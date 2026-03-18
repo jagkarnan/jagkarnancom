@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { resume } from "@/content/resume";
 
-export default function PrintableResume() {
+function PrintableResumeContent() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -143,6 +143,14 @@ export default function PrintableResume() {
         </section>
       </div>
     </main>
+  );
+}
+
+export default function PrintableResume() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-white" />}>
+      <PrintableResumeContent />
+    </Suspense>
   );
 }
 
