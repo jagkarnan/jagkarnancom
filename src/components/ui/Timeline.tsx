@@ -28,26 +28,21 @@ export function Timeline({ education, certifications, milestones }: TimelineProp
     notes: e.notes,
   }));
 
-  // Convert certifications to timeline items
-  const certificationItems: TimelineItem[] = certifications.map((c) => ({
-    year: parseInt(c.date),
-    title: c.name,
-    subtitle: c.issuer,
-    type: "certification",
-  }));
-
   // Convert milestones to timeline items
-  const milestoneItems: TimelineItem[] = (milestones || []).map((m) => ({
-    year: parseInt(m.year),
-    title: m.title,
-    subtitle: m.description,
-    type: "milestone",
-    milestoneType: m.type,
-    description: m.description,
-  }));
+  const milestoneItems: TimelineItem[] = (milestones || [])
+    // Exclude certification-type milestones; these are shown separately
+    .filter((m) => m.type !== "certification")
+    .map((m) => ({
+      year: parseInt(m.year),
+      title: m.title,
+      subtitle: m.description,
+      type: "milestone",
+      milestoneType: m.type,
+      description: m.description,
+    }));
 
   // Combine and sort by year (ascending - oldest first for tree layout)
-  const allItems = [...educationItems, ...certificationItems, ...milestoneItems].sort(
+  const allItems = [...educationItems, ...milestoneItems].sort(
     (a, b) => a.year - b.year
   );
 
@@ -64,9 +59,8 @@ export function Timeline({ education, certifications, milestones }: TimelineProp
             {allItems.map((item, index) => {
               const isEducation = item.type === "education";
               const isMilestone = item.type === "milestone";
-              const isCertification = item.type === "certification" || (isMilestone && item.milestoneType === "certification");
               const isAchievement = item.type === "milestone" && item.milestoneType === "achievement";
-              // Layout: Education left, Milestones left, Certifications right, Achievements left
+              // Layout: Education left, Milestones left, Achievements left
               const isLeft = isEducation || isMilestone || isAchievement;
 
               return (
@@ -87,8 +81,6 @@ export function Timeline({ education, certifications, milestones }: TimelineProp
                       className={`inline-block rounded-xl p-4 ${
                         isEducation
                           ? "bg-foreground/10 border border-foreground/20"
-                          : isCertification
-                          ? "bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/30"
                           : isAchievement
                           ? "bg-gradient-to-br from-purple-500/20 to-indigo-500/20 border border-purple-500/30"
                           : isMilestone
@@ -105,8 +97,6 @@ export function Timeline({ education, certifications, milestones }: TimelineProp
                           className={`text-xs font-medium uppercase tracking-wider ${
                             isEducation 
                               ? "text-foreground/70" 
-                              : isCertification
-                              ? "text-blue-400/80"
                               : isAchievement
                               ? "text-purple-400/80"
                               : isMilestone
@@ -138,8 +128,6 @@ export function Timeline({ education, certifications, milestones }: TimelineProp
                       className={`flex h-12 w-12 items-center justify-center rounded-full text-xs font-bold shadow-lg ${
                         isEducation
                           ? "bg-foreground text-background ring-4 ring-background"
-                          : isCertification
-                          ? "bg-gradient-to-br from-blue-500 to-cyan-500 text-white ring-4 ring-background"
                           : isAchievement
                           ? "bg-gradient-to-br from-purple-500 to-indigo-500 text-white ring-4 ring-background"
                           : isMilestone
@@ -176,10 +164,6 @@ export function Timeline({ education, certifications, milestones }: TimelineProp
                 <div className="flex items-center gap-2">
                   <div className="h-4 w-4 rounded-full bg-gradient-to-br from-amber-500 to-orange-500" />
                   <span>Milestone</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="h-4 w-4 rounded-full border-2 border-foreground/40 bg-background" />
-                  <span>Certification</span>
                 </div>
               </div>
             </div>

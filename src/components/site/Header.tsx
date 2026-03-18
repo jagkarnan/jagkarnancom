@@ -3,19 +3,17 @@
 import Link from "next/link";
 
 const navItems = [
-  { href: "#skills", label: "AI Skills" },
-  { href: "#milestones", label: "Major Milestones" },
+  { href: "#contact", label: "Contact" },
+  { href: "#skills", label: "AI focus" },
+  { href: "#ai-skills", label: "AI Skills" },
+  { href: "#tech-skills", label: "Tech Skills" },
+  { href: "#certifications", label: "Certifications" },
   { href: "#experience", label: "Experience" },
   { href: "#projects", label: "Projects" },
-  { href: "#contact", label: "Contact" },
+  { href: "#milestones", label: "Major Milestones" },
 ] as const;
 
 export function Header() {
-  const generatePDF = () => {
-    // Show print dialog which allows saving as PDF
-    window.print();
-  };
-
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-background/60 backdrop-blur print:hidden">
       <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-6 py-4">
@@ -42,12 +40,14 @@ export function Header() {
               {item.label}
             </a>
           ))}
-          <button
-            onClick={generatePDF}
-            className="focus-ring ml-2 rounded-full border border-black/10 px-3 py-1 text-sm text-foreground/80 hover:bg-black/5 border-white/15 hover:bg-white/5"
+          <a
+            href="/Jag_Karnan_Resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="focus-ring ml-2 rounded-full border border-white/15 px-3 py-1 text-sm text-foreground/80 hover:bg-white/5 cursor-pointer"
           >
             Resume PDF
-          </button>
+          </a>
         </nav>
       </div>
     </header>

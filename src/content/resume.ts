@@ -46,6 +46,7 @@ export type Resume = {
   links: SocialLink[];
   aiFocusAreas: string[];
   skills: Skill[];
+  techSkills?: string[];
   certifications: Certification[];
   experience: Experience[];
   projects: Project[];
@@ -54,10 +55,10 @@ export type Resume = {
 };
 export const resume: Resume = {
   name: "Jag Karnan",
-  headline: "AI Consultant & Entrepreneur • AI Automation Expert",
+  headline: "AI Partner",
   location: "Singapore (Singapore PR • Availability: Immediate)",
   summary:
-    "AI entrepreneur and consultant specializing in building custom AI solutions for enterprises. Expert in AI-assisted development, automation systems, and strategic AI implementation. Helping companies leverage AI for competitive advantage through custom solutions, process automation, and AI-powered applications.",
+    "AI partner to enterprises, working alongside leadership and teams to deeply understand how the business operates and where it can run smarter. I analyse end-to-end processes, identify high‑impact opportunities for AI, and design practical solutions that streamline workflows, reduce manual effort, and improve decision-making. The focus is on measurable business outcomes—faster cycles, fewer errors, and scalable operations—through AI-assisted development, intelligent automation, and targeted AI integrations that fit how your organisation actually works.",
   links: [
     { label: "Email", href: "mailto:jag.karnan@gmail.com" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/jagkarnan/" },
@@ -66,20 +67,77 @@ export const resume: Resume = {
     { label: "WhatsApp +65 8188 8935", href: "https://wa.me/6581888935" },
   ],
   aiFocusAreas: [
-    "Enterprise AI Strategy & Consulting",
-    "AI-Powered Automation Systems",
-    "Custom AI Solution Development",
-    "AI-Assisted Software Development",
-    "Process Optimization with AI",
-    "AI Integration & Implementation",
+    "Clear AI strategy aligned with business goals and measurable returns",
+    "Find opportunities where AI cuts costs, reduces errors, and speeds up cycles",
+    "Workflows that free teams from repetitive tasks for higher value work",
+    "AI assistants and automation that fit your existing tools",
+    "Prioritised roadmap by ROI and impact, no wasted effort",
+    "Smooth adoption with change management that drives uptake",
   ],
   skills: [
-    { name: "Solution Consulting", level: "Expert", keywords: ["Pre-Sales", "Solution Design", "Client Engagement"] },
-    { name: "IT Operations", level: "Expert", keywords: ["Infrastructure", "Cloud", "Cybersecurity"] },
-    { name: "Enterprise Outsourcing", level: "Advanced", keywords: ["Offshore", "Nearshore", "Delivery Teams"] },
-    { name: "Cloud Platforms", level: "Advanced", keywords: ["Azure", "AWS", "Microsoft 365"] },
-    { name: "Project Management", level: "Advanced", keywords: ["PMP", "Enterprise Projects", "APAC"] },
-    { name: "AI & Automation", level: "Advanced", keywords: ["AI Adoption", "Process Automation", "Efficiency"] },
+    {
+      name: "LLMs & Prompt Engineering",
+      level: "Expert",
+      keywords: ["GPT", "Claude", "Prompt Design", "RAG", "Fine-tuning"],
+    },
+    {
+      name: "AI Automation & Workflow",
+      level: "Expert",
+      keywords: ["Process Automation", "AI Agents", "Workflow Orchestration", "No-code/Low-code"],
+    },
+    {
+      name: "AI Strategy & Opportunity Assessment",
+      level: "Expert",
+      keywords: ["Use Case Prioritisation", "ROI Modelling", "AI Roadmapping", "Change Management"],
+    },
+    {
+      name: "Process Discovery & Mapping",
+      level: "Expert",
+      keywords: ["As‑Is / To‑Be", "Value Stream Mapping", "Bottleneck Analysis"],
+    },
+    {
+      name: "AI Integration & APIs",
+      level: "Advanced",
+      keywords: ["OpenAI", "Anthropic", "LangChain", "Vector DBs", "Embeddings"],
+    },
+    {
+      name: "Enterprise AI Implementation",
+      level: "Advanced",
+      keywords: ["Azure AI", "AWS Bedrock", "Google AI", "On-prem AI"],
+    },
+    {
+      name: "AI-Assisted Development",
+      level: "Advanced",
+      keywords: ["Copilot", "Cursor", "AI Code Generation", "Documentation"],
+    },
+    {
+      name: "Data & Analytics for AI",
+      level: "Advanced",
+      keywords: ["Data Pipelines", "ETL", "Analytics", "Databricks"],
+    },
+  ],
+  techSkills: [
+    "Python",
+    "JavaScript",
+    "TypeScript",
+    "React",
+    "AWS",
+    "Node.js",
+    "Next.js",
+    "Docker",
+    "Git",
+    "REST APIs",
+    "PostgreSQL",
+    "MongoDB",
+    "Vercel",
+    "Flutter",
+    "React Native + Expo",
+    ".NET / C#",
+    "Java",
+    "MySQL",
+    "Linux",
+    "C++",
+    "Data Recovery & Forensics",
   ],
   certifications: [
     {
@@ -116,26 +174,50 @@ export const resume: Resume = {
   experience: [
     {
       company: "Singapore IT Services Pte Ltd",
-      role: "AI Consultant",
+      role: "AI Partner & Consultant",
       location: "Singapore",
-      start: "Sep 2008",
+      start: "2020",
       end: "Present",
       highlights: [
-        "Advise clients on AI adoption strategies and implement AI-driven solutions to optimize business operations.",
-        "Consult with enterprise customers to design and deploy AI-powered automation systems.",
-        "Develop AI roadmaps and integration strategies for cloud and on-premise environments.",
-        "Lead AI training workshops and guide organizations through digital transformation with AI.",
-        "Integrate AI tools (LLMs, automation, data analytics) into client IT infrastructure.",
-        "Partner with business development teams to craft AI-focused proposals and solution presentations.",
+        "Act as AI partner to enterprises, helping leadership and teams identify where AI can improve operations.",
+        "Advise clients on AI adoption strategies and implement AI-driven solutions to optimise business processes.",
+        "Design and deploy AI-powered assistants, automations, and decision-support tools tailored to each organisation.",
+        "Lead AI training workshops and guide organisations through change management for AI-led transformation.",
       ],
       tech: ["AI Consulting", "LLMs", "Automation", "Cloud Solutions", "Enterprise AI", "Digital Transformation"],
+    },
+    {
+      company: "Singapore IT Services Pte Ltd",
+      role: "Digital Transformation & Automation Consultant",
+      location: "Singapore",
+      start: "2015",
+      end: "2019",
+      highlights: [
+        "Shifted focus from pure infrastructure to process-centric consulting and workflow optimisation.",
+        "Mapped end‑to‑end business processes and introduced automation, scripting, and cloud tools to remove manual steps.",
+        "Collaborated with business stakeholders to define outcomes, KPIs, and success metrics for transformation projects.",
+      ],
+      tech: ["Process Mapping", "Automation", "Scripting", "Cloud Services", "Digital Workplace"],
+    },
+    {
+      company: "Singapore IT Services Pte Ltd",
+      role: "Senior Systems Engineer & Consultant",
+      location: "Singapore",
+      start: "2008",
+      end: "2014",
+      highlights: [
+        "Led infrastructure and systems engineering projects for small and mid-sized enterprises in Singapore.",
+        "Designed and implemented secure, reliable on-premise and early cloud environments for clients across industries.",
+        "Worked hands-on with servers, networks, and endpoints while advising customers on IT best practices.",
+      ],
+      tech: ["Systems Engineering", "On‑Prem Infrastructure", "Networking", "Windows Server", "SME Consulting"],
     },
     {
       company: "Avanade Asia Pte Ltd",
       role: "Senior Systems Engineer",
       location: "Singapore",
-      start: "Apr 2005",
-      end: "Aug 2008",
+      start: "2005",
+      end: "2008",
       highlights: [
         "Supported enterprise IT infrastructure and operations across APAC.",
         "Delivered upgrades, migrations, and IT projects for clients such as British Telecom, MediaCorp, AIA, Changi General Hospital.",
@@ -228,32 +310,26 @@ export const resume: Resume = {
       type: "award",
     },
     {
-      title: "Joined PMR Software Technology Pvt Ltd",
-      description: "India as a Software Developer",
+      title: "Joined Software Technology International, USA",
+      description: "Software Engineer",
       year: "1999",
       type: "achievement",
     },
     {
-      title: "Joined Software Technology International",
-      description: "USA as a Software Engineer",
-      year: "2000",
-      type: "achievement",
-    },
-    {
-      title: "Joined PMR Software Technology Pte Ltd",
-      description: "Singapore as a Software Engineer",
+      title: "Joined PMR Software Technology Pte Ltd, Singapore",
+      description: "Software Engineer",
       year: "2001",
       type: "achievement",
     },
     {
-      title: "Joined Avanade Asia",
-      description: "Singapore as a Senior Software Engineer",
+      title: "Joined Avanade Asia, Singapore",
+      description: "Senior Software Engineer",
       year: "2005",
       type: "achievement",
     },
     {
-      title: "Joined Agility Logistics",
-      description: "Singapore as a Senior Engineering Manager",
+      title: "Joined Agility Logistics, Singapore",
+      description: "Senior Engineering Manager",
       year: "2007",
       type: "achievement",
     },

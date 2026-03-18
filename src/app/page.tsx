@@ -23,6 +23,44 @@ function Block({
 }
 
 export default function Home() {
+  const certificationBoardItems = [
+    // Primary certifications list
+    ...resume.certifications.map((c) => ({
+      id: `cert-${c.name}-${c.date}`,
+      title: c.name,
+      subtitle: c.issuer,
+      year: c.date,
+      source: "cert",
+    })),
+    // Historic certification milestones (previously in Major Milestones)
+    ...((resume.milestones ?? [])
+      .filter((m) => m.type === "certification")
+      .map((m) => ({
+        id: `milestone-cert-${m.title}-${m.year}`,
+        title: m.title,
+        subtitle: m.description,
+        year: m.year,
+        source: "milestone",
+      })) as {
+      id: string;
+      title: string;
+      subtitle: string;
+      year: string;
+      source: "cert" | "milestone";
+    }[]),
+  ].sort((a, b) => parseInt(b.year || "0") - parseInt(a.year || "0"));
+
+  const getIssuerInitials = (issuer?: string) => {
+    if (!issuer) return "AI";
+    return issuer
+      .split(" ")
+      .filter(Boolean)
+      .slice(0, 3)
+      .map((w) => w[0])
+      .join("")
+      .toUpperCase();
+  };
+
   return (
     <main className="pb-10">
       <Container>
@@ -97,7 +135,7 @@ export default function Home() {
               ))}
             </ul>
           </Block>
-          <Block title="Skills">
+          <Block title="AI Skills" id="ai-skills">
             <div className="grid gap-2 text-sm text-foreground/75 md:grid-cols-2">
               {resume.skills.map((s) => (
                 <div key={s.name} className="flex items-baseline gap-2">
@@ -109,13 +147,94 @@ export default function Home() {
               ))}
             </div>
           </Block>
+          <Block title="Tech Skills" id="tech-skills">
+            <div className="flex flex-wrap gap-2 text-sm text-foreground/75">
+              {(resume.techSkills ?? []).map((t) => (
+                <span
+                  key={t}
+                  className="rounded-full border border-white/20 bg-white/5 px-3 py-1 font-medium"
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+          </Block>
+          <Block title="Certifications" id="certifications">
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {certificationBoardItems.map((c) => (
+                <div
+                  key={c.id}
+                  className="relative flex flex-col rounded-[22px] border border-black/70 bg-[#f5f0e6] px-4 py-3 shadow-[0_14px_35px_rgba(15,23,42,0.55)] dark:border-black dark:bg-[#f5f0e6]"
+                >
+                  {/* Outer frame */}
+                  <div className="pointer-events-none absolute inset-1 rounded-[20px] border border-black/80 shadow-inner" />
+
+                  <div className="relative flex flex-1 flex-col gap-3">
+                    {/* Header: logo + issuer */}
+                    <div className="flex items-center gap-2.5 border-b border-black/40 pb-2">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 text-[11px] font-bold text-white shadow-md">
+                        {getIssuerInitials(c.source === "cert" ? c.subtitle : c.subtitle)}
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-zinc-600">
+                          Certificate of Achievement
+                        </span>
+                        <span className="text-xs font-semibold text-zinc-900">
+                          {c.subtitle || "Accredited Issuer"}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Certificate body */}
+                    <div className="flex-1 space-y-1.5">
+                      <p className="text-[11px] uppercase tracking-[0.22em] text-zinc-500">
+                        This is to certify that
+                      </p>
+                      <p className="text-[13px] font-semibold tracking-tight text-zinc-900">
+                        Jegadeesan Karunakaran
+                      </p>
+                      <p className="text-[11px] text-zinc-600">
+                        has successfully attained
+                      </p>
+                      <p className="text-[12px] font-semibold leading-snug text-zinc-900">
+                        {c.title}
+                      </p>
+                    </div>
+
+                    {/* Footer: year + seal */}
+                    <div className="mt-1.5 flex items-center justify-between pt-1.5">
+                      <div className="flex flex-col text-[10px] text-zinc-700">
+                        <span className="uppercase tracking-[0.18em]">Awarded</span>
+                        <span className="mt-1 inline-flex w-fit rounded-full border border-black/60 bg-[#f5f0e6] px-2 py-0.5 font-mono text-[10px] text-zinc-900">
+                          {c.year}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="relative h-10 w-10 rounded-full border-2 border-red-700 bg-gradient-to-br from-red-500 to-red-700 text-[16px] font-bold text-white shadow-[0_5px_12px_rgba(0,0,0,0.45)]">
+                          <div className="absolute inset-[2px] rounded-full border border-red-200/80" />
+                          <div className="relative flex h-full w-full items-center justify-center leading-none">
+                            ★
+                          </div>
+                        </div>                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Block>
           <Block title="Experience" id="experience">
             <div className="space-y-5">
               {resume.experience.map((e) => (
                 <div key={`${e.company}-${e.role}`} className="space-y-2">
                   <div className="flex flex-col gap-1 md:flex-row md:items-baseline md:justify-between">
-                    <p className="text-sm font-semibold">{e.role} • {e.company}</p>
-                    <p className="font-mono text-xs text-foreground/60">{e.start} — {e.end ?? "Present"}</p>
+                    <div className="flex flex-col">
+                      <p className="text-sm font-semibold">{e.role} • {e.company}</p>
+                      {e.location ? (
+                        <p className="text-xs text-foreground/60">{e.location}</p>
+                      ) : null}
+                    </div>
+                    <p className="font-mono text-xs text-foreground/60 whitespace-nowrap">{e.start} — {e.end ?? "Present"}</p>
                   </div>
                   <ul className="space-y-2 text-sm text-foreground/75">
                     {e.highlights.map((h) => (

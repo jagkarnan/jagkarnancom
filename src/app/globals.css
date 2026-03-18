@@ -71,6 +71,10 @@ body {
 
 @media print {
 
+  * {
+    color: #000000 !important;
+  }
+
   header,
   footer {
     display: none !important;
@@ -78,7 +82,6 @@ body {
 
   body {
     background: #ffffff !important;
-    color: #000000 !important;
   }
 
   .ai-grid::before {
