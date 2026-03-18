@@ -8,8 +8,8 @@ const navItems = [
   { href: "#ai-skills", label: "AI Skills" },
   { href: "#tech-skills", label: "Tech Skills" },
   { href: "#certifications", label: "Certifications" },
+  { href: "#corporate-exposure", label: "Corporate Exposure" },
   { href: "#experience", label: "Experience" },
-  { href: "#projects", label: "Projects" },
   { href: "#milestones", label: "Major Milestones" },
 ] as const;
 

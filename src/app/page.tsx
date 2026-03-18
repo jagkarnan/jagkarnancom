@@ -223,6 +223,33 @@ export default function Home() {
               ))}
             </div>
           </Block>
+          <Block title="Corporate Exposure" id="corporate-exposure">
+            <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12">
+              {[
+                { name: "British Telecom", logo: "/logos/bt.svg" },
+                { name: "Accenture", logo: "/logos/accenture.svg" },
+                { name: "Microsoft", logo: "/logos/microsoft.svg" },
+                { name: "Nike", logo: "/logos/nike.svg" },
+                { name: "Agility Logistics", logo: "/logos/agility.svg" },
+              ].map((company) => (
+                <div
+                  key={company.logo}
+                  className="flex flex-col items-center gap-3"
+                >
+                  <div className="flex h-14 w-28 items-center justify-center rounded-xl bg-white px-3 py-2 shadow-sm">
+                    <img
+                      src={company.logo}
+                      alt={company.name}
+                      className="h-10 w-auto max-w-[96px] object-contain"
+                    />
+                  </div>
+                  <span className="text-xs font-medium text-foreground/70">
+                    {company.name}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </Block>
           <Block title="Experience" id="experience">
             <div className="space-y-5">
               {resume.experience.map((e) => (
@@ -244,22 +271,6 @@ export default function Home() {
                       </li>
                     ))}
                   </ul>
-                </div>
-              ))}
-            </div>
-          </Block>
-          <Block title="Projects" id="projects">
-            <div className="space-y-5">
-              {resume.projects.map((p) => (
-                <div key={p.name} className="space-y-2">
-                  <p className="text-sm font-semibold">{p.name}</p>
-                  <p className="text-sm text-foreground/75">{p.blurb}</p>
-                  {p.impact ? (
-                    <p className="text-sm text-foreground/75">
-                      <span className="font-mono text-xs text-foreground/60">IMPACT </span>
-                      {p.impact}
-                    </p>
-                  ) : null}
                 </div>
               ))}
             </div>
