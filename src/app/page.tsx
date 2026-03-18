@@ -62,7 +62,7 @@ export default function Home() {
   };
 
   return (
-    <main className="pb-10">
+    <main className="pt-8 pb-10">
       <Container>
         <div className="flex flex-col gap-6">
           <section className="glass-card rounded-2xl p-6">
