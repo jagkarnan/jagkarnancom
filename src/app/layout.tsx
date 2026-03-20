@@ -9,14 +9,14 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 export const metadata: Metadata = {
-  title: { default: "Jag Karnan — AI Engineer", template: "%s | Jag Karnan" },
+  title: { default: "Jag Karnan - AI Partner", template: "%s | Jag Karnan" },
   description:
     "AI-focused online resume: skills, certifications, experience, and projects.",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   ),
   openGraph: {
-    title: "Jag Karnan — AI Engineer",
+    title: "Jag Karnan - AI Partner",
     description:
       "AI-focused online resume: skills, certifications, experience, and projects.",
     type: "website",

@@ -15,7 +15,7 @@ function Block({
   id?: string;
 }) {
   return (
-    <section id={id} className="glass-card rounded-2xl p-6">
+    <section id={id} className="glass-card rounded-2xl p-4 sm:p-6">
       <h2 className="text-sm font-semibold tracking-tight">{title}</h2>
       <div className="mt-3">{children}</div>
     </section>
@@ -62,22 +62,26 @@ export default function Home() {
   };
 
   return (
-    <main className="pt-8 pb-10">
+    <main className="min-w-0 overflow-x-hidden pt-8 pb-10">
       <Container>
         <div className="flex flex-col gap-6">
-          <section className="glass-card rounded-2xl p-6">
+          <section className="glass-card rounded-2xl p-4 sm:p-6">
             <div className="flex flex-col gap-4 md:flex-row md:gap-6">
-              <div className="flex-shrink-0">
+              <div className="flex-shrink-0 mx-auto md:mx-0">
                 <img
                   src="/profile-photo.jpg"
                   alt="Jag Karnan"
                   className="h-24 w-24 rounded-full object-cover border-2 border-white/20"
                 />
               </div>
-              <div className="flex flex-col gap-2 flex-1">
-                <h1 className="text-2xl font-semibold tracking-tight">{resume.name}</h1>
-                <p className="text-sm text-foreground/75">{resume.headline}</p>
-                <p className="text-sm text-foreground/70">{resume.summary}</p>
+              <div className="flex min-w-0 flex-col gap-2 flex-1 text-center md:text-left">
+                <h1 className="text-xl font-semibold tracking-tight sm:text-2xl break-words">
+                  {resume.name}
+                </h1>
+                <p className="text-sm text-foreground/75 break-words">{resume.headline}</p>
+                <p className="text-sm text-foreground/70 break-words text-pretty">
+                  {resume.summary}
+                </p>
                 <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-sm text-foreground/70">
                   {resume.location ? <span>{resume.location}</span> : null}
                 </div>
@@ -106,12 +110,12 @@ export default function Home() {
                   </a>
                 ))}
               </div>
-              <div className="flex gap-6 pt-2 border-t border-white/10 items-center">
+              <div className="flex flex-wrap gap-4 sm:gap-6 pt-2 border-t border-white/10 items-center">
                 {resume.links.filter(l => l.label.includes("Call") || l.label.includes("WhatsApp")).map((l) => (
                   <a
                     key={l.href}
                     href={l.href}
-                    className="flex items-center gap-2 underline decoration-white/20 underline-offset-4 hover:decoration-white/50 whitespace-nowrap"
+                    className="flex min-w-0 items-center gap-2 underline decoration-white/20 underline-offset-4 hover:decoration-white/50 break-all sm:break-normal sm:whitespace-nowrap"
                   >
                     {l.label.includes("Call") && (
                       <SmartphoneChargingIcon size={16} />
@@ -130,7 +134,7 @@ export default function Home() {
               {resume.aiFocusAreas.map((a) => (
                 <li key={a} className="flex gap-3">
                   <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/40" />
-                  <span>{a}</span>
+                  <span className="min-w-0 break-words text-pretty">{a}</span>
                 </li>
               ))}
             </ul>
@@ -138,8 +142,8 @@ export default function Home() {
           <Block title="AI Skills" id="ai-skills">
             <div className="grid gap-2 text-sm text-foreground/75 md:grid-cols-2">
               {resume.skills.map((s) => (
-                <div key={s.name} className="flex items-baseline gap-2">
-                  <span className="font-medium">{s.name}</span>
+                <div key={s.name} className="flex min-w-0 flex-wrap items-baseline gap-2">
+                  <span className="font-medium break-words">{s.name}</span>
                   {s.level ? (
                     <span className="font-mono text-xs text-foreground/60">{s.level}</span>
                   ) : null}
@@ -171,15 +175,15 @@ export default function Home() {
 
                   <div className="relative flex flex-1 flex-col gap-3">
                     {/* Header: logo + issuer */}
-                    <div className="flex items-center gap-2.5 border-b border-black/40 pb-2">
-                      <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 text-[11px] font-bold text-white shadow-md">
+                    <div className="flex min-w-0 items-start gap-2.5 border-b border-black/40 pb-2">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 text-[11px] font-bold text-white shadow-md">
                         {getIssuerInitials(c.source === "cert" ? c.subtitle : c.subtitle)}
                       </div>
-                      <div className="flex flex-col">
+                      <div className="min-w-0 flex flex-col">
                         <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-zinc-600">
                           Certificate of Achievement
                         </span>
-                        <span className="text-xs font-semibold text-zinc-900">
+                        <span className="break-words text-xs font-semibold text-zinc-900">
                           {c.subtitle || "Accredited Issuer"}
                         </span>
                       </div>
@@ -196,7 +200,7 @@ export default function Home() {
                       <p className="text-[11px] text-zinc-600">
                         has successfully attained
                       </p>
-                      <p className="text-[12px] font-semibold leading-snug text-zinc-900">
+                      <p className="break-words text-[12px] font-semibold leading-snug text-zinc-900">
                         {c.title}
                       </p>
                     </div>
@@ -255,19 +259,23 @@ export default function Home() {
               {resume.experience.map((e) => (
                 <div key={`${e.company}-${e.role}`} className="space-y-2">
                   <div className="flex flex-col gap-1 md:flex-row md:items-baseline md:justify-between">
-                    <div className="flex flex-col">
-                      <p className="text-sm font-semibold">{e.role} • {e.company}</p>
+                    <div className="min-w-0 flex flex-col">
+                      <p className="break-words text-sm font-semibold">
+                        {e.role} • {e.company}
+                      </p>
                       {e.location ? (
                         <p className="text-xs text-foreground/60">{e.location}</p>
                       ) : null}
                     </div>
-                    <p className="font-mono text-xs text-foreground/60 whitespace-nowrap">{e.start} — {e.end ?? "Present"}</p>
+                    <p className="shrink-0 font-mono text-xs text-foreground/60 md:whitespace-nowrap">
+                      {e.start} — {e.end ?? "Present"}
+                    </p>
                   </div>
                   <ul className="space-y-2 text-sm text-foreground/75">
                     {e.highlights.map((h) => (
                       <li key={h} className="flex gap-3">
                         <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/40" />
-                        <span>{h}</span>
+                        <span className="min-w-0 break-words">{h}</span>
                       </li>
                     ))}
                   </ul>

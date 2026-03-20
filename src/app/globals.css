@@ -40,9 +40,15 @@ body {
   position: relative;
 }
 
-/* Add spacing for sections with IDs to account for sticky header */
+/* Add spacing for sections with IDs to account for sticky header (taller on mobile) */
 [id] {
-  scroll-margin-top: 80px;
+  scroll-margin-top: 7rem;
+}
+
+@media (min-width: 768px) {
+  [id] {
+    scroll-margin-top: 5rem;
+  }
 }
 
 .glass-card {

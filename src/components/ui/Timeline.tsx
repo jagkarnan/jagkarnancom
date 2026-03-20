@@ -46,11 +46,56 @@ export function Timeline({ education, certifications, milestones }: TimelineProp
     (a, b) => a.year - b.year
   );
 
+  const cardClass = (item: TimelineItem) => {
+    const isEducation = item.type === "education";
+    const isAchievement =
+      item.type === "milestone" && item.milestoneType === "achievement";
+    const isMilestone = item.type === "milestone";
+    if (isEducation)
+      return "bg-foreground/10 border border-foreground/20";
+    if (isAchievement)
+      return "bg-gradient-to-br from-purple-500/20 to-indigo-500/20 border border-purple-500/30";
+    if (isMilestone)
+      return "bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/30";
+    return "bg-white/5 border border-white/10";
+  };
+
+  const typeLabel = (item: TimelineItem) =>
+    item.type === "milestone" ? item.milestoneType : item.type;
+
   return (
-    <div className="relative py-4">
-      <div className="flex gap-8">
+    <div className="relative min-w-0 py-4">
+      {/* Mobile / narrow tablet: stacked cards (no side-by-side squeeze) */}
+      <div className="space-y-4 md:hidden">
+        {allItems.map((item) => (
+          <div
+            key={`mobile-${item.title}-${item.year}`}
+            className={`rounded-xl p-4 ${cardClass(item)}`}
+          >
+            <p className="text-xs font-medium uppercase tracking-wider text-foreground/60">
+              {typeLabel(item)}
+            </p>
+            <p className="mt-1 font-mono text-xs text-foreground/60">
+              {item.year}
+            </p>
+            <h3 className="mt-2 break-words text-sm font-semibold text-foreground">
+              {item.title}
+            </h3>
+            <p className="mt-1 break-words text-sm text-foreground/70">
+              {item.subtitle}
+            </p>
+            {item.notes && item.notes.length > 0 ? (
+              <p className="mt-2 break-words text-xs italic text-foreground/50">
+                {item.notes.join(" • ")}
+              </p>
+            ) : null}
+          </div>
+        ))}
+      </div>
+
+      <div className="hidden gap-8 md:flex">
         {/* Timeline Tree Column */}
-        <div className="flex-1 relative max-w-4xl">
+        <div className="relative min-w-0 max-w-4xl flex-1">
           {/* Central spine */}
           <div className="absolute left-1/2 top-0 bottom-0 w-1 -translate-x-1/2 rounded-full bg-gradient-to-b from-foreground/30 via-foreground/60 to-foreground/30" />
 
@@ -73,12 +118,12 @@ export function Timeline({ education, certifications, milestones }: TimelineProp
                 >
                   {/* Content card */}
                   <div
-                    className={`w-[45%] ${
-                      isLeft ? "text-right pr-4" : "text-left pl-4"
+                    className={`min-w-0 w-[45%] max-w-[48%] ${
+                      isLeft ? "text-right pr-2 sm:pr-4" : "text-left pl-2 sm:pl-4"
                     }`}
                   >
                     <div
-                      className={`inline-block rounded-xl p-4 ${
+                      className={`inline-block max-w-full rounded-xl p-3 sm:p-4 ${
                         isEducation
                           ? "bg-foreground/10 border border-foreground/20"
                           : isAchievement
@@ -89,7 +134,7 @@ export function Timeline({ education, certifications, milestones }: TimelineProp
                       }`}
                     >
                       <div
-                        className={`flex flex-col gap-1 ${
+                        className={`flex min-w-0 flex-col gap-1 ${
                           isLeft ? "items-end" : "items-start"
                         }`}
                       >
@@ -109,12 +154,14 @@ export function Timeline({ education, certifications, milestones }: TimelineProp
                         <span className="font-mono text-xs text-foreground/60">
                           {item.year}
                         </span>
-                        <h3 className="text-sm font-semibold text-foreground">
+                        <h3 className="break-words text-sm font-semibold text-foreground">
                           {item.title}
                         </h3>
-                        <p className="text-sm text-foreground/70">{item.subtitle}</p>
+                        <p className="break-words text-sm text-foreground/70">
+                          {item.subtitle}
+                        </p>
                         {item.notes && item.notes.length > 0 && (
-                          <p className="text-xs text-foreground/50 italic">
+                          <p className="break-words text-xs italic text-foreground/50">
                             {item.notes.join(" • ")}
                           </p>
                         )}
@@ -149,14 +196,14 @@ export function Timeline({ education, certifications, milestones }: TimelineProp
                   />
 
                   {/* Empty space for opposite side */}
-                  <div className="w-[45%]" />
+                  <div className="min-w-0 w-[45%] max-w-[48%]" />
                 </div>
               );
             })}
             
             {/* Legend positioned before timeline ends */}
             <div className="relative mt-8 mb-8">
-              <div className="absolute left-0 right-0 flex items-center justify-center gap-8 text-xs text-foreground/60">
+              <div className="absolute left-0 right-0 flex flex-wrap items-center justify-center gap-4 gap-y-2 px-2 text-xs text-foreground/60 sm:gap-8">
                 <div className="flex items-center gap-2">
                   <div className="h-4 w-4 rounded-full bg-foreground" />
                   <span>Education</span>
@@ -170,8 +217,8 @@ export function Timeline({ education, certifications, milestones }: TimelineProp
           </div>
         </div>
 
-        {/* Experience Progression Column */}
-        <div className="w-48 relative">
+        {/* Experience Progression Column — hidden on smaller screens to avoid overlap */}
+        <div className="relative hidden w-48 shrink-0 lg:block">
           <div className="sticky top-8">
             <h3 className="text-sm font-semibold text-foreground/80 mb-4 text-center">
               Experience Journey
