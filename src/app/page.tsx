@@ -79,11 +79,13 @@ export default function Home() {
                   {resume.name}
                 </h1>
                 <p className="text-sm text-foreground/75 break-words">{resume.headline}</p>
-                <p className="text-sm text-foreground/70 break-words text-pretty">
-                  {resume.summary}
-                </p>
-                <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-sm text-foreground/70">
-                  {resume.location ? <span>{resume.location}</span> : null}
+                <div className="mx-auto flex w-full max-w-prose flex-col gap-2 md:mx-0 md:max-w-none">
+                  <p className="text-sm text-foreground/70 break-words text-pretty md:text-left">
+                    {resume.summary}
+                  </p>
+                  <div className="mt-1 flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm text-foreground/70 md:justify-start">
+                    {resume.location ? <span className="text-pretty">{resume.location}</span> : null}
+                  </div>
                 </div>
               </div>
             </div>
