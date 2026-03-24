@@ -291,7 +291,7 @@ export const resume: Resume = {
       degree: "Bachelor of Engineering • Electronics & Communication",
       start: "1995",
       end: "1999",
-      notes: ["University Gold Medalist"],
+      notes: ["University Gold Medal"],
     },
   ],
   milestones: [

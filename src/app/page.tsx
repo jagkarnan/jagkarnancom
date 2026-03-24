@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import { resume } from "@/content/resume";
 import {
   buildCertificationBoardItems,
@@ -9,6 +10,48 @@ import {
 import { Container } from "@/components/ui/Container";
 import { Timeline } from "@/components/ui/Timeline";
 import { MailCheckIcon, LinkedinIcon, GithubIcon, YoutubeIcon, SmartphoneChargingIcon, MessageCircleIcon } from "lucide-animated";
+
+function GoldMedalIcon({ size = 20, className }: { size?: number; className?: string }) {
+  const uid = useId().replace(/:/g, "");
+  const gradId = `hero-medal-gold-${uid}`;
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      className={className}
+      aria-hidden
+    >
+      <defs>
+        <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#fde68a" />
+          <stop offset="40%" stopColor="#f59e0b" />
+          <stop offset="100%" stopColor="#b45309" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M7.5 2.5 9.2 7.8 6 9.5 5.5 5.5Z"
+        fill="#991b1b"
+        opacity={0.95}
+      />
+      <path
+        d="M16.5 2.5 14.8 7.8 18 9.5 18.5 5.5Z"
+        fill="#991b1b"
+        opacity={0.95}
+      />
+      <circle cx="12" cy="14.5" r="6.2" fill={`url(#${gradId})`} stroke="#92400e" strokeWidth="1" />
+      <circle cx="12" cy="14.5" r="4" fill="none" stroke="#fef3c7" strokeOpacity={0.35} strokeWidth="0.75" />
+    </svg>
+  );
+}
+
+function getUniversityGoldMedalLabel(): string | null {
+  for (const ed of resume.education) {
+    const hit = ed.notes?.find((n) => /gold\s*medal/i.test(n));
+    if (hit) return hit;
+  }
+  return null;
+}
 
 function Block({
   title,
@@ -29,6 +72,7 @@ function Block({
 
 export default function Home() {
   const certificationBoardItems = buildCertificationBoardItems();
+  const goldMedalLabel = getUniversityGoldMedalLabel();
 
   return (
     <main className="min-w-0 overflow-x-hidden pt-8 pb-10">
@@ -44,9 +88,20 @@ export default function Home() {
                 />
               </div>
               <div className="flex min-w-0 flex-col gap-2 flex-1 text-center md:text-left">
-                <h1 className="text-xl font-semibold tracking-tight sm:text-2xl break-words">
-                  {resume.name}
-                </h1>
+                <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 md:justify-start">
+                  <h1 className="text-xl font-semibold tracking-tight sm:text-2xl break-words">
+                    {resume.name}
+                  </h1>
+                  {goldMedalLabel ? (
+                    <span
+                      className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/45 bg-gradient-to-r from-amber-500/15 to-amber-600/10 px-2.5 py-1 text-xs font-semibold tracking-tight text-amber-100 shadow-[0_0_20px_rgba(245,158,11,0.12)]"
+                      title={goldMedalLabel}
+                    >
+                      <GoldMedalIcon size={18} className="shrink-0 drop-shadow-sm" />
+                      <span className="whitespace-nowrap">{goldMedalLabel}</span>
+                    </span>
+                  ) : null}
+                </div>
                 <p className="text-sm text-foreground/75 break-words">{resume.headline}</p>
                 <div className="mx-auto flex w-full max-w-prose flex-col gap-2 md:mx-0 md:max-w-none">
                   <p className="text-sm text-foreground/70 break-words text-pretty md:text-left">
