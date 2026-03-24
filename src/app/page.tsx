@@ -88,10 +88,18 @@ export default function Home() {
                 />
               </div>
               <div className="flex min-w-0 flex-col gap-2 flex-1 text-center md:text-left">
-                <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 md:justify-start">
-                  <h1 className="text-xl font-semibold tracking-tight sm:text-2xl break-words">
-                    {resume.name}
-                  </h1>
+                <div className="flex w-full flex-col gap-1.5 items-center md:items-start">
+                  <div className="flex w-full flex-wrap items-baseline justify-center gap-x-2 gap-y-0.5 md:justify-start">
+                    <h1 className="text-xl font-semibold tracking-tight sm:text-2xl break-words">
+                      {resume.name}
+                    </h1>
+                    <span className="select-none text-foreground/35" aria-hidden>
+                      ·
+                    </span>
+                    <span className="text-base font-medium text-foreground/80 sm:text-lg break-words">
+                      {resume.headline}
+                    </span>
+                  </div>
                   {goldMedalLabel ? (
                     <span
                       className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/45 bg-gradient-to-r from-amber-500/15 to-amber-600/10 px-2.5 py-1 text-xs font-semibold tracking-tight text-amber-100 shadow-[0_0_20px_rgba(245,158,11,0.12)]"
@@ -102,7 +110,6 @@ export default function Home() {
                     </span>
                   ) : null}
                 </div>
-                <p className="text-sm text-foreground/75 break-words">{resume.headline}</p>
                 <div className="mx-auto flex w-full max-w-prose flex-col gap-2 md:mx-0 md:max-w-none">
                   <p className="text-sm text-foreground/70 break-words text-pretty md:text-left">
                     {resume.summary}
