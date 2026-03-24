@@ -40,6 +40,8 @@ export type Milestone = {
 };
 export type Resume = {
   name: string;
+  /** Legal / certificate name (e.g. for formal résumé and PDF) */
+  legalName?: string;
   headline: string;
   location?: string;
   summary: string;
@@ -55,6 +57,7 @@ export type Resume = {
 };
 export const resume: Resume = {
   name: "Jag Karnan",
+  legalName: "Jegadeesan Karunakaran",
   headline: "AI Partner",
   location: "Singapore (Singapore PR • Availability: Immediate)",
   summary:
@@ -63,6 +66,7 @@ export const resume: Resume = {
     { label: "Email", href: "mailto:jag.karnan@gmail.com" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/jagkarnan/" },
     { label: "GitHub", href: "https://github.com/jagkarnan" },
+    { label: "YouTube", href: "https://www.youtube.com/@jagkarnan" },
     { label: "Call +65 8188 8935", href: "tel:+6581888935" },
     { label: "WhatsApp +65 8188 8935", href: "https://wa.me/6581888935" },
   ],
@@ -343,6 +347,52 @@ export const resume: Resume = {
       title: "Founded Singapore Data Recovery Centre Pte Ltd",
       description: "",
       year: "2010",
+      type: "achievement",
+    },
+    {
+      title:
+        "Secured key private and gov accounts AIA, CITI Bank, Changi Airport, Ministry of Education (MOE), Singapore Police, Public Service Division",
+      description: "",
+      year: "2013",
+      type: "achievement",
+    },
+    {
+      title:
+        "Improved data recovery volume from 12 cases per month to average 74 cases per month",
+      description: "",
+      year: "2015",
+      type: "achievement",
+    },
+    {
+      title: "Started data analysis & reporting services for Singapore Real Estate Market",
+      description: "",
+      year: "2016",
+      type: "achievement",
+    },
+    {
+      title:
+        "Built autonomous systems to handle end-to-end real estate workflow from marketing to final completion",
+      description: "",
+      year: "2018",
+      type: "achievement",
+    },
+    {
+      title: "Machine learning & expert systems for Singapore real estate forecasting",
+      description: "",
+      year: "2021",
+      type: "achievement",
+    },
+    {
+      title: "LLM-powered business chatbots for client-facing automation",
+      description: "",
+      year: "2023",
+      type: "achievement",
+    },
+    {
+      title:
+        "Micro SaaS product builds. Automation Agency. AI-powered, subscription model",
+      description: "",
+      year: "2025",
       type: "achievement",
     },
     {

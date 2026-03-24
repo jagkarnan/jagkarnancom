@@ -3,7 +3,7 @@
 import { resume } from "@/content/resume";
 import { Container } from "@/components/ui/Container";
 import { Timeline } from "@/components/ui/Timeline";
-import { MailCheckIcon, LinkedinIcon, GithubIcon, SmartphoneChargingIcon, MessageCircleIcon } from "lucide-animated";
+import { MailCheckIcon, LinkedinIcon, GithubIcon, YoutubeIcon, SmartphoneChargingIcon, MessageCircleIcon } from "lucide-animated";
 
 function Block({
   title,
@@ -108,6 +108,9 @@ export default function Home() {
                     {l.label === "GitHub" && (
                       <GithubIcon size={16} />
                     )}
+                    {l.label === "YouTube" && (
+                      <YoutubeIcon size={16} />
+                    )}
                     <span>{l.label}</span>
                   </a>
                 ))}
@@ -197,7 +200,7 @@ export default function Home() {
                         This is to certify that
                       </p>
                       <p className="text-[13px] font-semibold tracking-tight text-zinc-900">
-                        Jegadeesan Karunakaran
+                        {resume.legalName ?? resume.name}
                       </p>
                       <p className="text-[11px] text-zinc-600">
                         has successfully attained
@@ -229,24 +232,27 @@ export default function Home() {
               ))}
             </div>
           </Block>
-          <Block title="Corporate Exposure" id="corporate-exposure">
+          <Block title="Corporate Experience" id="corporate-experience">
             <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12">
               {[
-                { name: "British Telecom", logo: "/logos/bt.svg" },
-                { name: "Accenture", logo: "/logos/accenture.svg" },
-                { name: "Microsoft", logo: "/logos/microsoft.svg" },
-                { name: "Nike", logo: "/logos/nike.svg" },
-                { name: "Agility Logistics", logo: "/logos/agility.svg" },
+                { name: "British Telecom", logo: "/logos/bt.png" },
+                { name: "Microsoft", logo: "/logos/microsoft.png" },
+                { name: "Avanade", logo: "/logos/avanade.png" },
+                { name: "Accenture", logo: "/logos/accenture.png" },
+                { name: "Nike", logo: "/logos/nike.png" },
+                { name: "Agility Logistics", logo: "/logos/agility.png" },
               ].map((company) => (
                 <div
-                  key={company.logo}
+                  key={company.name}
                   className="flex flex-col items-center gap-3"
                 >
-                  <div className="flex h-14 w-28 items-center justify-center rounded-xl bg-white px-3 py-2 shadow-sm">
+                  <div className="flex h-16 w-40 shrink-0 items-center justify-center rounded-xl bg-white px-3 py-2 shadow-sm sm:h-[4.5rem] sm:w-44">
                     <img
                       src={company.logo}
-                      alt={company.name}
-                      className="h-10 w-auto max-w-[96px] object-contain"
+                      alt={`${company.name} logo`}
+                      className="max-h-full max-w-full object-contain"
+                      loading="lazy"
+                      decoding="async"
                     />
                   </div>
                   <span className="text-xs font-medium text-foreground/70">

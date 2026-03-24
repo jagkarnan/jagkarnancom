@@ -9,7 +9,7 @@ const navItems = [
   { href: "#ai-skills", label: "AI Skills" },
   { href: "#tech-skills", label: "Tech Skills" },
   { href: "#certifications", label: "Certifications" },
-  { href: "#corporate-exposure", label: "Corporate Exposure" },
+  { href: "#corporate-experience", label: "Corporate Experience" },
   { href: "#experience", label: "Experience" },
   { href: "#milestones", label: "Major Milestones" },
 ] as const;
@@ -37,7 +37,7 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-background/60 backdrop-blur print:hidden">
+    <header className="site-header sticky top-0 z-50 border-b border-white/10 bg-background/60 backdrop-blur print:hidden">
       <div className="relative mx-auto flex max-w-5xl min-w-0 flex-col gap-0 px-4 py-3 sm:px-6 sm:py-4 md:gap-3">
         <div className="flex items-center justify-between gap-3">
           <Link
