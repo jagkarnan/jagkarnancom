@@ -1,6 +1,11 @@
 "use client";
 
 import { resume } from "@/content/resume";
+import {
+  buildCertificationBoardItems,
+  getIssuerInitials,
+  CORPORATE_EXPERIENCE,
+} from "@/content/resumeShared";
 import { Container } from "@/components/ui/Container";
 import { Timeline } from "@/components/ui/Timeline";
 import { MailCheckIcon, LinkedinIcon, GithubIcon, YoutubeIcon, SmartphoneChargingIcon, MessageCircleIcon } from "lucide-animated";
@@ -23,43 +28,7 @@ function Block({
 }
 
 export default function Home() {
-  const certificationBoardItems = [
-    // Primary certifications list
-    ...resume.certifications.map((c) => ({
-      id: `cert-${c.name}-${c.date}`,
-      title: c.name,
-      subtitle: c.issuer,
-      year: c.date,
-      source: "cert",
-    })),
-    // Historic certification milestones (previously in Major Milestones)
-    ...((resume.milestones ?? [])
-      .filter((m) => m.type === "certification")
-      .map((m) => ({
-        id: `milestone-cert-${m.title}-${m.year}`,
-        title: m.title,
-        subtitle: m.description,
-        year: m.year,
-        source: "milestone",
-      })) as {
-      id: string;
-      title: string;
-      subtitle: string;
-      year: string;
-      source: "cert" | "milestone";
-    }[]),
-  ].sort((a, b) => parseInt(b.year || "0") - parseInt(a.year || "0"));
-
-  const getIssuerInitials = (issuer?: string) => {
-    if (!issuer) return "AI";
-    return issuer
-      .split(" ")
-      .filter(Boolean)
-      .slice(0, 3)
-      .map((w) => w[0])
-      .join("")
-      .toUpperCase();
-  };
+  const certificationBoardItems = buildCertificationBoardItems();
 
   return (
     <main className="min-w-0 overflow-x-hidden pt-8 pb-10">
@@ -234,14 +203,7 @@ export default function Home() {
           </Block>
           <Block title="Corporate Experience" id="corporate-experience">
             <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12">
-              {[
-                { name: "British Telecom", logo: "/logos/bt.png" },
-                { name: "Microsoft", logo: "/logos/microsoft.png" },
-                { name: "Avanade", logo: "/logos/avanade.png" },
-                { name: "Accenture", logo: "/logos/accenture.png" },
-                { name: "Nike", logo: "/logos/nike.png" },
-                { name: "Agility Logistics", logo: "/logos/agility.png" },
-              ].map((company) => (
+              {CORPORATE_EXPERIENCE.map((company) => (
                 <div
                   key={company.name}
                   className="flex flex-col items-center gap-3"

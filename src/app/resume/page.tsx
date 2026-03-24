@@ -3,15 +3,11 @@
 import { Suspense, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { resume } from "@/content/resume";
-
-const CORPORATE_EXPERIENCE = [
-  { name: "British Telecom", logo: "/logos/bt.png" },
-  { name: "Microsoft", logo: "/logos/microsoft.png" },
-  { name: "Avanade", logo: "/logos/avanade.png" },
-  { name: "Accenture", logo: "/logos/accenture.png" },
-  { name: "Nike", logo: "/logos/nike.png" },
-  { name: "Agility Logistics", logo: "/logos/agility.png" },
-] as const;
+import {
+  buildCertificationBoardItems,
+  CORPORATE_EXPERIENCE,
+  getIssuerInitials,
+} from "@/content/resumeShared";
 
 type MilestoneRow =
   | {
@@ -49,17 +45,8 @@ function buildMajorMilestoneRows(): MilestoneRow[] {
   return [...educationRows, ...milestoneRows].sort((a, b) => a.year - b.year);
 }
 
-/** Module-level data so the print layout renders immediately (no Suspense blank shell). */
 const MAJOR_MILESTONE_ROWS = buildMajorMilestoneRows();
-const CERTIFICATIONS_PRIMARY = [...resume.certifications].sort(
-  (a, b) => parseInt(b.date || "0", 10) - parseInt(a.date || "0", 10),
-);
-const CERTIFICATIONS_FROM_MILESTONES = (resume.milestones ?? [])
-  .filter((m) => m.type === "certification")
-  .sort(
-    (a, b) =>
-      parseInt(b.year || "0", 10) - parseInt(a.year || "0", 10),
-  );
+const CERTIFICATION_BOARD_ITEMS = buildCertificationBoardItems();
 
 const WEB_LINKS = resume.links.filter(
   (l) => !l.label.includes("Call") && !l.label.includes("WhatsApp"),
@@ -68,99 +55,117 @@ const PHONE_LINKS = resume.links.filter(
   (l) => l.label.includes("Call") || l.label.includes("WhatsApp"),
 );
 
-function formatContactLine(label: string, href: string): string {
-  if (href.startsWith("mailto:")) {
-    return `${label}: ${href.slice("mailto:".length)}`;
-  }
-  if (href.startsWith("tel:")) {
-    const n = href.replace(/^tel:/, "").replace(/\s/g, "");
-    return `${label}: ${n}`;
-  }
-  if (href.includes("wa.me/")) {
-    const id = href.split("wa.me/")[1]?.split(/[?#]/)[0] ?? "";
-    return `${label}: +${id}`;
-  }
-  return `${label}: ${href}`;
-}
+const printExact = {
+  WebkitPrintColorAdjust: "exact" as const,
+  printColorAdjust: "exact" as const,
+};
 
 /**
- * Full résumé markup — always mounted. Do not put this behind useSearchParams + empty Suspense fallback
- * or Save as PDF can capture a blank first page.
+ * Section order and content mirror the public site (`/`):
+ * Hero → Contact → AI focus → AI Skills → Tech Skills → Certifications →
+ * Corporate Experience → Experience → Major Milestones
  */
 function ResumePrintBody() {
+  const certName = resume.legalName ?? resume.name;
+
   return (
     <main className="resume-print-root min-h-screen bg-white text-black">
       <div className="mx-auto max-w-3xl px-6 py-10">
-        <div className="resume-doc-header mb-6 flex gap-5 border-b border-black pb-4">
+        {/* —— Hero (same content as home hero; no separate “Summary” heading) —— */}
+        <section className="resume-doc-header mb-8 flex gap-5 border-b-2 border-black pb-6">
           <img
             src="/profile-photo.jpg"
             alt=""
-            className="h-24 w-24 shrink-0 rounded-full object-cover border border-black/20"
+            className="h-24 w-24 shrink-0 rounded-full object-cover border-2 border-neutral-400"
           />
-          <div className="min-w-0 flex-1 text-black">
+          <div className="min-w-0 flex-1">
             <h1 className="text-2xl font-semibold tracking-tight text-black">
               {resume.name}
             </h1>
             {resume.legalName ? (
-              <p className="mt-0.5 text-sm text-black">{resume.legalName}</p>
+              <p className="mt-0.5 text-sm font-medium text-black">
+                {resume.legalName}
+              </p>
             ) : null}
-            <p className="mt-1 text-sm text-black">{resume.headline}</p>
+            <p className="mt-2 text-sm leading-snug text-black">
+              {resume.headline}
+            </p>
+            <p className="mt-3 text-sm leading-relaxed text-black">
+              {resume.summary}
+            </p>
             {resume.location ? (
-              <p className="mt-1 text-xs text-black">{resume.location}</p>
+              <p className="mt-3 text-sm text-black">{resume.location}</p>
             ) : null}
           </div>
-        </div>
-
-        <section className="mb-6">
-          <h2 className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-black">
-            Summary
-          </h2>
-          <p className="text-sm leading-relaxed text-black">{resume.summary}</p>
         </section>
 
-        <section className="mb-6">
-          <h2 className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-black">
+        {/* —— Contact —— */}
+        <section className="mb-8 break-inside-avoid">
+          <h2 className="mb-3 border-b border-black pb-1 text-sm font-semibold uppercase tracking-wide text-black">
             Contact
           </h2>
           <div
-            className="resume-contact-box space-y-1 rounded-md border border-neutral-300 bg-neutral-100 p-3 text-sm text-black"
-            style={{ WebkitPrintColorAdjust: "exact", printColorAdjust: "exact" }}
+            className="space-y-2 rounded-lg border-2 border-neutral-500 bg-neutral-100 p-4 text-sm text-black"
+            style={printExact}
           >
             <p className="font-semibold text-black">{resume.name}</p>
             {resume.legalName ? (
               <p className="text-xs text-black">{resume.legalName}</p>
             ) : null}
-            {WEB_LINKS.map((l) => (
-              <p key={l.href} className="break-words text-black">
-                {formatContactLine(l.label, l.href)}
-              </p>
-            ))}
-            {PHONE_LINKS.map((l) => (
-              <p key={l.href} className="break-words text-black">
-                {formatContactLine(l.label, l.href)}
-              </p>
-            ))}
+            <div className="flex flex-col gap-2 border-t border-neutral-400 pt-2">
+              {WEB_LINKS.map((l) => (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  className="break-all text-black underline decoration-black underline-offset-2"
+                >
+                  <span className="font-medium">{l.label}:</span> {l.href}
+                </a>
+              ))}
+            </div>
+            <div className="flex flex-col gap-2 border-t border-neutral-400 pt-2">
+              {PHONE_LINKS.map((l) => (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  className="break-all text-black underline decoration-black underline-offset-2"
+                >
+                  <span className="font-medium">{l.label}:</span> {l.href}
+                </a>
+              ))}
+            </div>
           </div>
         </section>
 
-        <section className="mb-6">
-          <h2 className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-black">
+        {/* —— AI focus —— */}
+        <section className="mb-8">
+          <h2 className="mb-3 border-b border-black pb-1 text-sm font-semibold uppercase tracking-wide text-black">
             AI focus
           </h2>
-          <ul className="list-disc space-y-1 pl-4 text-sm text-black">
+          <ul className="space-y-2 text-sm text-black">
             {resume.aiFocusAreas.map((a) => (
-              <li key={a}>{a}</li>
+              <li key={a} className="flex gap-3">
+                <span
+                  className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-black"
+                  aria-hidden
+                />
+                <span className="min-w-0 leading-relaxed">{a}</span>
+              </li>
             ))}
           </ul>
         </section>
 
-        <section className="mb-6">
-          <h2 className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-black">
+        {/* —— AI Skills —— */}
+        <section className="mb-8">
+          <h2 className="mb-3 border-b border-black pb-1 text-sm font-semibold uppercase tracking-wide text-black">
             AI Skills
           </h2>
-          <div className="grid grid-cols-2 gap-y-1 text-sm text-black">
+          <div className="grid grid-cols-1 gap-2 text-sm text-black sm:grid-cols-2">
             {resume.skills.map((s) => (
-              <div key={s.name} className="flex flex-wrap gap-1">
+              <div
+                key={s.name}
+                className="flex min-w-0 flex-wrap items-baseline gap-2"
+              >
                 <span className="font-medium">{s.name}</span>
                 {s.level ? (
                   <span className="font-mono text-xs text-black">{s.level}</span>
@@ -170,77 +175,108 @@ function ResumePrintBody() {
           </div>
         </section>
 
-        <section className="mb-6">
-          <h2 className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-black">
+        {/* —— Tech Skills —— */}
+        <section className="mb-8">
+          <h2 className="mb-3 border-b border-black pb-1 text-sm font-semibold uppercase tracking-wide text-black">
             Tech Skills
           </h2>
-          <p className="text-sm leading-relaxed text-black">
-            {(resume.techSkills ?? []).join(" · ")}
-          </p>
+          <div className="flex flex-wrap gap-2 text-sm text-black">
+            {(resume.techSkills ?? []).map((t) => (
+              <span
+                key={t}
+                className="rounded-full border border-neutral-600 bg-neutral-50 px-3 py-1 font-medium text-black"
+                style={printExact}
+              >
+                {t}
+              </span>
+            ))}
+          </div>
         </section>
 
-        <section className="mb-6">
-          <h2 className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-black">
+        {/* —— Certifications (same merged list + wording as home certificate cards) —— */}
+        <section className="mb-8">
+          <h2 className="mb-3 border-b border-black pb-1 text-sm font-semibold uppercase tracking-wide text-black">
             Certifications
           </h2>
-          <h3 className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-black">
-            Primary credentials
-          </h3>
-          <ul className="mb-5 space-y-2 text-sm text-black">
-            {CERTIFICATIONS_PRIMARY.map((c) => (
-              <li
-                key={`cert-primary-${c.name}-${c.date}`}
-                className="resume-cert-item border-b border-neutral-300 pb-2 last:border-0"
+          <div className="grid gap-4 sm:grid-cols-2">
+            {CERTIFICATION_BOARD_ITEMS.map((c) => (
+              <div
+                key={c.id}
+                className="resume-print-cert relative flex flex-col rounded-[16px] border-2 border-black bg-[#f5f0e6] px-3 py-3 text-black shadow-sm"
+                style={printExact}
               >
-                <span className="font-semibold text-black">{c.name}</span>
-                {" · "}
-                <span className="text-black">{c.issuer}</span>
-                {" · "}
-                <span className="text-xs text-black">{c.date}</span>
-              </li>
+                <div
+                  className="pointer-events-none absolute inset-1 rounded-[14px] border border-black/70"
+                  aria-hidden
+                />
+                <div className="relative flex flex-1 flex-col gap-2">
+                  <div className="flex min-w-0 items-start gap-2 border-b border-black/50 pb-2">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-sky-700 text-[10px] font-bold text-white">
+                      {getIssuerInitials(c.subtitle)}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-700">
+                        Certificate of Achievement
+                      </p>
+                      <p className="text-xs font-semibold text-black">
+                        {c.subtitle || "Accredited Issuer"}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-[10px] uppercase tracking-widest text-neutral-600">
+                      This is to certify that
+                    </p>
+                    <p className="text-sm font-semibold text-black">{certName}</p>
+                    <p className="text-[10px] text-neutral-700">
+                      has successfully attained
+                    </p>
+                    <p className="text-xs font-semibold leading-snug text-black">
+                      {c.title}
+                    </p>
+                  </div>
+                  <div className="mt-auto flex items-center justify-between border-t border-black/40 pt-2">
+                    <div>
+                      <p className="text-[9px] uppercase tracking-widest text-neutral-700">
+                        Awarded
+                      </p>
+                      <p className="mt-0.5 inline-block rounded-full border border-black px-2 py-0.5 font-mono text-[10px] text-black">
+                        {c.year}
+                      </p>
+                    </div>
+                    <div
+                      className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-red-800 bg-red-600 text-sm font-bold text-white"
+                      style={printExact}
+                      aria-hidden
+                    >
+                      ★
+                    </div>
+                  </div>
+                </div>
+              </div>
             ))}
-          </ul>
-          <h3 className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-black">
-            Additional credentials (historic)
-          </h3>
-          <ul className="space-y-2 text-sm text-black">
-            {CERTIFICATIONS_FROM_MILESTONES.map((m) => (
-              <li
-                key={`cert-milestone-${m.title}-${m.year}`}
-                className="resume-cert-item border-b border-neutral-300 pb-2 last:border-0"
-              >
-                <span className="font-semibold text-black">{m.title}</span>
-                {m.description ? (
-                  <>
-                    {" · "}
-                    <span className="text-black">{m.description}</span>
-                  </>
-                ) : null}
-                {" · "}
-                <span className="text-xs text-black">{m.year}</span>
-              </li>
-            ))}
-          </ul>
+          </div>
         </section>
 
-        <section className="mb-6">
-          <h2 className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-black">
+        {/* —— Corporate Experience —— */}
+        <section className="mb-8 break-inside-avoid">
+          <h2 className="mb-4 border-b border-black pb-1 text-sm font-semibold uppercase tracking-wide text-black">
             Corporate Experience
           </h2>
-          <div className="flex flex-wrap items-end justify-start gap-6">
+          <div className="flex flex-wrap items-end justify-center gap-8">
             {CORPORATE_EXPERIENCE.map((company) => (
               <div
                 key={company.name}
-                className="flex w-[7.5rem] flex-col items-center gap-1"
+                className="flex w-40 flex-col items-center gap-2"
               >
-                <div className="flex h-14 w-full items-center justify-center rounded-lg border border-neutral-300 bg-white px-2 py-1">
+                <div className="flex h-[4.5rem] w-full items-center justify-center rounded-xl border-2 border-neutral-400 bg-white px-2 py-2">
                   <img
                     src={company.logo}
                     alt=""
-                    className="max-h-12 max-w-full object-contain"
+                    className="max-h-full max-w-full object-contain"
                   />
                 </div>
-                <span className="text-center text-[10px] font-medium leading-tight text-black">
+                <span className="text-center text-xs font-medium text-black">
                   {company.name}
                 </span>
               </div>
@@ -248,14 +284,15 @@ function ResumePrintBody() {
           </div>
         </section>
 
-        <section className="mb-6">
-          <h2 className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-black">
+        {/* —— Experience —— */}
+        <section className="mb-8">
+          <h2 className="mb-3 border-b border-black pb-1 text-sm font-semibold uppercase tracking-wide text-black">
             Experience
           </h2>
-          <div className="space-y-4 text-sm">
+          <div className="space-y-5 text-sm text-black">
             {resume.experience.map((e) => (
-              <div key={`${e.company}-${e.role}`}>
-                <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <div key={`${e.company}-${e.role}`} className="space-y-2">
+                <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
                   <div className="min-w-0">
                     <p className="font-semibold text-black">
                       {e.role} • {e.company}
@@ -264,13 +301,19 @@ function ResumePrintBody() {
                       <p className="text-xs text-black">{e.location}</p>
                     ) : null}
                   </div>
-                  <p className="shrink-0 whitespace-nowrap font-mono text-xs text-black">
+                  <p className="shrink-0 font-mono text-xs text-black sm:whitespace-nowrap">
                     {e.start} — {e.end ?? "Present"}
                   </p>
                 </div>
-                <ul className="mt-1 list-disc space-y-1 pl-4 text-black">
+                <ul className="space-y-2">
                   {e.highlights.map((h) => (
-                    <li key={h}>{h}</li>
+                    <li key={h} className="flex gap-3">
+                      <span
+                        className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-black"
+                        aria-hidden
+                      />
+                      <span className="min-w-0 leading-relaxed">{h}</span>
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -278,24 +321,25 @@ function ResumePrintBody() {
           </div>
         </section>
 
+        {/* —— Major Milestones (same underlying data as Timeline: education + non-cert milestones) —— */}
         <section>
-          <h2 className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-black">
+          <h2 className="mb-3 border-b border-black pb-1 text-sm font-semibold uppercase tracking-wide text-black">
             Major Milestones
           </h2>
-          <div className="space-y-3 text-sm text-black">
+          <div className="space-y-4 text-sm text-black">
             {MAJOR_MILESTONE_ROWS.map((row, i) =>
               row.kind === "education" ? (
                 <div
                   key={`ed-${row.school}-${row.degree}-${i}`}
-                  className="border-b border-neutral-300 pb-3 last:border-0"
+                  className="resume-milestone-item border-b border-neutral-400 pb-4 last:border-0"
                 >
-                  <p className="font-mono text-xs text-black">
+                  <p className="font-mono text-xs font-semibold text-black">
                     {row.year} · education
                   </p>
-                  <p className="font-semibold text-black">{row.degree}</p>
+                  <p className="mt-1 font-semibold text-black">{row.degree}</p>
                   <p className="text-black">{row.school}</p>
                   {row.notes && row.notes.length > 0 ? (
-                    <p className="mt-0.5 text-xs italic text-black">
+                    <p className="mt-1 text-xs italic text-black">
                       {row.notes.join(" · ")}
                     </p>
                   ) : null}
@@ -303,14 +347,16 @@ function ResumePrintBody() {
               ) : (
                 <div
                   key={`ms-${row.title}-${row.year}-${i}`}
-                  className="border-b border-neutral-300 pb-3 last:border-0"
+                  className="resume-milestone-item border-b border-neutral-400 pb-4 last:border-0"
                 >
-                  <p className="font-mono text-xs text-black">
+                  <p className="font-mono text-xs font-semibold text-black">
                     {row.year} · {row.milestoneType}
                   </p>
-                  <p className="font-semibold text-black">{row.title}</p>
+                  <p className="mt-1 font-semibold text-black">{row.title}</p>
                   {row.description ? (
-                    <p className="text-sm text-black">{row.description}</p>
+                    <p className="mt-1 leading-relaxed text-black">
+                      {row.description}
+                    </p>
                   ) : null}
                 </div>
               ),
@@ -322,7 +368,6 @@ function ResumePrintBody() {
   );
 }
 
-/** Only this hook needs Suspense — body is already on screen. */
 function AutoPrintWhenPdfQuery() {
   const searchParams = useSearchParams();
 
