@@ -65,7 +65,6 @@ export function Timeline({ education, certifications, milestones }: TimelineProp
     item.type === "milestone" ? item.milestoneType : item.type;
 
   const careerStartYear = 1997;
-  const yearsExperienceLabel = new Date().getFullYear() - careerStartYear + 1;
 
   const renderDesktopTimelineRow = (item: TimelineItem) => {
     const isEducation = item.type === "education";
@@ -231,7 +230,7 @@ export function Timeline({ education, certifications, milestones }: TimelineProp
               Experience Journey
             </h3>
             <p className="mt-1 text-[10px] font-bold tracking-wide text-amber-500/95">
-              {yearsExperienceLabel}+ YEARS EXPERIENCE
+              30 YEARS EXPERIENCE
             </p>
           </div>
         </div>
