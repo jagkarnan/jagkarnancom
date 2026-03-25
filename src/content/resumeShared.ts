@@ -8,6 +8,8 @@ export const CORPORATE_EXPERIENCE = [
   { name: "Accenture", logo: "/logos/accenture.png" },
   { name: "Nike", logo: "/logos/nike.png" },
   { name: "Agility Logistics", logo: "/logos/agility.png" },
+  { name: "Lazard", logo: "/logos/lazard.png" },
+  { name: "AIA", logo: "/logos/aia.png" },
 ] as const;
 
 export type CertificationBoardItem = {
