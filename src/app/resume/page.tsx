@@ -63,7 +63,7 @@ const printExact = {
 /**
  * Section order and content mirror the public site (`/`):
  * Hero → Contact → AI Skills → Tech Skills → Certifications →
- * Corporate Experience → Experience → Major Milestones
+ * Corporate Exposure → Work Experience → Major Milestones
  */
 function ResumePrintBody() {
   const certName = resume.legalName ?? resume.name;
@@ -232,10 +232,10 @@ function ResumePrintBody() {
           </div>
         </section>
 
-        {/* —— Corporate Experience —— */}
+        {/* —— Corporate Exposure —— */}
         <section className="mb-8 break-inside-avoid">
           <h2 className="mb-4 border-b border-black pb-1 text-sm font-semibold uppercase tracking-wide text-black">
-            Corporate Experience
+            Corporate Exposure
           </h2>
           <div className="flex flex-wrap items-end justify-center gap-8">
             {CORPORATE_EXPERIENCE.map((company) => (
@@ -258,10 +258,10 @@ function ResumePrintBody() {
           </div>
         </section>
 
-        {/* —— Experience —— */}
+        {/* —— Work Experience —— */}
         <section className="mb-8">
           <h2 className="mb-3 border-b border-black pb-1 text-sm font-semibold uppercase tracking-wide text-black">
-            Experience
+            Work Experience
           </h2>
           <div className="space-y-5 text-sm text-black">
             {resume.experience.map((e) => (

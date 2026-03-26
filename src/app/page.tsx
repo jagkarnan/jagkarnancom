@@ -277,7 +277,7 @@ export default function Home() {
               ))}
             </div>
           </Block>
-          <Block title="Corporate Experience" id="corporate-experience">
+          <Block title="Corporate Exposure" id="corporate-exposure">
             <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12">
               {CORPORATE_EXPERIENCE.map((company) => (
                 <div
@@ -300,7 +300,7 @@ export default function Home() {
               ))}
             </div>
           </Block>
-          <Block title="Experience" id="experience">
+          <Block title="Work Experience" id="work-experience">
             <div className="space-y-6 md:space-y-8">
               {resume.experience.map((e) => (
                 <div

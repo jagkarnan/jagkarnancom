@@ -11,8 +11,8 @@ export function ExperienceSection() {
         <div className="flex flex-col gap-8">
           {" "}
           <SectionHeading
-            id="experience"
-            title="Work experience"
+            id="work-experience"
+            title="Work Experience"
             subtitle="Impact-focused highlights, tuned for AI engineering roles."
           />{" "}
           <div className="grid gap-6">

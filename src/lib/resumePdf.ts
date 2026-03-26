@@ -175,11 +175,11 @@ export function generateResumePdfBuffer(): Promise<Buffer> {
       doc.moveDown(0.35);
     }
 
-    sectionTitle(doc, "Corporate experience");
+    sectionTitle(doc, "Corporate Exposure");
     ensureSpace(doc, 20);
     doc.text(CORPORATE_EXPERIENCE.map((c) => c.name).join(" · "), { width: w });
 
-    sectionTitle(doc, "Experience");
+    sectionTitle(doc, "Work Experience");
     for (const e of resume.experience) {
       ensureSpace(doc, 80);
       doc

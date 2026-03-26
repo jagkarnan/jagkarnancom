@@ -1,6 +1,6 @@
 import { resume } from "./resume";
 
-/** Corporate logos — same list as the home page Corporate Experience section. */
+/** Corporate logos — same list as the home page Corporate Exposure section. */
 export const CORPORATE_EXPERIENCE = [
   { name: "British Telecom", logo: "/logos/bt.png" },
   { name: "Microsoft", logo: "/logos/microsoft.png" },
