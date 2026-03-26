@@ -152,9 +152,10 @@ export function generateResumePdfBuffer(): Promise<Buffer> {
 
     sectionTitle(doc, "AI skills");
     for (const s of resume.skills) {
-      ensureSpace(doc, 16);
       const line = s.level ? `${s.name} (${s.level})` : s.name;
-      doc.text(line, { width: w });
+      ensureSpace(doc, 56);
+      doc.text(`• ${line}`, { width: w, indent: 8 });
+      doc.moveDown(0.35);
     }
 
     sectionTitle(doc, "Tech skills");

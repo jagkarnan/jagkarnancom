@@ -71,44 +71,28 @@ export const resume: Resume = {
   ],
   skills: [
     {
-      name: "LLMs & Prompt Engineering",
-      level: "Expert",
-      keywords: ["GPT", "Claude", "Prompt Design", "RAG", "Fine-tuning"],
+      name: "Designing effective AI prompts and instructions that get accurate, reliable results from AI models",
     },
     {
-      name: "AI Automation & Workflow",
-      level: "Expert",
-      keywords: ["Process Automation", "AI Agents", "Workflow Orchestration", "No-code/Low-code"],
+      name: "Building smart search systems that let AI pull answers from company documents and data",
     },
     {
-      name: "AI Strategy & Opportunity Assessment",
-      level: "Expert",
-      keywords: ["Use Case Prioritisation", "ROI Modelling", "AI Roadmapping", "Change Management"],
+      name: "Creating AI agents that can complete tasks, use tools, and work together autonomously",
     },
     {
-      name: "Process Discovery & Mapping",
-      level: "Expert",
-      keywords: ["As‑Is / To‑Be", "Value Stream Mapping", "Bottleneck Analysis"],
+      name: "Working with cloud AI services from AWS, Microsoft Azure, and Google Cloud",
     },
     {
-      name: "AI Integration & APIs",
-      level: "Advanced",
-      keywords: ["OpenAI", "Anthropic", "LangChain", "Vector DBs", "Embeddings"],
+      name: "Automating business workflows using AI powered tools like n8n, Zapier, and Make",
     },
     {
-      name: "Enterprise AI Implementation",
-      level: "Advanced",
-      keywords: ["Azure AI", "AWS Bedrock", "Google AI", "On-prem AI"],
+      name: "Setting up AI policies, risk controls, and ethical guidelines for safe and compliant AI use",
     },
     {
-      name: "AI-Assisted Development",
-      level: "Advanced",
-      keywords: ["Copilot", "Cursor", "AI Code Generation", "Documentation"],
+      name: "Assessing business readiness for AI, identifying high impact opportunities, and building adoption roadmaps",
     },
     {
-      name: "Data & Analytics for AI",
-      level: "Advanced",
-      keywords: ["Data Pipelines", "ETL", "Analytics", "Databricks"],
+      name: "Monitoring AI systems in production to track performance, control costs, and maintain quality",
     },
   ],
   techSkills: [

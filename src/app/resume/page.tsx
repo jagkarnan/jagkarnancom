@@ -142,19 +142,17 @@ function ResumePrintBody() {
           <h2 className="mb-3 border-b border-black pb-1 text-sm font-semibold uppercase tracking-wide text-black">
             AI Skills
           </h2>
-          <div className="grid grid-cols-1 gap-2 text-sm text-black sm:grid-cols-2">
+          <ul className="space-y-3 text-sm text-black">
             {resume.skills.map((s) => (
-              <div
-                key={s.name}
-                className="flex min-w-0 flex-wrap items-baseline gap-2"
-              >
-                <span className="font-medium">{s.name}</span>
-                {s.level ? (
-                  <span className="font-mono text-xs text-black">{s.level}</span>
-                ) : null}
-              </div>
+              <li key={s.name} className="flex gap-3 text-pretty">
+                <span
+                  className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-black"
+                  aria-hidden
+                />
+                <span className="min-w-0 leading-relaxed">{s.name}</span>
+              </li>
             ))}
-          </div>
+          </ul>
         </section>
 
         {/* —— Tech Skills —— */}

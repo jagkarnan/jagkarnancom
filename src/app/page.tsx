@@ -166,16 +166,17 @@ export default function Home() {
             </div>
           </Block>
           <Block title="AI Skills" id="ai-skills">
-            <div className="grid gap-2 text-sm text-foreground/75 md:grid-cols-2">
+            <ul className="space-y-3 text-sm text-foreground/75">
               {resume.skills.map((s) => (
-                <div key={s.name} className="flex min-w-0 flex-wrap items-baseline gap-2">
-                  <span className="font-medium break-words">{s.name}</span>
-                  {s.level ? (
-                    <span className="font-mono text-xs text-foreground/60">{s.level}</span>
-                  ) : null}
-                </div>
+                <li key={s.name} className="flex gap-3 text-pretty">
+                  <span
+                    className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/40"
+                    aria-hidden
+                  />
+                  <span className="min-w-0 break-words">{s.name}</span>
+                </li>
               ))}
-            </div>
+            </ul>
           </Block>
           <Block title="Tech Skills" id="tech-skills">
             <div className="flex flex-wrap gap-2 text-sm text-foreground/75">
