@@ -4,6 +4,11 @@ import { Suspense, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { resume } from "@/content/resume";
 import {
+  ObfuscatedResumeEmailRow,
+  ObfuscatedResumeTelRow,
+  ObfuscatedResumeWaRow,
+} from "@/components/contact/ObfuscatedContactAnchors";
+import {
   buildCertificationBoardItems,
   CORPORATE_EXPERIENCE,
   getIssuerInitials,
@@ -48,12 +53,7 @@ function buildMajorMilestoneRows(): MilestoneRow[] {
 const MAJOR_MILESTONE_ROWS = buildMajorMilestoneRows();
 const CERTIFICATION_BOARD_ITEMS = buildCertificationBoardItems();
 
-const WEB_LINKS = resume.links.filter(
-  (l) => !l.label.includes("Call") && !l.label.includes("WhatsApp"),
-);
-const PHONE_LINKS = resume.links.filter(
-  (l) => l.label.includes("Call") || l.label.includes("WhatsApp"),
-);
+const PUBLIC_WEB_LINKS = resume.links;
 
 const printExact = {
   WebkitPrintColorAdjust: "exact" as const,
@@ -113,7 +113,8 @@ function ResumePrintBody() {
               <p className="text-xs text-black">{resume.legalName}</p>
             ) : null}
             <div className="flex flex-col gap-2 border-t border-neutral-400 pt-2">
-              {WEB_LINKS.map((l) => (
+              <ObfuscatedResumeEmailRow className="break-all text-black underline decoration-black underline-offset-2" />
+              {PUBLIC_WEB_LINKS.map((l) => (
                 <a
                   key={l.href}
                   href={l.href}
@@ -124,15 +125,8 @@ function ResumePrintBody() {
               ))}
             </div>
             <div className="flex flex-col gap-2 border-t border-neutral-400 pt-2">
-              {PHONE_LINKS.map((l) => (
-                <a
-                  key={l.href}
-                  href={l.href}
-                  className="break-all text-black underline decoration-black underline-offset-2"
-                >
-                  <span className="font-medium">{l.label}:</span> {l.href}
-                </a>
-              ))}
+              <ObfuscatedResumeTelRow className="break-all text-black underline decoration-black underline-offset-2" />
+              <ObfuscatedResumeWaRow className="break-all text-black underline decoration-black underline-offset-2" />
             </div>
           </div>
         </section>

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { CONTACT_SENSITIVE } from '@/lib/contactSensitive';
 
 const resend = new Resend('re_76ojsEPf_7HEZ39KLagMQTohJAZQz5D11');
 
@@ -27,7 +28,7 @@ export async function POST(request: NextRequest) {
     // Send email using Resend
     const { data, error } = await resend.emails.send({
       from: 'onboarding@resend.dev',
-      to: ['jag.karnan@gmail.com'],
+      to: [CONTACT_SENSITIVE.email],
       subject: 'AI Consulting Inquiry',
       replyTo: email,
       html: `
@@ -39,7 +40,7 @@ export async function POST(request: NextRequest) {
           <div style="margin: 20px 0;">
             <p><strong>Name:</strong> ${name}</p>
             <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Phone:</strong> +65 8188 8935</p>
+            <p><strong>Phone:</strong> ${CONTACT_SENSITIVE.phoneDisplay}</p>
           </div>
           
           <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; margin: 20px 0;">

@@ -1,5 +1,6 @@
 import PDFDocument from "pdfkit";
 import { resume } from "@/content/resume";
+import { getSensitiveContactLinks } from "@/lib/contactSensitive";
 import {
   buildCertificationBoardItems,
   CORPORATE_EXPERIENCE,
@@ -139,7 +140,8 @@ export function generateResumePdfBuffer(): Promise<Buffer> {
     }
     doc.moveDown(0.3);
     doc.font("Helvetica");
-    for (const l of resume.links) {
+    const allContactLinks = [...resume.links, ...getSensitiveContactLinks()];
+    for (const l of allContactLinks) {
       ensureSpace(doc, 16);
       const line = formatContactLine(l.label, l.href);
       // PDFKit link option is unreliable for mailto:/tel: in some runtimes

@@ -1,10 +1,22 @@
 "use client";
 
+import {
+  ObfuscatedMailtoAnchor,
+  ObfuscatedTelAnchor,
+  ObfuscatedWhatsAppAnchor,
+} from "@/components/contact/ObfuscatedContactAnchors";
 import { resume } from "@/content/resume";
 import { Container } from "@/components/ui/Container";
 import { ExternalLink } from "@/components/ui/ExternalLink";
 import { useState } from "react";
-import { MailCheckIcon, LinkedinIcon, GithubIcon, SmartphoneChargingIcon, MessageCircleIcon } from "lucide-animated";
+import {
+  MailCheckIcon,
+  LinkedinIcon,
+  GithubIcon,
+  YoutubeIcon,
+  SmartphoneChargingIcon,
+  MessageCircleIcon,
+} from "lucide-animated";
 
 export function HeroSection() {
   const [formData, setFormData] = useState({
@@ -80,43 +92,37 @@ export function HeroSection() {
             </p>{" "}
             <div className="flex flex-wrap items-center gap-3 pt-4">
               {" "}
-              {resume.links.filter(l => !l.label.includes("Call") && !l.label.includes("WhatsApp")).map((l) => (
+              <ObfuscatedMailtoAnchor className="flex items-center gap-2 rounded-full border border-foreground/12 bg-transparent px-4 py-2 text-sm text-foreground/85 no-underline transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/20 hover:bg-foreground/[0.06] active:scale-[0.98] motion-reduce:active:scale-100">
+                <MailCheckIcon size={16} />
+                Email
+              </ObfuscatedMailtoAnchor>
+              {resume.links.map((l) => (
                 <ExternalLink
                   key={l.href}
                   href={l.href}
                   className="flex items-center gap-2 rounded-full border border-foreground/12 bg-transparent px-4 py-2 text-sm text-foreground/85 no-underline transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/20 hover:bg-foreground/[0.06] active:scale-[0.98] motion-reduce:active:scale-100"
                 >
-                  {" "}
-                  {l.label === "Email" && (
-                    <MailCheckIcon size={16} />
-                  )}
                   {l.label === "LinkedIn" && (
                     <LinkedinIcon size={16} />
                   )}
                   {l.label === "GitHub" && (
                     <GithubIcon size={16} />
                   )}
-                  {l.label}{" "}
+                  {l.label === "YouTube" && (
+                    <YoutubeIcon size={16} />
+                  )}
+                  {l.label}
                 </ExternalLink>
               ))}{" "}
               <div className="flex gap-3 items-center">
-                {" "}
-                {resume.links.filter(l => l.label.includes("Call") || l.label.includes("WhatsApp")).map((l) => (
-                  <ExternalLink
-                    key={l.href}
-                    href={l.href}
-                    className="flex items-center gap-2 whitespace-nowrap rounded-full border border-foreground/12 bg-transparent px-4 py-2 text-sm text-foreground/85 no-underline transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/20 hover:bg-foreground/[0.06] active:scale-[0.98] motion-reduce:active:scale-100"
-                  >
-                    {" "}
-                    {l.label.includes("Call") && (
-                    <SmartphoneChargingIcon size={16} />
-                  )}
-                    {l.label.includes("WhatsApp") && (
-                    <MessageCircleIcon size={16} />
-                  )}
-                    {l.label}{" "}
-                  </ExternalLink>
-                ))}{" "}
+                <ObfuscatedTelAnchor className="flex items-center gap-2 whitespace-nowrap rounded-full border border-foreground/12 bg-transparent px-4 py-2 text-sm text-foreground/85 no-underline transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/20 hover:bg-foreground/[0.06] active:scale-[0.98] motion-reduce:active:scale-100">
+                  <SmartphoneChargingIcon size={16} />
+                  Call
+                </ObfuscatedTelAnchor>
+                <ObfuscatedWhatsAppAnchor className="flex items-center gap-2 whitespace-nowrap rounded-full border border-foreground/12 bg-transparent px-4 py-2 text-sm text-foreground/85 no-underline transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/20 hover:bg-foreground/[0.06] active:scale-[0.98] motion-reduce:active:scale-100">
+                  <MessageCircleIcon size={16} />
+                  WhatsApp
+                </ObfuscatedWhatsAppAnchor>
               </div>{" "}
             </div>{" "}
           </div>{" "}

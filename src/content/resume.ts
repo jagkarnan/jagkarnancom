@@ -62,37 +62,40 @@ export const resume: Resume = {
   summary:
     "I partner with enterprises alongside leadership and teams, learning how the business really runs and where it can work smarter. I analyse processes from start to finish, find where AI can make a meaningful difference, and shape practical changes that smooth out workflows, cut manual effort, and support stronger decisions. I care about outcomes you can measure, like faster cycles, fewer errors, and operations that keep pace as you grow. I get there by building with AI where it helps, automating what should not be manual, and connecting tools in a way that fits how your organisation already works.",
   links: [
-    { label: "Email", href: "mailto:jag.karnan@gmail.com" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/jagkarnan/" },
     { label: "GitHub", href: "https://github.com/jagkarnan" },
     { label: "YouTube", href: "https://www.youtube.com/@jagkarnan" },
-    { label: "Call +65 8188 8935", href: "tel:+6581888935" },
-    { label: "WhatsApp +65 8188 8935", href: "https://wa.me/6581888935" },
   ],
   skills: [
     {
-      name: "Designing effective AI prompts and instructions that get accurate, reliable results from AI models",
+      name: "Defining clear and precise instructions for AI systems so they deliver exactly what is needed, without ambiguity or guesswork",
     },
     {
-      name: "Building smart search systems that let AI pull answers from company documents and data",
+      name: "Reviewing and evaluating AI generated outputs with a critical eye to catch errors, inconsistencies, and confidently wrong results before they reach production",
     },
     {
-      name: "Creating AI agents that can complete tasks, use tools, and work together autonomously",
+      name: "Breaking down complex business problems into smaller tasks that can be distributed across multiple AI agents working together as a coordinated system",
     },
     {
-      name: "Working with cloud AI services from AWS, Microsoft Azure, and Google Cloud",
+      name: "Identifying and diagnosing the common ways AI systems fail, including context decay over long sessions, specification drift, false confirmations, wrong tool usage, chain reaction failures, and silent errors that look correct but are not",
     },
     {
-      name: "Automating business workflows using AI powered tools like n8n, Zapier, and Make",
+      name: "Designing safety boundaries and guardrails for AI systems, determining where human oversight is essential and where automation can be trusted to operate independently",
     },
     {
-      name: "Setting up AI policies, risk controls, and ethical guidelines for safe and compliant AI use",
+      name: "Organizing and structuring business data so AI agents can reliably find, retrieve, and use the right information at the right time across the organization",
     },
     {
-      name: "Assessing business readiness for AI, identifying high impact opportunities, and building adoption roadmaps",
+      name: "Calculating whether an AI solution is financially viable by modeling token costs across different AI models, estimating usage volumes, and proving return on investment before committing resources",
     },
     {
-      name: "Monitoring AI systems in production to track performance, control costs, and maintain quality",
+      name: "Matching the right AI model to the right task based on capability, cost, and performance requirements to optimize both quality and budget",
+    },
+    {
+      name: "Understanding how to scope projects correctly for different types of AI agent setups, from single agent tasks to complex multi agent workflows",
+    },
+    {
+      name: "Building evaluation frameworks and quality checks into AI workflows so that outputs are verified for real world accuracy, not just surface level correctness",
     },
   ],
   techSkills: [
