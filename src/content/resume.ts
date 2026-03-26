@@ -46,7 +46,6 @@ export type Resume = {
   location?: string;
   summary: string;
   links: SocialLink[];
-  aiFocusAreas: string[];
   skills: Skill[];
   techSkills?: string[];
   certifications: Certification[];
@@ -61,7 +60,7 @@ export const resume: Resume = {
   headline: "AI Partner",
   location: "Singapore (Singapore PR • Availability: Immediate)",
   summary:
-    "AI partner to enterprises, working alongside leadership and teams to deeply understand how the business operates and where it can run smarter. I analyse end-to-end processes, identify high‑impact opportunities for AI, and design practical solutions that streamline workflows, reduce manual effort, and improve decision-making. The focus is on measurable business outcomes—faster cycles, fewer errors, and scalable operations—through AI-assisted development, intelligent automation, and targeted AI integrations that fit how your organisation actually works.",
+    "I partner with enterprises alongside leadership and teams, learning how the business really runs and where it can work smarter. I analyse processes from start to finish, find where AI can make a meaningful difference, and shape practical changes that smooth out workflows, cut manual effort, and support stronger decisions. I care about outcomes you can measure, like faster cycles, fewer errors, and operations that keep pace as you grow. I get there by building with AI where it helps, automating what should not be manual, and connecting tools in a way that fits how your organisation already works.",
   links: [
     { label: "Email", href: "mailto:jag.karnan@gmail.com" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/jagkarnan/" },
@@ -69,14 +68,6 @@ export const resume: Resume = {
     { label: "YouTube", href: "https://www.youtube.com/@jagkarnan" },
     { label: "Call +65 8188 8935", href: "tel:+6581888935" },
     { label: "WhatsApp +65 8188 8935", href: "https://wa.me/6581888935" },
-  ],
-  aiFocusAreas: [
-    "Clear AI strategy aligned with business goals and measurable returns",
-    "Find opportunities where AI cuts costs, reduces errors, and speeds up cycles",
-    "Workflows that free teams from repetitive tasks for higher value work",
-    "AI assistants and automation that fit your existing tools",
-    "Prioritised roadmap by ROI and impact, no wasted effort",
-    "Smooth adoption with change management that drives uptake",
   ],
   skills: [
     {

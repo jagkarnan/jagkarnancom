@@ -150,13 +150,6 @@ export function generateResumePdfBuffer(): Promise<Buffer> {
       }
     }
 
-    // —— AI focus (homepage order) ——
-    sectionTitle(doc, "AI focus");
-    for (const line of resume.aiFocusAreas) {
-      ensureSpace(doc, 20);
-      doc.text(`• ${line}`, { width: w, indent: 8 });
-    }
-
     sectionTitle(doc, "AI skills");
     for (const s of resume.skills) {
       ensureSpace(doc, 16);

@@ -165,16 +165,6 @@ export default function Home() {
               </div>
             </div>
           </Block>
-          <Block title="AI focus" id="skills">
-            <ul className="space-y-2 text-sm text-foreground/75">
-              {resume.aiFocusAreas.map((a) => (
-                <li key={a} className="flex gap-3">
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/40" />
-                  <span className="min-w-0 break-words text-pretty">{a}</span>
-                </li>
-              ))}
-            </ul>
-          </Block>
           <Block title="AI Skills" id="ai-skills">
             <div className="grid gap-2 text-sm text-foreground/75 md:grid-cols-2">
               {resume.skills.map((s) => (

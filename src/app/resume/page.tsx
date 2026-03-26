@@ -62,7 +62,7 @@ const printExact = {
 
 /**
  * Section order and content mirror the public site (`/`):
- * Hero → Contact → AI focus → AI Skills → Tech Skills → Certifications →
+ * Hero → Contact → AI Skills → Tech Skills → Certifications →
  * Corporate Experience → Experience → Major Milestones
  */
 function ResumePrintBody() {
@@ -135,24 +135,6 @@ function ResumePrintBody() {
               ))}
             </div>
           </div>
-        </section>
-
-        {/* —— AI focus —— */}
-        <section className="mb-8">
-          <h2 className="mb-3 border-b border-black pb-1 text-sm font-semibold uppercase tracking-wide text-black">
-            AI focus
-          </h2>
-          <ul className="space-y-2 text-sm text-black">
-            {resume.aiFocusAreas.map((a) => (
-              <li key={a} className="flex gap-3">
-                <span
-                  className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-black"
-                  aria-hidden
-                />
-                <span className="min-w-0 leading-relaxed">{a}</span>
-              </li>
-            ))}
-          </ul>
         </section>
 
         {/* —— AI Skills —— */}
