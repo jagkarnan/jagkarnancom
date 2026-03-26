@@ -25,7 +25,9 @@ export function CertificationsSection() {
                   {" "}
                   <div className="flex items-start justify-between gap-4">
                     {" "}
-                    <h3 className="text-base font-semibold">{c.name}</h3>{" "}
+                    <h3 className="text-base font-semibold leading-tight tracking-tight">
+                      {c.name}
+                    </h3>{" "}
                     <p className="font-mono text-xs text-foreground/60">
                       {" "}
                       {c.date}{" "}
@@ -35,7 +37,7 @@ export function CertificationsSection() {
                   {c.credentialUrl ? (
                     <ExternalLink
                       href={c.credentialUrl}
-                      className="mt-2 text-sm text-foreground/80 underline decoration-white/20 underline-offset-4 hover:decoration-white/50"
+                      className="mt-2 text-sm text-foreground/80 underline decoration-foreground/30 underline-offset-4 transition-colors duration-200 hover:decoration-sky-500/50"
                     >
                       {" "}
                       View credential{" "}

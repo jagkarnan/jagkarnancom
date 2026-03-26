@@ -1,0 +1,189 @@
+---
+description: UI/UX fundamentals — signifiers, hierarchy, spacing, type, color, dark mode, shadows, buttons, feedback, micro-interactions, image overlays
+alwaysApply: true
+---
+
+# UI/UX Fundamentals — Implementation Guide
+
+Use this document as context when building UI components. These are battle-tested design principles distilled into actionable rules.
+
+---
+
+## 1. Signifiers & Affordances
+
+UI elements must visually communicate what they do without instructions.
+
+**Implementation rules:**
+- Containers/borders group related items visually (e.g., tabs in a tab group share a container)
+- Selected/active states use a visible container, highlight, or background change
+- Inactive/disabled items use grayed-out text and reduced opacity (typically `opacity: 0.5` or `text-gray-400`)
+- Every interactive element needs: hover state, active/pressed state, focus state, and disabled state
+- Add tooltips to icon-only buttons so users know what the UI affords
+
+---
+
+## 2. Visual Hierarchy
+
+Control what users see first by manipulating size, position, and color contrast.
+
+**Implementation rules:**
+- Most important content goes at the top, largest, and boldest
+- Images always add a strong visual anchor — use them at the top of cards whenever possible
+- Create contrast between elements: the *difference* between small and big, colored and neutral, is what creates hierarchy
+- Price or key data: top-right aligned, accent color (e.g., blue) to draw the eye
+- Secondary info (location, date, metadata): smaller font, muted color, positioned below primary content
+- Replace text labels with icons + visual connectors where possible (e.g., a line between origin and destination instead of "From" / "To" labels)
+- Cards should not look like spreadsheets — vary font sizes, weights, and colors
+
+---
+
+## 3. Grids, Layouts & Whitespace
+
+Whitespace matters more than rigid grid adherence.
+
+**Implementation rules:**
+- 12-column grids are guidelines, not law — custom landing pages often break grid alignment
+- Grids are most useful for structured/repeating content (galleries, blogs, card grids) and responsive breakpoints: 12 columns desktop, 8 columns tablet, 4 columns mobile
+- Use a **4-point grid system**: all spacing values should be multiples of 4 (4, 8, 12, 16, 20, 24, 32, 40, 48, 64...). This ensures you can always halve spacing and maintain consistency
+- Default gap between sibling elements: `32px` (`gap-8` in Tailwind)
+- Group tightly related elements with smaller spacing (e.g., `8px` between a heading and its subtext, `32px` between that group and the next section)
+- Let things breathe — generous padding and margin always looks more professional than cramped layouts
+
+---
+
+## 4. Typography & Font Sizing
+
+Design is mostly text. Get this right and everything elevates.
+
+**Implementation rules:**
+- Use ONE sans-serif font per project. Reliable choices: Inter, DM Sans, Plus Jakarta Sans, Satoshi, General Sans, Geist
+- **Header text hack**: tighten letter-spacing to `-2%` to `-3%` (`tracking-tight` or `tracking-tighter` in Tailwind) and drop line-height to `110%–120%` (`leading-tight` or `leading-none`). This instantly makes large text look polished
+- Body text keeps normal letter-spacing and line-height of `140%–160%`
+- Landing pages / marketing sites: max 6 font sizes with a wide range (e.g., 14, 16, 20, 24, 36, 48–72px)
+- Dashboards / data-dense UIs: compress the range — rarely go above 24px. Information density is the priority
+- Establish a clear type scale and stick to it throughout the project
+
+---
+
+## 5. Color Theory
+
+Start minimal. Let color find its purpose.
+
+**Implementation rules:**
+- Start with ONE primary/brand color
+- Lighten it for subtle backgrounds (e.g., `blue-50`, `blue-100`)
+- Darken it for text on those light backgrounds (e.g., `blue-800`, `blue-900`)
+- Build a full color ramp from that primary for chips, states, charts, and variants
+- Use **semantic colors** with purpose:
+  - Blue → trust, links, info states
+  - Red → danger, errors, destructive actions
+  - Yellow/Amber → warnings, caution
+  - Green → success, confirmation, positive states
+- Color should communicate meaning, not just decorate. Every colored element should answer: "Why is this colored?"
+
+---
+
+## 6. Dark Mode
+
+Dark mode is not just "invert the colors." It has its own rules.
+
+**Implementation rules:**
+- Reduce border contrast — light borders on dark backgrounds are too harsh. Use subtle borders (`border-white/10` or `border-gray-700`)
+- No drop shadows in dark mode — create depth by making foreground surfaces (cards, modals) slightly lighter than the background (e.g., background `gray-950`, card `gray-900`)
+- Bright chips/badges need desaturation — dim both saturation and brightness of background colors, then make the text lighter for readability
+- Dark mode is not limited to navy/gray — explore deep purples, dark reds, dark greens for unique palettes
+- Test contrast ratios: text on dark backgrounds still needs WCAG-compliant contrast
+
+---
+
+## 7. Shadows
+
+Shadows create depth in light mode. Subtlety is key.
+
+**Implementation rules:**
+- Default shadows are almost always too strong — reduce opacity and increase blur radius
+- Rule of thumb: if the shadow is the first thing you notice, it is too strong
+- Cards and surfaces: use soft, low-opacity shadows (`shadow-sm` or `shadow-md` with reduced opacity)
+- Elevated content (popovers, dropdowns, modals) that floats above other content: use stronger shadows (`shadow-lg` or `shadow-xl`)
+- Combine inner and outer shadows for tactile/raised button effects
+- Shadow formula: low Y-offset, generous blur, low opacity (e.g., `0 4px 16px rgba(0,0,0,0.08)`)
+
+---
+
+## 8. Icons & Buttons
+
+Icons and buttons are the primary interaction vocabulary.
+
+**Implementation rules:**
+- Icons are usually too large by default — match icon size to the line-height of adjacent text (e.g., if text line-height is 24px, icon should be 24x24)
+- Tighten the gap between icon and text (`gap-2` or `8px` typically works)
+- **Ghost buttons**: no background by default, background appears on hover. These are just buttons without a visible container until interaction
+- Sidebar navigation links are ghost buttons — icon + text, background on hover/active
+- Primary + Secondary CTA pairing: primary gets filled background, secondary gets ghost/outline style
+- Button padding guideline: horizontal padding should be roughly double the vertical padding (e.g., `py-2 px-4` or `py-3 px-6`)
+- Buttons work with or without icons — both variants should be accounted for
+
+---
+
+## 9. Feedback & States
+
+Every user action needs a visible response. No silent interactions.
+
+**Implementation rules:**
+- Every button needs at minimum 4 states: default, hover, active/pressed, and disabled
+- Add a loading state with spinner for async actions
+- Every input needs: default, focus (with ring/border color change), error (red border + error message below), and optionally warning state
+- Show loading spinners/skeletons when data is being fetched
+- Show success messages/toasts when actions complete
+- Animate transitions on scroll, swipe, and page changes
+- Rule: if the user did something and nothing visually changed, the UI is broken
+
+---
+
+## 10. Micro Interactions
+
+Micro interactions are elevated feedback that confirm actions with delight.
+
+**Implementation rules:**
+- Go beyond state changes — add small animations that confirm the action happened
+- Example: copy button click → show a "Copied!" chip/tooltip that slides up and fades out after 1–2 seconds
+- Toggle switches should animate smoothly between states
+- Like/favorite buttons can have a brief scale or bounce animation
+- Range from purely practical (confirming clipboard copy) to playful (confetti on achievement)
+- Keep animations short: 150–300ms for UI feedback, up to 500ms for more expressive micro interactions
+- Use CSS transitions or Framer Motion — avoid blocking the UI thread
+
+---
+
+## 11. Overlays & Image Text Readability
+
+When placing text over images, you must ensure readability.
+
+**Implementation rules:**
+- Never place text directly on an unmodified image — contrast will be inconsistent
+- Option A: Full-screen dark overlay (`bg-black/50`) — works but dulls the image
+- Option B (preferred): Linear gradient overlay — transparent at top fading to dark at bottom where text sits. This preserves the image while creating a readable text zone
+  ```css
+  background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.8) 100%);
+  ```
+- Option C (modern/premium): Progressive blur on top of the gradient using `backdrop-filter: blur()` layered with the gradient for a frosted glass effect
+- Always test with actual content — single words and long sentences behave differently over images
+
+---
+
+## Quick Reference Cheat Sheet
+
+| Concept | Key Rule |
+|---|---|
+| Signifiers | Every interactive element needs hover, active, focus, and disabled states |
+| Hierarchy | Bigger + bolder + top = more important. Contrast creates hierarchy |
+| Spacing | 4-point grid multiples. 32px default gap. Group related elements tighter |
+| Typography | One font. Tight letter-spacing on headers (-2 to -3%). Max 6 sizes |
+| Color | One primary color. Semantic colors for meaning. Lighten for BG, darken for text |
+| Dark Mode | Lighter cards than BG for depth. No shadows. Desaturate bright accents |
+| Shadows | If you notice it first, it is too strong. More blur, less opacity |
+| Icons | Match icon size to text line-height. Usually 24px |
+| Buttons | Ghost for secondary. Horizontal padding = 2x vertical. Always 4 states |
+| Feedback | Every action gets a visible response. No silent interactions |
+| Micro interactions | Short confirming animations (150–300ms). Practical over flashy |
+| Overlays | Gradient overlay bottom-up on images. Progressive blur for modern look |

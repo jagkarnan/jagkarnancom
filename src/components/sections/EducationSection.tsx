@@ -24,7 +24,9 @@ export function EducationSection() {
                   {" "}
                   <div className="flex flex-col gap-1">
                     {" "}
-                    <h3 className="text-base font-semibold">{e.school}</h3>{" "}
+                    <h3 className="text-base font-semibold leading-tight tracking-tight">
+                      {e.school}
+                    </h3>{" "}
                     <p className="text-sm text-foreground/75">
                       {e.degree}
                     </p>{" "}
@@ -37,7 +39,7 @@ export function EducationSection() {
                   ) : null}{" "}
                 </div>{" "}
                 {e.notes?.length ? (
-                  <ul className="mt-4 space-y-2 text-sm leading-6 text-foreground/75">
+                  <ul className="mt-4 space-y-3 text-sm leading-relaxed text-foreground/75">
                     {" "}
                     {e.notes.map((n) => (
                       <li key={n} className="flex gap-3">

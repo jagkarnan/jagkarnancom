@@ -64,17 +64,17 @@ export function HeroSection() {
               <img
                 src="/profile-photo.jpg"
                 alt="Jag Karnan"
-                className="h-40 w-40 rounded-full object-cover border-2 border-white/20"
+                className="h-40 w-40 rounded-full border-2 border-foreground/20 object-cover ring-2 ring-foreground/5"
               />
-              <h1 className="text-3xl font-semibold tracking-tight md:text-5xl">
+              <h1 className="text-3xl font-semibold leading-tight tracking-tight md:text-5xl">
                 {resume.name}
               </h1>
             </div>{" "}
-            <p className="text-base text-foreground/80 md:text-lg">
+            <p className="text-base leading-snug text-foreground/80 md:text-lg">
               {" "}
               {resume.headline}{" "}
             </p>{" "}
-            <p className="max-w-2xl text-sm leading-7 text-foreground/70 md:text-base">
+            <p className="max-w-2xl text-sm leading-relaxed text-foreground/70 md:text-base">
               {" "}
               {resume.summary}{" "}
             </p>{" "}
@@ -84,7 +84,7 @@ export function HeroSection() {
                 <ExternalLink
                   key={l.href}
                   href={l.href}
-                  className="rounded-full border border-black/10 px-4 py-2 text-sm text-foreground/80 hover:bg-black/5 border-white/15 hover:bg-white/5 flex items-center gap-2"
+                  className="flex items-center gap-2 rounded-full border border-foreground/12 bg-transparent px-4 py-2 text-sm text-foreground/85 no-underline transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/20 hover:bg-foreground/[0.06] active:scale-[0.98] motion-reduce:active:scale-100"
                 >
                   {" "}
                   {l.label === "Email" && (
@@ -105,7 +105,7 @@ export function HeroSection() {
                   <ExternalLink
                     key={l.href}
                     href={l.href}
-                    className="rounded-full border border-black/10 px-4 py-2 text-sm text-foreground/80 hover:bg-black/5 border-white/15 hover:bg-white/5 flex items-center gap-2 whitespace-nowrap"
+                    className="flex items-center gap-2 whitespace-nowrap rounded-full border border-foreground/12 bg-transparent px-4 py-2 text-sm text-foreground/85 no-underline transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/20 hover:bg-foreground/[0.06] active:scale-[0.98] motion-reduce:active:scale-100"
                   >
                     {" "}
                     {l.label.includes("Call") && (
@@ -122,7 +122,7 @@ export function HeroSection() {
           </div>{" "}
           <aside className="glass-card rounded-3xl p-6 md:p-7">
             {" "}
-            <h2 className="text-sm font-semibold tracking-tight text-foreground/80">
+            <h2 className="text-sm font-semibold leading-tight tracking-tight text-foreground/85">
               {" "}
               Get in Touch{" "}
             </h2>{" "}
@@ -140,7 +140,7 @@ export function HeroSection() {
                   placeholder="Your Name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm placeholder-foreground/50 focus:border-white/20 focus:outline-none focus:ring-1 focus:ring-white/20"
+                  className="w-full rounded-lg border border-foreground/15 bg-foreground/5 px-3 py-2 text-sm text-foreground placeholder:text-foreground/45 transition-[border-color,box-shadow] duration-200 ease-out focus:border-sky-500/45 focus:outline-none focus:ring-2 focus:ring-sky-500/25 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50"
                   required
                 />{" "}
               </div>{" "}
@@ -152,7 +152,7 @@ export function HeroSection() {
                   placeholder="Your Email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm placeholder-foreground/50 focus:border-white/20 focus:outline-none focus:ring-1 focus:ring-white/20"
+                  className="w-full rounded-lg border border-foreground/15 bg-foreground/5 px-3 py-2 text-sm text-foreground placeholder:text-foreground/45 transition-[border-color,box-shadow] duration-200 ease-out focus:border-sky-500/45 focus:outline-none focus:ring-2 focus:ring-sky-500/25 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50"
                   required
                 />{" "}
               </div>{" "}
@@ -164,14 +164,14 @@ export function HeroSection() {
                   value={formData.message}
                   onChange={handleInputChange}
                   rows={4}
-                  className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm placeholder-foreground/50 focus:border-white/20 focus:outline-none focus:ring-1 focus:ring-white/20 resize-none"
+                  className="w-full resize-none rounded-lg border border-foreground/15 bg-foreground/5 px-3 py-2 text-sm text-foreground placeholder:text-foreground/45 transition-[border-color,box-shadow] duration-200 ease-out focus:border-sky-500/45 focus:outline-none focus:ring-2 focus:ring-sky-500/25 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50"
                   required
                 />{" "}
               </div>{" "}
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                className="focus-ring w-full rounded-full bg-foreground px-4 py-2.5 text-sm font-medium text-background transition-[opacity,transform] duration-200 ease-out hover:opacity-90 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50 motion-reduce:active:scale-100"
               >
                 {" "}
                 {isSubmitting ? "Sending..." : "Send Message"}{" "}

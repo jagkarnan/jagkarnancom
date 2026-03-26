@@ -58,7 +58,7 @@ export function Timeline({ education, certifications, milestones }: TimelineProp
       return "bg-gradient-to-br from-purple-500/20 to-indigo-500/20 border border-purple-500/30";
     if (isMilestone)
       return "bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/30";
-    return "bg-white/5 border border-white/10";
+    return "bg-foreground/5 border border-foreground/10";
   };
 
   const typeLabel = (item: TimelineItem) =>
@@ -86,14 +86,14 @@ export function Timeline({ education, certifications, milestones }: TimelineProp
           }`}
         >
           <div
-            className={`inline-block max-w-full rounded-xl p-3 sm:p-4 ${
+            className={`inline-block max-w-full rounded-xl p-3 transition-[border-color,box-shadow] duration-200 ease-out sm:p-4 ${
               isEducation
                 ? "bg-foreground/10 border border-foreground/20"
                 : isAchievement
                   ? "bg-gradient-to-br from-purple-500/20 to-indigo-500/20 border border-purple-500/30"
                   : isMilestone
                     ? "bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/30"
-                    : "bg-white/5 border border-white/10"
+                    : "bg-foreground/5 border border-foreground/10"
             }`}
           >
             <div
@@ -134,14 +134,14 @@ export function Timeline({ education, certifications, milestones }: TimelineProp
 
         <div className="absolute left-1/2 -translate-x-1/2 z-10">
           <div
-            className={`flex h-12 w-12 items-center justify-center rounded-full text-xs font-bold shadow-lg ${
+            className={`timeline-hub flex h-12 w-12 items-center justify-center rounded-full text-xs font-bold ring-4 ring-background ${
               isEducation
-                ? "bg-foreground text-background ring-4 ring-background"
+                ? "bg-foreground text-background"
                 : isAchievement
-                  ? "bg-gradient-to-br from-purple-500 to-indigo-500 text-white ring-4 ring-background"
+                  ? "bg-gradient-to-br from-purple-500 to-indigo-500 text-white"
                   : isMilestone
-                    ? "bg-gradient-to-br from-amber-500 to-orange-500 text-white ring-4 ring-background"
-                    : "bg-background text-foreground border-2 border-foreground/40 ring-4 ring-background"
+                    ? "bg-gradient-to-br from-amber-500 to-orange-500 text-white"
+                    : "border-2 border-foreground/40 bg-background text-foreground"
             }`}
           >
             {item.year}
@@ -183,7 +183,7 @@ export function Timeline({ education, certifications, milestones }: TimelineProp
         {allItems.map((item) => (
           <div
             key={`mobile-${item.title}-${item.year}`}
-            className={`rounded-xl p-4 ${cardClass(item)}`}
+            className={`rounded-xl p-4 transition-[border-color,box-shadow] duration-200 ease-out motion-reduce:transition-none ${cardClass(item)}`}
           >
             <p className="text-xs font-medium uppercase tracking-wider text-foreground/60">
               {typeLabel(item)}

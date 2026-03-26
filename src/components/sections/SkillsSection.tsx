@@ -25,7 +25,9 @@ export function SkillsSection() {
                   {" "}
                   <div className="flex flex-col gap-1">
                     {" "}
-                    <h3 className="text-base font-semibold">{s.name}</h3>{" "}
+                    <h3 className="text-base font-semibold leading-tight tracking-tight">
+                      {s.name}
+                    </h3>{" "}
                     {s.level ? (
                       <p className="font-mono text-xs text-foreground/60">
                         {" "}

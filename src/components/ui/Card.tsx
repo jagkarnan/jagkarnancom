@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+
 export function Card({
   children,
   className,
@@ -7,9 +8,6 @@ export function Card({
   className?: string;
 }) {
   return (
-    <div className={`glass-card rounded-2xl ${className ?? ""}`}>
-      {" "}
-      {children}{" "}
-    </div>
+    <div className={`glass-card rounded-2xl ${className ?? ""}`}>{children}</div>
   );
 }

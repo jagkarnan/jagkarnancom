@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+
 export function ExternalLink({
   href,
   children,
@@ -13,10 +14,9 @@ export function ExternalLink({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className={`focus-ring inline-flex items-center gap-2 rounded-md ${className ?? ""}`}
+      className={`focus-ring inline-flex items-center gap-2 rounded-md text-foreground transition-colors duration-200 ease-out hover:text-sky-500 active:opacity-80 motion-reduce:transition-none ${className ?? ""}`}
     >
-      {" "}
-      {children}{" "}
+      {children}
     </a>
   );
 }

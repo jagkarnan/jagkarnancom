@@ -27,9 +27,8 @@ export function ExperienceSection() {
                   {" "}
                   <div className="flex flex-col gap-1">
                     {" "}
-                    <h3 className="text-base font-semibold">
-                      {" "}
-                      {e.role} • {e.company}{" "}
+                    <h3 className="text-base font-semibold leading-tight tracking-tight">
+                      {e.role} • {e.company}
                     </h3>{" "}
                     <p className="text-sm text-foreground/70">
                       {" "}
@@ -39,7 +38,7 @@ export function ExperienceSection() {
                     </p>{" "}
                   </div>{" "}
                 </div>{" "}
-                <ul className="mt-4 space-y-2 text-sm leading-6 text-foreground/75">
+                <ul className="mt-4 space-y-3 text-sm leading-relaxed text-foreground/75">
                   {" "}
                   {e.highlights.map((h) => (
                     <li key={h} className="flex gap-3">

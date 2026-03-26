@@ -13,7 +13,7 @@ function Field({ label, value }: { label: string; value?: string }) {
         {" "}
         {label}{" "}
       </p>{" "}
-      <p className="text-sm leading-6 text-foreground/75">{value}</p>{" "}
+      <p className="text-sm leading-relaxed text-foreground/75">{value}</p>{" "}
     </div>
   );
 }
@@ -37,8 +37,10 @@ export function ProjectsSection() {
                 {" "}
                 <div className="flex flex-col gap-2">
                   {" "}
-                  <h3 className="text-base font-semibold">{p.name}</h3>{" "}
-                  <p className="text-sm leading-6 text-foreground/75">
+                  <h3 className="text-base font-semibold leading-tight tracking-tight">
+                    {p.name}
+                  </h3>{" "}
+                  <p className="text-sm leading-relaxed text-foreground/75">
                     {" "}
                     {p.blurb}{" "}
                   </p>{" "}
@@ -62,7 +64,7 @@ export function ProjectsSection() {
                       <ExternalLink
                         key={l.href}
                         href={l.href}
-                        className="text-sm text-foreground/80 underline decoration-white/20 underline-offset-4 hover:decoration-white/50"
+                        className="text-sm text-foreground/80 underline decoration-foreground/30 underline-offset-4 transition-colors duration-200 hover:decoration-sky-500/50"
                       >
                         {" "}
                         {l.label}{" "}

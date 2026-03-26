@@ -36,7 +36,7 @@ export function ContactSection() {
                   <ExternalLink
                     key={l.href}
                     href={l.href}
-                    className="rounded-full border border-black/10 px-4 py-2 text-sm text-foreground/80 hover:bg-black/5 border-white/15 hover:bg-white/5"
+                    className="rounded-full border border-foreground/12 px-4 py-2 text-sm text-foreground/85 no-underline transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/20 hover:bg-foreground/[0.06] active:scale-[0.98] motion-reduce:active:scale-100"
                   >
                     {" "}
                     {l.label}{" "}
@@ -44,7 +44,7 @@ export function ContactSection() {
                 ))}{" "}
                 <a
                   href="/resume"
-                  className="focus-ring rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background hover:opacity-90"
+                  className="focus-ring rounded-full bg-foreground px-4 py-2.5 text-sm font-medium text-background transition-[opacity,transform] duration-200 ease-out hover:opacity-90 active:scale-[0.98] motion-reduce:active:scale-100"
                 >
                   {" "}
                   Print / save as PDF{" "}
