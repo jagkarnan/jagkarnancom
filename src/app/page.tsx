@@ -1,6 +1,6 @@
 "use client";
 
-import { useId } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { resume } from "@/content/resume";
 import {
   buildCertificationBoardItems,
@@ -85,9 +85,91 @@ function Block({
   );
 }
 
+function ProfilePhotoLightbox({
+  open,
+  onClose,
+  alt,
+}: {
+  open: boolean;
+  onClose: () => void;
+  alt: string;
+}) {
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
+
+  useEffect(() => {
+    if (!open) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onCloseRef.current();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  useEffect(() => {
+    if (open) closeRef.current?.focus();
+  }, [open]);
+
+  if (!open) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-[2px]"
+      role="dialog"
+      aria-modal="true"
+      aria-label={alt}
+      onClick={onClose}
+    >
+      <div
+        className="relative max-h-[min(90vh,36rem)] max-w-[min(90vw,36rem)]"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          ref={closeRef}
+          type="button"
+          onClick={onClose}
+          className="focus-ring absolute -right-1 -top-1 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-black/60 text-white shadow-lg transition-[background-color,transform] hover:bg-black/75 active:scale-95 motion-reduce:active:scale-100"
+          aria-label="Close enlarged photo"
+        >
+          <svg
+            width={22}
+            height={22}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            aria-hidden
+          >
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
+        </button>
+        <img
+          src="/profile-photo.jpg"
+          alt={alt}
+          className="max-h-[min(90vh,36rem)] max-w-[min(90vw,36rem)] rounded-full border-2 border-white/20 object-cover shadow-2xl"
+          decoding="async"
+        />
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const certificationBoardItems = buildCertificationBoardItems();
   const goldMedalLabel = getUniversityGoldMedalLabel();
+  const [photoOpen, setPhotoOpen] = useState(false);
+  const photoAlt = `Photo of ${resume.name}`;
 
   return (
     <main
@@ -102,12 +184,19 @@ export default function Home() {
           >
             <div className="flex flex-col gap-5 md:flex-row md:gap-8">
               <div className="mx-auto shrink-0 md:mx-0">
-                <img
-                  src="/profile-photo.jpg"
-                  alt=""
-                  className="h-24 w-24 rounded-full object-cover border-2 border-foreground/20 ring-2 ring-foreground/5"
-                  decoding="async"
-                />
+                <button
+                  type="button"
+                  onClick={() => setPhotoOpen(true)}
+                  className="focus-ring group relative rounded-full"
+                  aria-label={`View larger photo of ${resume.name}`}
+                >
+                  <img
+                    src="/profile-photo.jpg"
+                    alt=""
+                    className="h-24 w-24 rounded-full object-cover border-2 border-foreground/20 ring-2 ring-foreground/5 transition-[transform,box-shadow] duration-200 ease-out group-hover:ring-foreground/15 group-active:scale-[0.98] motion-reduce:group-active:scale-100"
+                    decoding="async"
+                  />
+                </button>
               </div>
               <div className="flex min-w-0 flex-1 flex-col gap-3 text-center md:text-left">
                 <div className="flex w-full flex-col gap-2 items-center md:items-start">
@@ -284,7 +373,7 @@ export default function Home() {
                   key={company.name}
                   className="flex flex-col items-center gap-3"
                 >
-                  <div className="flex h-16 w-40 shrink-0 items-center justify-center rounded-xl border border-black/10 bg-white px-3 py-2 shadow-sm transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md dark:border-white/15 dark:bg-white/95 sm:h-[4.5rem] sm:w-44">
+                  <div className="corporate-logo-tile flex h-16 w-40 shrink-0 items-center justify-center rounded-xl border border-neutral-300 px-3 py-2 shadow-sm transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md sm:h-[4.5rem] sm:w-44">
                     <img
                       src={company.logo}
                       alt={`${company.name} logo`}
@@ -341,6 +430,11 @@ export default function Home() {
           </Block>
         </div>
       </Container>
+      <ProfilePhotoLightbox
+        open={photoOpen}
+        onClose={() => setPhotoOpen(false)}
+        alt={photoAlt}
+      />
     </main>
   );
 }

@@ -68,34 +68,34 @@ export const resume: Resume = {
   ],
   skills: [
     {
-      name: "Defining clear and precise instructions for AI systems so they deliver exactly what is needed, without ambiguity or guesswork",
+      name: "Craft precise AI prompts and instructions that eliminate ambiguity and deliver reliable, production ready outputs",
     },
     {
-      name: "Reviewing and evaluating AI generated outputs with a critical eye to catch errors, inconsistencies, and confidently wrong results before they reach production",
+      name: "Evaluate AI generated content with a critical eye, catching errors, hallucinations, and confidently wrong results before they reach stakeholders",
     },
     {
-      name: "Breaking down complex business problems into smaller tasks that can be distributed across multiple AI agents working together as a coordinated system",
+      name: "Decompose complex business problems into structured task flows that can be distributed across coordinated multi agent AI systems",
     },
     {
-      name: "Identifying and diagnosing the common ways AI systems fail, including context decay over long sessions, specification drift, false confirmations, wrong tool usage, chain reaction failures, and silent errors that look correct but are not",
+      name: "Diagnose common AI failure modes including context decay, specification drift, false confirmations, tool misuse, and silent errors that pass surface level checks",
     },
     {
-      name: "Designing safety boundaries and guardrails for AI systems, determining where human oversight is essential and where automation can be trusted to operate independently",
+      name: "Design human in the loop guardrails for AI systems, defining where automation can operate independently and where human oversight is essential",
     },
     {
-      name: "Organizing and structuring business data so AI agents can reliably find, retrieve, and use the right information at the right time across the organization",
+      name: "Structure and organize enterprise data so AI agents can reliably retrieve and use the right information at the right time",
     },
     {
-      name: "Calculating whether an AI solution is financially viable by modeling token costs across different AI models, estimating usage volumes, and proving return on investment before committing resources",
+      name: "Model AI solution economics by calculating token costs across models, forecasting usage volumes, and proving ROI before committing resources",
     },
     {
-      name: "Matching the right AI model to the right task based on capability, cost, and performance requirements to optimize both quality and budget",
+      name: "Match the right AI model to the right task based on capability, cost, and performance to optimize both quality and budget",
     },
     {
-      name: "Understanding how to scope projects correctly for different types of AI agent setups, from single agent tasks to complex multi agent workflows",
+      name: "Scope AI projects accurately across single agent tasks and complex multi agent workflows, setting realistic timelines and expectations",
     },
     {
-      name: "Building evaluation frameworks and quality checks into AI workflows so that outputs are verified for real world accuracy, not just surface level correctness",
+      name: "Build evaluation frameworks and quality gates into AI workflows that verify real world accuracy, not just surface level correctness",
     },
   ],
   techSkills: [

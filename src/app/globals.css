@@ -139,6 +139,29 @@ html[data-theme="light"] .timeline-hub {
   box-shadow: 0 2px 12px rgba(15, 23, 42, 0.08);
 }
 
+/* Corporate Exposure: opaque white behind logos. Isolated from parent .glass-card
+   backdrop-filter so transparent PNG pixels composite against #fff, not the blurred page. */
+.corporate-logo-tile {
+  position: relative;
+  isolation: isolate;
+  background-color: #ffffff;
+}
+
+.corporate-logo-tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  background-color: #ffffff;
+}
+
+.corporate-logo-tile img {
+  position: relative;
+  z-index: 1;
+  background-color: #ffffff;
+}
+
 .focus-ring {
   transition:
     box-shadow 0.15s ease,

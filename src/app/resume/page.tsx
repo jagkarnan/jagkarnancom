@@ -243,7 +243,7 @@ function ResumePrintBody() {
                 key={company.name}
                 className="flex w-40 flex-col items-center gap-2"
               >
-                <div className="flex h-[4.5rem] w-full items-center justify-center rounded-xl border-2 border-neutral-400 bg-white px-2 py-2">
+                <div className="corporate-logo-tile flex h-[4.5rem] w-full items-center justify-center rounded-xl border-2 border-neutral-400 px-2 py-2">
                   <img
                     src={company.logo}
                     alt=""
