@@ -230,11 +230,6 @@ export default function Home() {
                   <p className="text-sm leading-relaxed text-foreground/75 break-words text-pretty md:text-left">
                     {resume.summary}
                   </p>
-                  <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm text-foreground/65 md:justify-start">
-                    {resume.location ? (
-                      <span className="text-pretty">{resume.location}</span>
-                    ) : null}
-                  </div>
                 </div>
               </div>
             </div>
