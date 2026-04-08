@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { use, useEffect, useId, useRef, useState } from "react";
 import { resume } from "@/content/resume";
+import type { CertificationBoardItem } from "@/content/resumeShared";
 import {
   buildCertificationBoardItems,
   getIssuerInitials,
+  groupCertificationBoardItemsByDecade,
   CORPORATE_EXPERIENCE,
 } from "@/content/resumeShared";
 import {
@@ -165,8 +167,74 @@ function ProfilePhotoLightbox({
   );
 }
 
-export default function Home() {
+function CertificationBoardCard({
+  c,
+  certName,
+}: {
+  c: CertificationBoardItem;
+  certName: string;
+}) {
+  return (
+    <div
+      className="relative flex flex-col rounded-[22px] border border-black/70 bg-[#f5f0e6] px-4 py-3 shadow-sm transition-shadow duration-200 dark:border-black dark:bg-[#f5f0e6]"
+    >
+      <div className="pointer-events-none absolute inset-1 rounded-[20px] border border-black/80 shadow-inner" />
+      <div className="relative flex flex-1 flex-col gap-3">
+        <div className="flex min-w-0 items-start gap-2.5 border-b border-black/40 pb-2">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 text-[11px] font-bold text-white shadow-sm">
+            {getIssuerInitials(c.subtitle)}
+          </div>
+          <div className="min-w-0 flex flex-col">
+            <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-zinc-600">
+              Certificate of Achievement
+            </span>
+            <span className="break-words text-xs font-semibold text-zinc-900">
+              {c.subtitle || "Accredited Issuer"}
+            </span>
+          </div>
+        </div>
+        <div className="flex-1 space-y-1.5">
+          <p className="text-[11px] uppercase tracking-[0.22em] text-zinc-500">
+            This is to certify that
+          </p>
+          <p className="text-[13px] font-semibold tracking-tight text-zinc-900">{certName}</p>
+          <p className="text-[11px] text-zinc-600">has successfully attained</p>
+          <p className="break-words text-[12px] font-semibold leading-snug text-zinc-900">
+            {c.title}
+          </p>
+        </div>
+        <div className="mt-1.5 flex items-center justify-between pt-1.5">
+          <div className="flex flex-col text-[10px] text-zinc-700">
+            <span className="uppercase tracking-[0.18em]">Awarded</span>
+            <span className="mt-1 inline-flex w-fit rounded-full border border-black/60 bg-[#f5f0e6] px-2 py-0.5 font-mono text-[10px] text-zinc-900">
+              {c.year}
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="relative h-10 w-10 rounded-full border-2 border-red-700 bg-gradient-to-br from-red-500 to-red-700 text-[16px] font-bold text-white shadow-sm">
+              <div className="absolute inset-[2px] rounded-full border border-red-200/80" />
+              <div className="relative flex h-full w-full items-center justify-center leading-none">
+                ★
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function Home({
+  params,
+}: {
+  params: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  use(params);
+
   const certificationBoardItems = buildCertificationBoardItems();
+  const certificationsByDecade = groupCertificationBoardItemsByDecade(
+    certificationBoardItems,
+  );
   const goldMedalLabel = getUniversityGoldMedalLabel();
   const [photoOpen, setPhotoOpen] = useState(false);
   const photoAlt = `Photo of ${resume.name}`;
@@ -301,66 +369,35 @@ export default function Home() {
             </div>
           </Block>
           <Block title="Certifications" id="certifications">
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {certificationBoardItems.map((c) => (
-                <div
-                  key={c.id}
-                  className="relative flex flex-col rounded-[22px] border border-black/70 bg-[#f5f0e6] px-4 py-3 shadow-sm transition-shadow duration-200 dark:border-black dark:bg-[#f5f0e6]"
+            <div className="flex flex-col">
+              {certificationsByDecade.map((group, i) => (
+                <section
+                  key={group.id}
+                  id={`certifications-${group.id}`}
+                  aria-labelledby={`certifications-${group.id}-heading`}
+                  className={
+                    "min-w-0 scroll-mt-28" +
+                    (i > 0
+                      ? " mt-8 border-t border-foreground/10 pt-8 md:mt-10 md:pt-10"
+                      : "")
+                  }
                 >
-                  {/* Outer frame */}
-                  <div className="pointer-events-none absolute inset-1 rounded-[20px] border border-black/80 shadow-inner" />
-
-                  <div className="relative flex flex-1 flex-col gap-3">
-                    {/* Header: logo + issuer */}
-                    <div className="flex min-w-0 items-start gap-2.5 border-b border-black/40 pb-2">
-                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 text-[11px] font-bold text-white shadow-sm">
-                        {getIssuerInitials(c.source === "cert" ? c.subtitle : c.subtitle)}
-                      </div>
-                      <div className="min-w-0 flex flex-col">
-                        <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-zinc-600">
-                          Certificate of Achievement
-                        </span>
-                        <span className="break-words text-xs font-semibold text-zinc-900">
-                          {c.subtitle || "Accredited Issuer"}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Certificate body */}
-                    <div className="flex-1 space-y-1.5">
-                      <p className="text-[11px] uppercase tracking-[0.22em] text-zinc-500">
-                        This is to certify that
-                      </p>
-                      <p className="text-[13px] font-semibold tracking-tight text-zinc-900">
-                        {resume.legalName ?? resume.name}
-                      </p>
-                      <p className="text-[11px] text-zinc-600">
-                        has successfully attained
-                      </p>
-                      <p className="break-words text-[12px] font-semibold leading-snug text-zinc-900">
-                        {c.title}
-                      </p>
-                    </div>
-
-                    {/* Footer: year + seal */}
-                    <div className="mt-1.5 flex items-center justify-between pt-1.5">
-                      <div className="flex flex-col text-[10px] text-zinc-700">
-                        <span className="uppercase tracking-[0.18em]">Awarded</span>
-                        <span className="mt-1 inline-flex w-fit rounded-full border border-black/60 bg-[#f5f0e6] px-2 py-0.5 font-mono text-[10px] text-zinc-900">
-                          {c.year}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="relative h-10 w-10 rounded-full border-2 border-red-700 bg-gradient-to-br from-red-500 to-red-700 text-[16px] font-bold text-white shadow-sm">
-                          <div className="absolute inset-[2px] rounded-full border border-red-200/80" />
-                          <div className="relative flex h-full w-full items-center justify-center leading-none">
-                            ★
-                          </div>
-                        </div>                        
-                      </div>
-                    </div>
+                  <h3
+                    id={`certifications-${group.id}-heading`}
+                    className="text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground/50 sm:text-xs"
+                  >
+                    {group.label}
+                  </h3>
+                  <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                    {group.items.map((c) => (
+                      <CertificationBoardCard
+                        key={c.id}
+                        c={c}
+                        certName={resume.legalName ?? resume.name}
+                      />
+                    ))}
                   </div>
-                </div>
+                </section>
               ))}
             </div>
           </Block>
@@ -419,12 +456,37 @@ export default function Home() {
               ))}
             </div>
           </Block>
+          <Block title="Education" id="education">
+            <div className="space-y-6 md:space-y-8">
+              {[...resume.education]
+                .sort(
+                  (a, b) =>
+                    parseInt(b.end || b.start || "0", 10) -
+                    parseInt(a.end || a.start || "0", 10),
+                )
+                .map((ed) => (
+                  <div
+                    key={`${ed.school}-${ed.degree}`}
+                    className="space-y-2 border-b border-foreground/10 pb-6 last:border-b-0 last:pb-0 md:pb-8 md:last:pb-0"
+                  >
+                    <p className="break-words text-sm font-semibold leading-snug tracking-tight text-foreground">
+                      {ed.degree}
+                    </p>
+                    <p className="text-sm text-foreground/75">{ed.school}</p>
+                    <p className="font-mono text-xs text-foreground/60">
+                      {[ed.start, ed.end].filter(Boolean).join(" — ") || "—"}
+                    </p>
+                    {ed.notes && ed.notes.length > 0 ? (
+                      <p className="text-sm italic text-foreground/65">
+                        {ed.notes.join(" · ")}
+                      </p>
+                    ) : null}
+                  </div>
+                ))}
+            </div>
+          </Block>
           <Block title="Major Milestones" id="milestones">
-            <Timeline
-              education={resume.education}
-              certifications={resume.certifications}
-              milestones={resume.milestones}
-            />
+            <Timeline milestones={resume.milestones} />
           </Block>
         </div>
       </Container>

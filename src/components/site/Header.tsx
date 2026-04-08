@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { resume } from "@/content/resume";
 import { ThemeToggle } from "@/components/site/ThemeToggle";
 
@@ -12,11 +12,12 @@ const navItems = [
   { href: "#certifications", label: "Certifications" },
   { href: "#corporate-exposure", label: "Corporate Exposure" },
   { href: "#work-experience", label: "Work Experience" },
+  { href: "#education", label: "Education" },
   { href: "#milestones", label: "Major Milestones" },
 ] as const;
 
 const navLinkClass =
-  "focus-ring shrink-0 whitespace-nowrap rounded-md px-2 py-1.5 text-[11px] font-medium text-foreground/70 transition-colors duration-200 ease-out hover:bg-foreground/[0.06] hover:text-foreground active:bg-foreground/10 motion-reduce:transition-none lg:px-2.5 lg:text-xs xl:px-3 xl:text-sm";
+  "focus-ring rounded-md px-2 py-1.5 text-center text-[11px] font-medium leading-tight text-foreground/70 transition-colors duration-200 ease-out hover:bg-foreground/[0.06] hover:text-foreground active:bg-foreground/10 motion-reduce:transition-none lg:px-2 lg:text-xs xl:px-2.5 xl:text-sm";
 
 const nameLinkClass =
   "focus-ring shrink-0 rounded-lg px-2 py-2 text-sm font-semibold tracking-tight text-foreground transition-colors duration-200 ease-out hover:bg-foreground/[0.06] active:bg-foreground/10 sm:px-3 sm:text-base motion-reduce:transition-none";
@@ -43,6 +44,15 @@ function HamburgerIcon({ open }: { open: boolean }) {
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const onChange = () => {
+      if (mq.matches) setMenuOpen(false);
+    };
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
   return (
     <header className="site-header sticky top-0 z-50 w-full border-b border-foreground/10 bg-background/60 backdrop-blur print:hidden">
       <div className="relative w-full min-w-0 px-4 py-3 sm:px-6 sm:py-4 lg:px-8">
@@ -55,11 +65,12 @@ export function Header() {
             {resume.name}
           </Link>
 
+          {/* lg+: wrap links instead of horizontal scroll (no clipped/hidden scrollbar). */}
           <nav
-            className="mx-2 hidden min-h-10 min-w-0 flex-1 items-center justify-center overflow-x-auto overflow-y-hidden md:flex md:[scrollbar-width:none] md:[&::-webkit-scrollbar]:hidden"
+            className="mx-1 hidden min-w-0 flex-1 items-center justify-center lg:mx-2 lg:flex"
             aria-label="Page sections"
           >
-            <div className="inline-flex w-max max-w-full flex-nowrap items-center justify-center gap-0.5 lg:gap-1">
+            <div className="flex max-w-full flex-wrap justify-center gap-x-0.5 gap-y-1.5 sm:gap-x-1">
               {navItems.map((item) => (
                 <a key={item.href} href={item.href} className={navLinkClass}>
                   {item.label}
@@ -72,7 +83,7 @@ export function Header() {
             <ThemeToggle />
             <button
               type="button"
-              className="focus-ring rounded-lg p-2 text-foreground/80 transition-colors duration-200 ease-out hover:bg-foreground/10 active:bg-foreground/15 md:hidden motion-reduce:transition-none"
+              className="focus-ring rounded-lg p-2 text-foreground/80 transition-colors duration-200 ease-out hover:bg-foreground/10 active:bg-foreground/15 lg:hidden motion-reduce:transition-none"
               aria-expanded={menuOpen}
               aria-controls="mobile-nav"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
@@ -94,7 +105,7 @@ export function Header() {
         {menuOpen ? (
           <nav
             id="mobile-nav"
-            className="absolute left-0 right-0 top-full z-50 border-b border-foreground/10 bg-background/95 backdrop-blur-md md:hidden"
+            className="absolute left-0 right-0 top-full z-50 border-b border-foreground/10 bg-background/95 backdrop-blur-md lg:hidden"
             aria-label="Page sections"
           >
             <div className="mx-auto flex w-full max-w-5xl flex-col px-4 py-2 sm:px-6 lg:px-8">

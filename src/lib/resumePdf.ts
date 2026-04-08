@@ -3,6 +3,7 @@ import { resume } from "@/content/resume";
 import { getSensitiveContactLinks } from "@/lib/contactSensitive";
 import {
   buildCertificationBoardItems,
+  groupCertificationBoardItemsByDecade,
   CORPORATE_EXPERIENCE,
 } from "@/content/resumeShared";
 
@@ -56,16 +57,9 @@ function ensureSpace(doc: InstanceType<typeof PDFDocument>, estimatedHeight: num
   }
 }
 
-/** Milestones excluding certifications, sorted by year ascending (same basis as site Timeline). */
+/** Milestones excluding certifications and achievements (achievements have their own section). */
 function buildTimelineRows() {
-  const educationRows = resume.education.map((e) => ({
-    kind: "education" as const,
-    year: parseInt(e.end || e.start || "0", 10),
-    label: "education",
-    title: e.degree,
-    detail: [e.school, ...(e.notes ?? [])].filter(Boolean).join(" · "),
-  }));
-  const other = (resume.milestones ?? [])
+  return (resume.milestones ?? [])
     .filter(
       (m) =>
         m.type !== "certification" && m.type !== "achievement",
@@ -76,8 +70,8 @@ function buildTimelineRows() {
       label: m.type,
       title: m.title,
       detail: m.description || "",
-    }));
-  return [...educationRows, ...other].sort((a, b) => a.year - b.year);
+    }))
+    .sort((a, b) => a.year - b.year);
 }
 
 /** Achievements only (explicit section per product request). */
@@ -112,6 +106,7 @@ export function generateResumePdfBuffer(): Promise<Buffer> {
 
     const w = contentWidth(doc);
     const certBoard = buildCertificationBoardItems();
+    const certificationsByDecade = groupCertificationBoardItemsByDecade(certBoard);
     const achievements = buildAchievementRows();
     const timeline = buildTimelineRows();
 
@@ -164,15 +159,36 @@ export function generateResumePdfBuffer(): Promise<Buffer> {
     ensureSpace(doc, 24);
     doc.text((resume.techSkills ?? []).join(" · "), { width: w });
 
-    // —— Certifications (full board, same merge as homepage) ——
+    // —— Certifications by decade (same merge + order as homepage) ——
     sectionTitle(doc, "Certifications");
-    for (const c of certBoard) {
-      ensureSpace(doc, 48);
-      doc.font("Helvetica-Bold").text(c.title, { width: w });
-      doc.font("Helvetica");
-      const issuerLine = [c.subtitle, c.year].filter(Boolean).join(" · ");
-      if (issuerLine) doc.text(issuerLine, { width: w });
-      doc.moveDown(0.35);
+    const certLeft = doc.page.margins.left;
+    for (let gi = 0; gi < certificationsByDecade.length; gi++) {
+      const group = certificationsByDecade[gi];
+      if (gi > 0) {
+        doc.moveDown(0.45);
+        const yLine = doc.y;
+        doc
+          .strokeColor("#d4d4d8")
+          .lineWidth(0.5)
+          .moveTo(certLeft, yLine)
+          .lineTo(certLeft + w, yLine)
+          .stroke();
+        doc.strokeColor("#000000");
+        doc.moveDown(0.55);
+      }
+      ensureSpace(doc, 28);
+      doc.font("Helvetica-Bold").fontSize(10).text(group.label, { width: w });
+      doc.font("Helvetica").fontSize(10);
+      doc.moveDown(0.25);
+      for (const c of group.items) {
+        ensureSpace(doc, 48);
+        doc.font("Helvetica-Bold").text(c.title, { width: w });
+        doc.font("Helvetica");
+        const issuerLine = [c.subtitle, c.year].filter(Boolean).join(" · ");
+        if (issuerLine) doc.text(issuerLine, { width: w });
+        doc.moveDown(0.35);
+      }
+      doc.moveDown(0.2);
     }
 
     sectionTitle(doc, "Corporate Exposure");
@@ -198,6 +214,25 @@ export function generateResumePdfBuffer(): Promise<Buffer> {
       doc.moveDown(0.4);
     }
 
+    sectionTitle(doc, "Education");
+    const educationOrdered = [...resume.education].sort(
+      (a, b) =>
+        parseInt(b.end || b.start || "0", 10) -
+        parseInt(a.end || a.start || "0", 10),
+    );
+    for (const ed of educationOrdered) {
+      ensureSpace(doc, 52);
+      doc.font("Helvetica-Bold").text(ed.degree, { width: w });
+      doc.font("Helvetica");
+      doc.text(ed.school, { width: w });
+      const range = [ed.start, ed.end].filter(Boolean).join(" — ");
+      if (range) doc.text(range, { width: w });
+      if (ed.notes?.length) {
+        doc.text(ed.notes.join(" · "), { width: w });
+      }
+      doc.moveDown(0.4);
+    }
+
     // —— All achievement-type milestones ——
     sectionTitle(doc, "Achievements");
     for (const a of achievements) {
@@ -212,7 +247,7 @@ export function generateResumePdfBuffer(): Promise<Buffer> {
       doc.moveDown(0.25);
     }
 
-    // —— Education, awards, projects (Timeline without certs & achievements) ——
+    // —— Awards, projects, etc. (Timeline without certs, achievements, education) ——
     sectionTitle(doc, "Major milestones");
     for (const row of timeline) {
       ensureSpace(doc, 40);
@@ -224,6 +259,15 @@ export function generateResumePdfBuffer(): Promise<Buffer> {
       if (row.detail) doc.text(row.detail, { width: w, indent: 10 });
       doc.moveDown(0.3);
     }
+
+    doc.moveDown(1);
+    ensureSpace(doc, 28);
+    doc
+      .font("Helvetica")
+      .fontSize(9)
+      .fillColor("#525252")
+      .text("- END OF DOCUMENT -", { width: w, align: "center" });
+    doc.fillColor("#000000").font("Helvetica").fontSize(10);
 
     doc.end();
     } catch (err) {

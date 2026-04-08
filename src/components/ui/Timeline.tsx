@@ -1,59 +1,39 @@
 "use client";
 
 import { Fragment } from "react";
-import { Certification, Education, Milestone } from "@/content/resume";
+import { Milestone } from "@/content/resume";
 
 interface TimelineItem {
   year: number;
   title: string;
   subtitle: string;
-  type: "education" | "certification" | "milestone";
+  type: "milestone";
   notes?: string[];
   description?: string;
   milestoneType?: "achievement" | "project" | "award" | "certification";
 }
 
 interface TimelineProps {
-  education: Education[];
-  certifications: Certification[];
   milestones?: Milestone[];
 }
 
-export function Timeline({ education, certifications, milestones }: TimelineProps) {
-  // Convert education to timeline items
-  const educationItems: TimelineItem[] = education.map((e) => ({
-    year: parseInt(e.end || e.start || "0"),
-    title: e.degree,
-    subtitle: e.school,
-    type: "education",
-    notes: e.notes,
-  }));
-
-  // Convert milestones to timeline items
-  const milestoneItems: TimelineItem[] = (milestones || [])
-    // Exclude certification-type milestones; these are shown separately
+export function Timeline({ milestones }: TimelineProps) {
+  const allItems: TimelineItem[] = (milestones || [])
     .filter((m) => m.type !== "certification")
     .map((m) => ({
-      year: parseInt(m.year),
+      year: parseInt(m.year, 10),
       title: m.title,
       subtitle: m.description,
-      type: "milestone",
+      type: "milestone" as const,
       milestoneType: m.type,
       description: m.description,
-    }));
-
-  // Combine and sort by year (ascending - oldest first for tree layout)
-  const allItems = [...educationItems, ...milestoneItems].sort(
-    (a, b) => a.year - b.year
-  );
+    }))
+    .sort((a, b) => a.year - b.year);
 
   const cardClass = (item: TimelineItem) => {
-    const isEducation = item.type === "education";
     const isAchievement =
       item.type === "milestone" && item.milestoneType === "achievement";
     const isMilestone = item.type === "milestone";
-    if (isEducation)
-      return "bg-foreground/10 border border-foreground/20";
     if (isAchievement)
       return "bg-gradient-to-br from-purple-500/20 to-indigo-500/20 border border-purple-500/30";
     if (isMilestone)
@@ -61,17 +41,15 @@ export function Timeline({ education, certifications, milestones }: TimelineProp
     return "bg-foreground/5 border border-foreground/10";
   };
 
-  const typeLabel = (item: TimelineItem) =>
-    item.type === "milestone" ? item.milestoneType : item.type;
+  const typeLabel = (item: TimelineItem) => item.milestoneType;
 
   const careerStartYear = 1997;
 
   const renderDesktopTimelineRow = (item: TimelineItem) => {
-    const isEducation = item.type === "education";
     const isMilestone = item.type === "milestone";
     const isAchievement =
       item.type === "milestone" && item.milestoneType === "achievement";
-    const isLeft = isEducation || isMilestone || isAchievement;
+    const isLeft = true;
 
     return (
       <div
@@ -87,13 +65,11 @@ export function Timeline({ education, certifications, milestones }: TimelineProp
         >
           <div
             className={`inline-block max-w-full rounded-xl p-3 transition-[border-color,box-shadow] duration-200 ease-out sm:p-4 ${
-              isEducation
-                ? "bg-foreground/10 border border-foreground/20"
-                : isAchievement
-                  ? "bg-gradient-to-br from-purple-500/20 to-indigo-500/20 border border-purple-500/30"
-                  : isMilestone
-                    ? "bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/30"
-                    : "bg-foreground/5 border border-foreground/10"
+              isAchievement
+                ? "bg-gradient-to-br from-purple-500/20 to-indigo-500/20 border border-purple-500/30"
+                : isMilestone
+                  ? "bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/30"
+                  : "bg-foreground/5 border border-foreground/10"
             }`}
           >
             <div
@@ -103,16 +79,14 @@ export function Timeline({ education, certifications, milestones }: TimelineProp
             >
               <span
                 className={`text-xs font-medium uppercase tracking-wider ${
-                  isEducation
-                    ? "text-foreground/70"
-                    : isAchievement
-                      ? "text-purple-400/80"
-                      : isMilestone
-                        ? "text-amber-400/80"
-                        : "text-foreground/50"
+                  isAchievement
+                    ? "text-purple-400/80"
+                    : isMilestone
+                      ? "text-amber-400/80"
+                      : "text-foreground/50"
                 }`}
               >
-                {isMilestone ? item.milestoneType : item.type}
+                {item.milestoneType}
               </span>
               <span className="font-mono text-xs text-foreground/60">
                 {item.year}
@@ -135,13 +109,11 @@ export function Timeline({ education, certifications, milestones }: TimelineProp
         <div className="absolute left-1/2 -translate-x-1/2 z-10">
           <div
             className={`timeline-hub flex h-12 w-12 items-center justify-center rounded-full text-xs font-bold ring-4 ring-background ${
-              isEducation
-                ? "bg-foreground text-background"
-                : isAchievement
-                  ? "bg-gradient-to-br from-purple-500 to-indigo-500 text-white"
-                  : isMilestone
-                    ? "bg-gradient-to-br from-amber-500 to-orange-500 text-white"
-                    : "border-2 border-foreground/40 bg-background text-foreground"
+              isAchievement
+                ? "bg-gradient-to-br from-purple-500 to-indigo-500 text-white"
+                : isMilestone
+                  ? "bg-gradient-to-br from-amber-500 to-orange-500 text-white"
+                  : "border-2 border-foreground/40 bg-background text-foreground"
             }`}
           >
             {item.year}
@@ -165,8 +137,8 @@ export function Timeline({ education, certifications, milestones }: TimelineProp
     <div className="relative mt-8 mb-8">
       <div className="absolute left-0 right-0 flex flex-wrap items-center justify-center gap-4 gap-y-2 px-2 text-xs text-foreground/60 sm:gap-8">
         <div className="flex items-center gap-2">
-          <div className="h-4 w-4 rounded-full bg-foreground" />
-          <span>Education</span>
+          <div className="h-4 w-4 rounded-full bg-gradient-to-br from-purple-500 to-indigo-500" />
+          <span>Achievement</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="h-4 w-4 rounded-full bg-gradient-to-br from-amber-500 to-orange-500" />
@@ -222,14 +194,14 @@ export function Timeline({ education, certifications, milestones }: TimelineProp
       </div>
 
       {/* lg+: timeline + experience journey rows aligned (arrow height matches spine) */}
-      <div className="hidden lg:block w-full max-w-[calc(56rem+2rem+12rem)]">
+      <div className="timeline-experience-journey hidden lg:block w-full max-w-[calc(56rem+2rem+12rem)]">
         <div className="mb-4 grid grid-cols-[minmax(0,56rem)_12rem] gap-x-8">
           <div aria-hidden />
           <div className="text-center">
-            <h3 className="text-sm font-semibold text-foreground/80">
+            <h3 className="experience-journey-heading text-sm font-semibold text-foreground/80">
               Experience Journey
             </h3>
-            <p className="mt-1 text-[10px] font-bold tracking-wide text-amber-500/95">
+            <p className="experience-journey-subtitle mt-1 text-[10px] font-bold tracking-wide text-amber-500/95">
               30 YEARS EXPERIENCE
             </p>
           </div>
@@ -252,8 +224,8 @@ export function Timeline({ education, certifications, milestones }: TimelineProp
             className="pointer-events-none z-0 col-start-2 row-start-1 relative flex justify-center"
             style={{ gridRowEnd: `span ${allItems.length}` }}
           >
-            <div className="absolute left-1/2 top-0 bottom-0 w-2 -translate-x-1/2 rounded-full bg-gradient-to-b from-amber-500/30 via-amber-500/40 to-amber-500/50" />
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-0 w-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[10px] border-t-amber-500/60" />
+            <div className="experience-journey-arrow-track absolute left-1/2 top-0 bottom-0 w-2 -translate-x-1/2 rounded-full bg-gradient-to-b from-amber-500/30 via-amber-500/40 to-amber-500/50" />
+            <div className="experience-journey-arrow-tip absolute bottom-0 left-1/2 -translate-x-1/2 h-0 w-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[10px] border-t-amber-500/60" />
           </div>
 
           {allItems.map((item, index) => (
@@ -268,10 +240,10 @@ export function Timeline({ education, certifications, milestones }: TimelineProp
                 className="relative z-10 flex flex-col items-center justify-center gap-0.5 px-1 text-center"
                 style={{ gridColumn: 2, gridRow: index + 1 }}
               >
-                <span className="text-xs font-mono text-amber-500/90">
+                <span className="experience-journey-year text-xs font-mono text-amber-500/90">
                   {item.year}
                 </span>
-                <span className="text-[10px] font-bold leading-tight text-amber-500/95">
+                <span className="experience-journey-year experience-journey-yr-count text-[10px] font-bold leading-tight text-amber-500/95">
                   {item.year - careerStartYear + 1} yr
                 </span>
               </div>

@@ -23,9 +23,14 @@ export const metadata: Metadata = {
   },
   alternates: { canonical: "/" },
 };
-export default function RootLayout({
+export default async function RootLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+  params,
+}: Readonly<{
+  children: React.ReactNode;
+  params: Promise<Record<string, string | string[] | undefined>>;
+}>) {
+  await params;
   return (
     <html lang="en" suppressHydrationWarning>
       <head>

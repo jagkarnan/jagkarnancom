@@ -64,38 +64,26 @@ export const resume: Resume = {
   links: [
     { label: "LinkedIn", href: "https://www.linkedin.com/in/jagkarnan/" },
     { label: "GitHub", href: "https://github.com/jagkarnan" },
-    { label: "YouTube", href: "https://www.youtube.com/@jagkarnan" },
+    { label: "YouTube", href: "https://www.youtube.com/@jagkarnanai" },
   ],
   skills: [
     {
-      name: "Craft precise AI prompts and instructions that eliminate ambiguity and deliver reliable, production ready outputs",
+      name: "Identify high-impact opportunities where AI can increase revenue, reduce costs, and improve business efficiency",
     },
     {
-      name: "Evaluate AI generated content with a critical eye, catching errors, hallucinations, and confidently wrong results before they reach stakeholders",
+      name: "Design and implement automated workflows to replace manual tasks such as lead handling, reporting, and customer communication",
     },
     {
-      name: "Decompose complex business problems into structured task flows that can be distributed across coordinated multi agent AI systems",
+      name: "Develop and integrate AI-powered tools (e.g., chatbots, internal systems, SaaS applications) into business operations",
     },
     {
-      name: "Diagnose common AI failure modes including context decay, specification drift, false confirmations, tool misuse, and silent errors that pass surface level checks",
+      name: "Use tools like Claude, Gemini to generate content, automate processes, and support decision-making",
     },
     {
-      name: "Design human in the loop guardrails for AI systems, defining where automation can operate independently and where human oversight is essential",
+      name: "Build scalable AI solutions using APIs, Python, and automation platforms such as CrewAI, n8n and Zapier",
     },
     {
-      name: "Structure and organize enterprise data so AI agents can reliably retrieve and use the right information at the right time",
-    },
-    {
-      name: "Model AI solution economics by calculating token costs across models, forecasting usage volumes, and proving ROI before committing resources",
-    },
-    {
-      name: "Match the right AI model to the right task based on capability, cost, and performance to optimize both quality and budget",
-    },
-    {
-      name: "Scope AI projects accurately across single agent tasks and complex multi agent workflows, setting realistic timelines and expectations",
-    },
-    {
-      name: "Build evaluation frameworks and quality gates into AI workflows that verify real world accuracy, not just surface level correctness",
+      name: "Lead end-to-end AI implementation, from identifying use cases to deployment, ensuring smooth adoption and measurable business impact",
     },
   ],
   techSkills: [

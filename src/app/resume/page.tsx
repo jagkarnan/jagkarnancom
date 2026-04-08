@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect } from "react";
+import { Suspense, use, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { resume } from "@/content/resume";
 import {
@@ -10,48 +10,41 @@ import {
 } from "@/components/contact/ObfuscatedContactAnchors";
 import {
   buildCertificationBoardItems,
+  groupCertificationBoardItemsByDecade,
   CORPORATE_EXPERIENCE,
   getIssuerInitials,
 } from "@/content/resumeShared";
 
-type MilestoneRow =
-  | {
-      kind: "education";
-      year: number;
-      degree: string;
-      school: string;
-      notes?: string[];
-    }
-  | {
-      kind: "milestone";
-      year: number;
-      milestoneType: string;
-      title: string;
-      description: string;
-    };
+type MilestoneRow = {
+  year: number;
+  milestoneType: string;
+  title: string;
+  description: string;
+};
 
 function buildMajorMilestoneRows(): MilestoneRow[] {
-  const educationRows: MilestoneRow[] = resume.education.map((e) => ({
-    kind: "education" as const,
-    year: parseInt(e.end || e.start || "0", 10),
-    degree: e.degree,
-    school: e.school,
-    notes: e.notes,
-  }));
-  const milestoneRows: MilestoneRow[] = (resume.milestones ?? [])
+  return (resume.milestones ?? [])
     .filter((m) => m.type !== "certification")
     .map((m) => ({
-      kind: "milestone" as const,
       year: parseInt(m.year, 10),
       milestoneType: m.type,
       title: m.title,
       description: m.description,
-    }));
-  return [...educationRows, ...milestoneRows].sort((a, b) => a.year - b.year);
+    }))
+    .sort((a, b) => a.year - b.year);
 }
+
+const EDUCATION_PRINT_ORDERED = [...resume.education].sort(
+  (a, b) =>
+    parseInt(b.end || b.start || "0", 10) -
+    parseInt(a.end || a.start || "0", 10),
+);
 
 const MAJOR_MILESTONE_ROWS = buildMajorMilestoneRows();
 const CERTIFICATION_BOARD_ITEMS = buildCertificationBoardItems();
+const CERTIFICATIONS_BY_DECADE = groupCertificationBoardItemsByDecade(
+  CERTIFICATION_BOARD_ITEMS,
+);
 
 const PUBLIC_WEB_LINKS = resume.links;
 
@@ -63,7 +56,7 @@ const printExact = {
 /**
  * Section order and content mirror the public site (`/`):
  * Hero → Contact → AI Skills → Tech Skills → Certifications →
- * Corporate Exposure → Work Experience → Major Milestones
+ * Corporate Exposure → Work Experience → Education → Major Milestones
  */
 function ResumePrintBody() {
   const certName = resume.legalName ?? resume.name;
@@ -167,65 +160,80 @@ function ResumePrintBody() {
           </div>
         </section>
 
-        {/* —— Certifications (same merged list + wording as home certificate cards) —— */}
+        {/* —— Certifications by decade (same merged list as home) —— */}
         <section className="mb-8">
           <h2 className="mb-3 border-b border-black pb-1 text-sm font-semibold uppercase tracking-wide text-black">
             Certifications
           </h2>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {CERTIFICATION_BOARD_ITEMS.map((c) => (
+          <div className="flex flex-col">
+            {CERTIFICATIONS_BY_DECADE.map((group, i) => (
               <div
-                key={c.id}
-                className="resume-print-cert relative flex flex-col rounded-[16px] border-2 border-black bg-[#f5f0e6] px-3 py-3 text-black shadow-sm"
-                style={printExact}
+                key={group.id}
+                className={
+                  "min-w-0" +
+                  (i > 0 ? " mt-6 border-t border-neutral-300 pt-6" : "")
+                }
               >
-                <div
-                  className="pointer-events-none absolute inset-1 rounded-[14px] border border-black/70"
-                  aria-hidden
-                />
-                <div className="relative flex flex-1 flex-col gap-2">
-                  <div className="flex min-w-0 items-start gap-2 border-b border-black/50 pb-2">
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-sky-700 text-[10px] font-bold text-white">
-                      {getIssuerInitials(c.subtitle)}
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-700">
-                        Certificate of Achievement
-                      </p>
-                      <p className="text-xs font-semibold text-black">
-                        {c.subtitle || "Accredited Issuer"}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-[10px] uppercase tracking-widest text-neutral-600">
-                      This is to certify that
-                    </p>
-                    <p className="text-sm font-semibold text-black">{certName}</p>
-                    <p className="text-[10px] text-neutral-700">
-                      has successfully attained
-                    </p>
-                    <p className="text-xs font-semibold leading-snug text-black">
-                      {c.title}
-                    </p>
-                  </div>
-                  <div className="mt-auto flex items-center justify-between border-t border-black/40 pt-2">
-                    <div>
-                      <p className="text-[9px] uppercase tracking-widest text-neutral-700">
-                        Awarded
-                      </p>
-                      <p className="mt-0.5 inline-block rounded-full border border-black px-2 py-0.5 font-mono text-[10px] text-black">
-                        {c.year}
-                      </p>
-                    </div>
+                <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-neutral-800">
+                  {group.label}
+                </h3>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {group.items.map((c) => (
                     <div
-                      className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-red-800 bg-red-600 text-sm font-bold text-white"
+                      key={c.id}
+                      className="resume-print-cert relative flex flex-col rounded-[16px] border-2 border-black bg-[#f5f0e6] px-3 py-3 text-black shadow-sm"
                       style={printExact}
-                      aria-hidden
                     >
-                      ★
+                      <div
+                        className="pointer-events-none absolute inset-1 rounded-[14px] border border-black/70"
+                        aria-hidden
+                      />
+                      <div className="relative flex flex-1 flex-col gap-2">
+                        <div className="flex min-w-0 items-start gap-2 border-b border-black/50 pb-2">
+                          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-sky-700 text-[10px] font-bold text-white">
+                            {getIssuerInitials(c.subtitle)}
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-700">
+                              Certificate of Achievement
+                            </p>
+                            <p className="text-xs font-semibold text-black">
+                              {c.subtitle || "Accredited Issuer"}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="space-y-1">
+                          <p className="text-[10px] uppercase tracking-widest text-neutral-600">
+                            This is to certify that
+                          </p>
+                          <p className="text-sm font-semibold text-black">{certName}</p>
+                          <p className="text-[10px] text-neutral-700">
+                            has successfully attained
+                          </p>
+                          <p className="text-xs font-semibold leading-snug text-black">
+                            {c.title}
+                          </p>
+                        </div>
+                        <div className="mt-auto flex items-center justify-between border-t border-black/40 pt-2">
+                          <div>
+                            <p className="text-[9px] uppercase tracking-widest text-neutral-700">
+                              Awarded
+                            </p>
+                            <p className="mt-0.5 inline-block rounded-full border border-black px-2 py-0.5 font-mono text-[10px] text-black">
+                              {c.year}
+                            </p>
+                          </div>
+                          <div
+                            className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-red-800 bg-red-600 text-sm font-bold text-white"
+                            style={printExact}
+                            aria-hidden
+                          >
+                            ★
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             ))}
@@ -295,46 +303,54 @@ function ResumePrintBody() {
           </div>
         </section>
 
-        {/* —— Major Milestones (same underlying data as Timeline: education + non-cert milestones) —— */}
+        {/* —— Education —— */}
+        <section className="mb-8">
+          <h2 className="mb-3 border-b border-black pb-1 text-sm font-semibold uppercase tracking-wide text-black">
+            Education
+          </h2>
+          <div className="space-y-4 text-sm text-black">
+            {EDUCATION_PRINT_ORDERED.map((ed) => (
+              <div
+                key={`${ed.school}-${ed.degree}`}
+                className="resume-milestone-item border-b border-neutral-400 pb-4 last:border-0"
+              >
+                <p className="font-semibold text-black">{ed.degree}</p>
+                <p className="mt-1 text-black">{ed.school}</p>
+                <p className="mt-1 font-mono text-xs text-black">
+                  {[ed.start, ed.end].filter(Boolean).join(" — ") || "—"}
+                </p>
+                {ed.notes && ed.notes.length > 0 ? (
+                  <p className="mt-1 text-xs italic text-black">
+                    {ed.notes.join(" · ")}
+                  </p>
+                ) : null}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* —— Major Milestones (non-cert milestones; same basis as site Timeline) —— */}
         <section>
           <h2 className="mb-3 border-b border-black pb-1 text-sm font-semibold uppercase tracking-wide text-black">
             Major Milestones
           </h2>
           <div className="space-y-4 text-sm text-black">
-            {MAJOR_MILESTONE_ROWS.map((row, i) =>
-              row.kind === "education" ? (
-                <div
-                  key={`ed-${row.school}-${row.degree}-${i}`}
-                  className="resume-milestone-item border-b border-neutral-400 pb-4 last:border-0"
-                >
-                  <p className="font-mono text-xs font-semibold text-black">
-                    {row.year} · education
+            {MAJOR_MILESTONE_ROWS.map((row, i) => (
+              <div
+                key={`ms-${row.title}-${row.year}-${i}`}
+                className="resume-milestone-item border-b border-neutral-400 pb-4 last:border-0"
+              >
+                <p className="font-mono text-xs font-semibold text-black">
+                  {row.year} · {row.milestoneType}
+                </p>
+                <p className="mt-1 font-semibold text-black">{row.title}</p>
+                {row.description ? (
+                  <p className="mt-1 leading-relaxed text-black">
+                    {row.description}
                   </p>
-                  <p className="mt-1 font-semibold text-black">{row.degree}</p>
-                  <p className="text-black">{row.school}</p>
-                  {row.notes && row.notes.length > 0 ? (
-                    <p className="mt-1 text-xs italic text-black">
-                      {row.notes.join(" · ")}
-                    </p>
-                  ) : null}
-                </div>
-              ) : (
-                <div
-                  key={`ms-${row.title}-${row.year}-${i}`}
-                  className="resume-milestone-item border-b border-neutral-400 pb-4 last:border-0"
-                >
-                  <p className="font-mono text-xs font-semibold text-black">
-                    {row.year} · {row.milestoneType}
-                  </p>
-                  <p className="mt-1 font-semibold text-black">{row.title}</p>
-                  {row.description ? (
-                    <p className="mt-1 leading-relaxed text-black">
-                      {row.description}
-                    </p>
-                  ) : null}
-                </div>
-              ),
-            )}
+                ) : null}
+              </div>
+            ))}
           </div>
         </section>
       </div>
@@ -362,7 +378,13 @@ function AutoPrintWhenPdfQuery() {
   return null;
 }
 
-export default function PrintableResume() {
+export default function PrintableResume({
+  params,
+}: {
+  params: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  use(params);
+
   return (
     <>
       <ResumePrintBody />
