@@ -199,21 +199,13 @@ export default function Home() {
                 </button>
               </div>
               <div className="flex min-w-0 flex-1 flex-col gap-3 text-center md:text-left">
-                <div className="flex w-full flex-col gap-2 items-center md:items-start">
-                  <div className="flex w-full flex-wrap items-baseline justify-center gap-x-2 gap-y-1 md:justify-start">
-                    <h1
-                      id="hero-name-heading"
-                      className="text-2xl font-semibold leading-tight tracking-tight text-foreground sm:text-3xl break-words"
-                    >
-                      {resume.name}
-                    </h1>
-                    <span className="select-none text-foreground/35" aria-hidden>
-                      ·
-                    </span>
-                    <p className="max-w-prose text-sm font-medium leading-snug text-foreground/65 sm:text-base break-words text-pretty">
-                      {resume.headline}
-                    </p>
-                  </div>
+                <div className="flex w-full flex-col gap-3 items-center md:items-start">
+                  <h1
+                    id="hero-name-heading"
+                    className="w-full text-center text-2xl font-semibold leading-tight tracking-tight text-foreground sm:text-3xl break-words md:text-left"
+                  >
+                    {resume.name}
+                  </h1>
                   {goldMedalLabel ? (
                     <div className="flex justify-center md:justify-start">
                       <span
@@ -225,6 +217,17 @@ export default function Home() {
                       </span>
                     </div>
                   ) : null}
+                  <blockquote className="mx-auto w-full max-w-prose rounded-xl border border-foreground/12 bg-foreground/[0.035] px-4 py-3.5 shadow-sm dark:border-foreground/18 dark:bg-foreground/[0.06] md:mx-0">
+                    <p className="text-center text-pretty text-sm font-medium italic leading-snug text-foreground/80 sm:text-base md:text-left">
+                      <span className="text-foreground/45 not-italic" aria-hidden>
+                        &ldquo;
+                      </span>
+                      {resume.headline}
+                      <span className="text-foreground/45 not-italic" aria-hidden>
+                        &rdquo;
+                      </span>
+                    </p>
+                  </blockquote>
                 </div>
                 <div className="mx-auto flex w-full max-w-prose flex-col gap-2.5 md:mx-0">
                   <p className="text-sm leading-relaxed text-foreground/75 break-words text-pretty md:text-left">
