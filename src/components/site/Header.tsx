@@ -6,14 +6,16 @@ import { resume } from "@/content/resume";
 import { ThemeToggle } from "@/components/site/ThemeToggle";
 
 const navItems = [
-  { href: "#contact", label: "Contact" },
-  { href: "#ai-skills", label: "AI Skills" },
-  { href: "#tech-skills", label: "Tech Skills" },
-  { href: "#certifications", label: "Certifications" },
-  { href: "#corporate-exposure", label: "Corporate Exposure" },
-  { href: "#work-experience", label: "Work Experience" },
-  { href: "#education", label: "Education" },
-  { href: "#milestones", label: "Major Milestones" },
+  { href: "/ai-papers", label: "AI Papers" },
+  { href: "/youtube-videos", label: "YouTube Videos" },
+  { href: "/#contact", label: "Contact" },
+  { href: "/#ai-skills", label: "AI Skills" },
+  { href: "/#tech-skills", label: "Tech Skills" },
+  { href: "/#certifications", label: "Certifications" },
+  { href: "/#corporate-exposure", label: "Corporate Exposure" },
+  { href: "/#work-experience", label: "Work Experience" },
+  { href: "/#education", label: "Education" },
+  { href: "/#milestones", label: "Major Milestones" },
 ] as const;
 
 const navLinkClass =
@@ -72,9 +74,9 @@ export function Header() {
           >
             <div className="flex max-w-full flex-wrap justify-center gap-x-0.5 gap-y-1.5 sm:gap-x-1">
               {navItems.map((item) => (
-                <a key={item.href} href={item.href} className={navLinkClass}>
+                <Link key={item.href} href={item.href} className={navLinkClass}>
                   {item.label}
-                </a>
+                </Link>
               ))}
             </div>
           </nav>
@@ -110,14 +112,14 @@ export function Header() {
           >
             <div className="mx-auto flex w-full max-w-5xl flex-col px-4 py-2 sm:px-6 lg:px-8">
               {navItems.map((item) => (
-                <a
+                <Link
                   key={item.href}
                   href={item.href}
                   className="focus-ring rounded-lg px-3 py-3 text-sm text-foreground/80 transition-colors duration-200 hover:bg-foreground/5 hover:text-foreground active:bg-foreground/10"
                   onClick={() => setMenuOpen(false)}
                 >
                   {item.label}
-                </a>
+                </Link>
               ))}
             </div>
           </nav>
