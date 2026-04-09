@@ -204,6 +204,79 @@ html[data-theme="light"] .timeline-hub {
   box-shadow: 0 0 0 4px var(--ring);
 }
 
+/* AI Papers — “AI Free Writing” balloon expand / collapse */
+.ai-free-writing-panel {
+  transform-origin: left center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ai-free-writing-panel--enter {
+    animation: ai-free-balloon-expand 0.34s cubic-bezier(0.22, 1.55, 0.28, 1) both;
+  }
+
+  .ai-free-writing-panel--exit {
+    animation: ai-free-balloon-collapse 0.26s cubic-bezier(0.55, 0.02, 0.65, 0.38) forwards;
+  }
+
+  @keyframes ai-free-balloon-expand {
+    0% {
+      transform: scale(0.22);
+      opacity: 0;
+    }
+    58% {
+      transform: scale(1.045);
+      opacity: 1;
+    }
+    76% {
+      transform: scale(0.972);
+    }
+    88% {
+      transform: scale(1.012);
+    }
+    94% {
+      transform: scale(0.996);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes ai-free-balloon-collapse {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    22% {
+      transform: scale(1.055);
+      opacity: 1;
+    }
+    68% {
+      transform: scale(0.4);
+      opacity: 0.55;
+    }
+    84% {
+      transform: scale(0.3);
+      opacity: 0.28;
+    }
+    92% {
+      transform: scale(0.22);
+      opacity: 0.12;
+    }
+    100% {
+      transform: scale(0.14);
+      opacity: 0;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-free-writing-panel--enter,
+  .ai-free-writing-panel--exit {
+    animation: none;
+  }
+}
+
 @media print {
 
   * {

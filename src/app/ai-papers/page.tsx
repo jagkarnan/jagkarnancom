@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AiFreeWritingInfo } from "@/components/ai-papers/AiFreeWritingInfo";
 import { aiArticles } from "@/content/aiArticles";
 import { Container } from "@/components/ui/Container";
 
@@ -37,9 +38,7 @@ export default function AiPapersPage() {
           <h1 className="mt-2 text-2xl font-semibold leading-tight tracking-tight text-foreground sm:text-3xl">
             AI Papers
           </h1>
-          <p className="mt-3 max-w-2xl text-base leading-relaxed text-foreground/70">
-            Notes and articles on AI, systems, and how to think clearly about technology.
-          </p>
+          <AiFreeWritingInfo />
         </div>
 
         <ul className="flex flex-col gap-4 md:gap-6">
