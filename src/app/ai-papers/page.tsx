@@ -11,18 +11,6 @@ export const metadata: Metadata = {
   alternates: { canonical: "/ai-papers" },
 };
 
-function formatDate(iso: string) {
-  try {
-    return new Intl.DateTimeFormat("en", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    }).format(new Date(iso));
-  } catch {
-    return iso;
-  }
-}
-
 export default function AiPapersPage() {
   const sorted = [...aiArticles].sort(
     (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
@@ -48,10 +36,7 @@ export default function AiPapersPage() {
                 href={`/ai-papers/${article.slug}`}
                 className="focus-ring group block rounded-2xl border border-foreground/10 bg-[var(--card)] p-5 shadow-sm shadow-[var(--glass-shadow-soft)] transition-[border-color,box-shadow,transform] duration-200 ease-out hover:border-[var(--glass-hover-border)] hover:shadow-md active:scale-[0.99] motion-reduce:transition-none motion-reduce:active:scale-100 sm:p-6"
               >
-                <p className="text-xs font-medium text-foreground/50">
-                  {formatDate(article.publishedAt)}
-                </p>
-                <h2 className="mt-2 text-lg font-semibold leading-tight tracking-tight text-foreground transition-colors group-hover:text-sky-600 dark:group-hover:text-sky-400 sm:text-xl">
+                <h2 className="text-lg font-semibold leading-tight tracking-tight text-foreground transition-colors group-hover:text-sky-600 dark:group-hover:text-sky-400 sm:text-xl">
                   {article.title}
                 </h2>
                 <p className="mt-2 text-sm leading-relaxed text-foreground/70 sm:text-base">

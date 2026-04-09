@@ -4,18 +4,6 @@ import { notFound } from "next/navigation";
 import { aiArticles, getArticleBySlug } from "@/content/aiArticles";
 import { Container } from "@/components/ui/Container";
 
-function formatDate(iso: string) {
-  try {
-    return new Intl.DateTimeFormat("en", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    }).format(new Date(iso));
-  } catch {
-    return iso;
-  }
-}
-
 export function generateStaticParams() {
   return aiArticles.map((a) => ({ slug: a.slug }));
 }
@@ -72,7 +60,6 @@ export default async function AiArticlePage({
             <h1 className="mt-2 text-xl font-semibold leading-tight tracking-tight text-foreground sm:text-2xl md:text-3xl">
               {article.title}
             </h1>
-            <p className="mt-3 text-sm text-foreground/55">{formatDate(article.publishedAt)}</p>
             <p className="mt-4 max-w-3xl text-base leading-relaxed text-foreground/75">
               {article.summary}
             </p>
