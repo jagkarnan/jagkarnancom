@@ -25,7 +25,7 @@ const mobileNavLinkClass =
   "focus-ring rounded-lg px-3 py-3 text-sm text-foreground/80 transition-colors duration-200 hover:bg-foreground/5 hover:text-foreground active:bg-foreground/10";
 
 const mobileNavSubLinkClass =
-  "focus-ring rounded-lg py-2.5 pl-10 pr-3 text-sm text-foreground/75 transition-colors duration-200 hover:bg-foreground/5 hover:text-foreground active:bg-foreground/10";
+  "focus-ring block w-full rounded-lg py-2.5 pl-10 pr-3 text-left text-sm text-foreground/75 transition-colors duration-200 hover:bg-foreground/5 hover:text-foreground active:bg-foreground/10";
 
 const mobileNavGroupLabelClass = "px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-foreground/50";
 
@@ -146,31 +146,45 @@ export function Header() {
                   {item.label}
                 </Link>
               ))}
-              <div className="border-t border-foreground/10 pt-1" role="group" aria-label="Competencies">
+              <div
+                className="flex flex-col border-t border-foreground/10 pt-1"
+                role="group"
+                aria-label="Competencies"
+              >
                 <p className={mobileNavGroupLabelClass}>Competencies</p>
-                {COMPETENCIES_ITEMS.map((item) => (
-                  <Link
-                    key={item.id}
-                    href={item.href}
-                    className={mobileNavSubLinkClass}
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
+                <ul className="flex list-none flex-col p-0">
+                  {COMPETENCIES_ITEMS.map((item) => (
+                    <li key={item.id}>
+                      <Link
+                        href={item.href}
+                        className={mobileNavSubLinkClass}
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <div className="border-t border-foreground/10 pt-1" role="group" aria-label="Experience">
+              <div
+                className="flex flex-col border-t border-foreground/10 pt-1"
+                role="group"
+                aria-label="Experience"
+              >
                 <p className={mobileNavGroupLabelClass}>Experience</p>
-                {EXPERIENCE_ITEMS.map((item) => (
-                  <Link
-                    key={item.id}
-                    href={item.href}
-                    className={mobileNavSubLinkClass}
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
+                <ul className="flex list-none flex-col p-0">
+                  {EXPERIENCE_ITEMS.map((item) => (
+                    <li key={item.id}>
+                      <Link
+                        href={item.href}
+                        className={mobileNavSubLinkClass}
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
               {navItems.slice(3).map((item) => (
                 <Link
