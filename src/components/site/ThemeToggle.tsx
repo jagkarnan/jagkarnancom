@@ -10,8 +10,6 @@ function SunIcon({ className }: { className?: string }) {
   return (
     <svg
       className={className}
-      width={14}
-      height={14}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -30,8 +28,6 @@ function MoonIcon({ className }: { className?: string }) {
   return (
     <svg
       className={className}
-      width={14}
-      height={14}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -81,18 +77,30 @@ export function ThemeToggle() {
       aria-checked={mounted ? light : false}
       aria-label={light ? "Switch to dark theme" : "Switch to light theme"}
       onClick={toggle}
-      className="focus-ring relative inline-flex h-8 w-[3.25rem] shrink-0 items-center rounded-full border border-foreground/20 bg-foreground/10 p-0.5 transition-colors duration-200 ease-out hover:bg-foreground/[0.14] active:scale-[0.96] motion-reduce:transition-none motion-reduce:active:scale-100"
+      className="focus-ring relative inline-flex h-7 w-11 shrink-0 items-center overflow-visible rounded-full border border-foreground/20 bg-foreground/10 p-0.5 transition-colors duration-200 ease-out hover:bg-foreground/[0.14] active:scale-[0.96] motion-reduce:transition-none motion-reduce:active:scale-100"
     >
-      <span className="pointer-events-none absolute inset-0 flex items-center justify-between px-1.5">
-        <MoonIcon className="text-foreground/40" />
-        <SunIcon className="text-foreground/40" />
-      </span>
+      {/* Inactive icon only in the clear half — avoids the sliding thumb clipping the sun/moon */}
+      {light ? (
+        <span className="pointer-events-none absolute left-1 top-1/2 z-0 -translate-y-1/2">
+          <MoonIcon className="h-3.5 w-3.5 text-foreground/40" />
+        </span>
+      ) : (
+        <span className="pointer-events-none absolute right-1 top-1/2 z-0 -translate-y-1/2">
+          <SunIcon className="h-3.5 w-3.5 text-foreground/40" />
+        </span>
+      )}
       <span
-        className={`absolute left-0.5 top-0.5 z-[1] size-7 rounded-full bg-background shadow-sm ring-1 ring-foreground/15 transition-transform duration-200 ease-out motion-reduce:transition-none ${
-          light ? "translate-x-[1.25rem]" : "translate-x-0"
+        className={`absolute left-0.5 top-0.5 z-[1] flex size-6 items-center justify-center overflow-visible rounded-full bg-background shadow-sm ring-1 ring-foreground/15 transition-transform duration-200 ease-out motion-reduce:transition-none ${
+          light ? "translate-x-4" : "translate-x-0"
         }`}
         aria-hidden
-      />
+      >
+        {light ? (
+          <SunIcon className="h-[13px] w-[13px] shrink-0 text-foreground" />
+        ) : (
+          <MoonIcon className="h-[13px] w-[13px] shrink-0 text-foreground/80" />
+        )}
+      </span>
     </button>
   );
 }

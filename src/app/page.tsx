@@ -401,6 +401,35 @@ export default function Home({
               ))}
             </div>
           </Block>
+          <Block title="Education" id="education">
+            <div className="space-y-6 md:space-y-8">
+              {[...resume.education]
+                .sort(
+                  (a, b) =>
+                    parseInt(b.end || b.start || "0", 10) -
+                    parseInt(a.end || a.start || "0", 10),
+                )
+                .map((ed) => (
+                  <div
+                    key={`${ed.school}-${ed.degree}`}
+                    className="space-y-2 border-b border-foreground/10 pb-6 last:border-b-0 last:pb-0 md:pb-8 md:last:pb-0"
+                  >
+                    <p className="break-words text-sm font-semibold leading-snug tracking-tight text-foreground">
+                      {ed.degree}
+                    </p>
+                    <p className="text-sm text-foreground/75">{ed.school}</p>
+                    <p className="font-mono text-xs text-foreground/60">
+                      {[ed.start, ed.end].filter(Boolean).join(" — ") || "—"}
+                    </p>
+                    {ed.notes && ed.notes.length > 0 ? (
+                      <p className="text-sm italic text-foreground/65">
+                        {ed.notes.join(" · ")}
+                      </p>
+                    ) : null}
+                  </div>
+                ))}
+            </div>
+          </Block>
           <Block title="Corporate Exposure" id="corporate-exposure">
             <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12">
               {CORPORATE_EXPERIENCE.map((company) => (
@@ -454,35 +483,6 @@ export default function Home({
                   </ul>
                 </div>
               ))}
-            </div>
-          </Block>
-          <Block title="Education" id="education">
-            <div className="space-y-6 md:space-y-8">
-              {[...resume.education]
-                .sort(
-                  (a, b) =>
-                    parseInt(b.end || b.start || "0", 10) -
-                    parseInt(a.end || a.start || "0", 10),
-                )
-                .map((ed) => (
-                  <div
-                    key={`${ed.school}-${ed.degree}`}
-                    className="space-y-2 border-b border-foreground/10 pb-6 last:border-b-0 last:pb-0 md:pb-8 md:last:pb-0"
-                  >
-                    <p className="break-words text-sm font-semibold leading-snug tracking-tight text-foreground">
-                      {ed.degree}
-                    </p>
-                    <p className="text-sm text-foreground/75">{ed.school}</p>
-                    <p className="font-mono text-xs text-foreground/60">
-                      {[ed.start, ed.end].filter(Boolean).join(" — ") || "—"}
-                    </p>
-                    {ed.notes && ed.notes.length > 0 ? (
-                      <p className="text-sm italic text-foreground/65">
-                        {ed.notes.join(" · ")}
-                      </p>
-                    ) : null}
-                  </div>
-                ))}
             </div>
           </Block>
           <Block title="Major Milestones" id="milestones">

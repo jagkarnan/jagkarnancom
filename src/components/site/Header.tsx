@@ -3,26 +3,31 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { resume } from "@/content/resume";
+import { COMPETENCIES_ITEMS, CompetenciesNav } from "@/components/site/CompetenciesNav";
+import { EXPERIENCE_ITEMS, ExperienceNav } from "@/components/site/ExperienceNav";
+import type { HeaderInlineNavKey } from "@/components/site/headerInlineNav";
 import { ThemeToggle } from "@/components/site/ThemeToggle";
 
 const navItems = [
   { href: "/ai-papers", label: "AI Papers" },
   { href: "/youtube-videos", label: "YouTube Videos" },
   { href: "/#contact", label: "Contact" },
-  { href: "/#ai-skills", label: "AI Skills" },
-  { href: "/#tech-skills", label: "Tech Skills" },
-  { href: "/#certifications", label: "Certifications" },
-  { href: "/#corporate-exposure", label: "Corporate Exposure" },
-  { href: "/#work-experience", label: "Work Experience" },
-  { href: "/#education", label: "Education" },
   { href: "/#milestones", label: "Major Milestones" },
 ] as const;
 
 const navLinkClass =
-  "focus-ring rounded-md px-2 py-1.5 text-center text-[11px] font-medium leading-tight text-foreground/70 transition-colors duration-200 ease-out hover:bg-foreground/[0.06] hover:text-foreground active:bg-foreground/10 motion-reduce:transition-none lg:px-2 lg:text-xs xl:px-2.5 xl:text-sm";
+  "focus-ring rounded-md px-2 py-1 text-center text-[11px] font-medium leading-tight text-foreground/70 transition-colors duration-200 ease-out hover:bg-foreground/[0.06] hover:text-foreground active:bg-foreground/10 motion-reduce:transition-none lg:px-2 lg:text-xs xl:px-2.5 xl:text-sm";
 
 const nameLinkClass =
-  "focus-ring shrink-0 rounded-lg px-2 py-2 text-sm font-semibold tracking-tight text-foreground transition-colors duration-200 ease-out hover:bg-foreground/[0.06] active:bg-foreground/10 sm:px-3 sm:text-base motion-reduce:transition-none";
+  "focus-ring shrink-0 rounded-lg px-2 py-1.5 text-sm font-semibold tracking-tight text-foreground transition-colors duration-200 ease-out hover:bg-foreground/[0.06] active:bg-foreground/10 sm:px-3 sm:text-base motion-reduce:transition-none";
+
+const mobileNavLinkClass =
+  "focus-ring rounded-lg px-3 py-3 text-sm text-foreground/80 transition-colors duration-200 hover:bg-foreground/5 hover:text-foreground active:bg-foreground/10";
+
+const mobileNavSubLinkClass =
+  "focus-ring rounded-lg py-2.5 pl-10 pr-3 text-sm text-foreground/75 transition-colors duration-200 hover:bg-foreground/5 hover:text-foreground active:bg-foreground/10";
+
+const mobileNavGroupLabelClass = "px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-foreground/50";
 
 function HamburgerIcon({ open }: { open: boolean }) {
   return (
@@ -45,6 +50,7 @@ function HamburgerIcon({ open }: { open: boolean }) {
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [expandedInlineNav, setExpandedInlineNav] = useState<HeaderInlineNavKey | null>(null);
 
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 1024px)");
@@ -55,9 +61,13 @@ export function Header() {
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
+  useEffect(() => {
+    if (!menuOpen) setExpandedInlineNav(null);
+  }, [menuOpen]);
+
   return (
     <header className="site-header sticky top-0 z-50 w-full bg-background/60 backdrop-blur print:hidden">
-      <div className="relative w-full min-w-0 px-4 py-3 sm:px-6 sm:py-4 lg:px-8">
+      <div className="relative w-full min-w-0 px-4 py-2 sm:px-6 sm:py-2.5 lg:px-8">
         <div className="flex w-full min-w-0 items-center gap-2 sm:gap-3 lg:gap-4">
           <Link
             href="/"
@@ -67,13 +77,28 @@ export function Header() {
             {resume.name}
           </Link>
 
-          {/* lg+: wrap links instead of horizontal scroll (no clipped/hidden scrollbar). */}
+          {/* lg+: single row so expanding Competencies does not wrap and jump header height; scroll horizontally if needed. */}
           <nav
-            className="mx-1 hidden min-w-0 flex-1 items-center justify-center lg:mx-2 lg:flex"
+            className="mx-1 hidden min-w-0 flex-1 items-center justify-center overflow-visible lg:mx-2 lg:flex"
             aria-label="Page sections"
           >
-            <div className="flex max-w-full flex-wrap justify-center gap-x-0.5 gap-y-1.5 sm:gap-x-1">
-              {navItems.map((item) => (
+            <div className="flex min-w-0 max-w-full flex-nowrap items-center justify-center gap-x-0.5 overflow-x-auto overflow-y-visible overscroll-x-contain [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-x-1 [&::-webkit-scrollbar]:hidden">
+              {navItems.slice(0, 3).map((item) => (
+                <Link key={item.href} href={item.href} className={navLinkClass}>
+                  {item.label}
+                </Link>
+              ))}
+              <CompetenciesNav
+                triggerClassName={navLinkClass}
+                expandedNav={expandedInlineNav}
+                onExpandedNavChange={setExpandedInlineNav}
+              />
+              <ExperienceNav
+                triggerClassName={navLinkClass}
+                expandedNav={expandedInlineNav}
+                onExpandedNavChange={setExpandedInlineNav}
+              />
+              {navItems.slice(3).map((item) => (
                 <Link key={item.href} href={item.href} className={navLinkClass}>
                   {item.label}
                 </Link>
@@ -85,7 +110,7 @@ export function Header() {
             <ThemeToggle />
             <button
               type="button"
-              className="focus-ring rounded-lg p-2 text-foreground/80 transition-colors duration-200 ease-out hover:bg-foreground/10 active:bg-foreground/15 lg:hidden motion-reduce:transition-none"
+              className="focus-ring rounded-lg p-1.5 text-foreground/80 transition-colors duration-200 ease-out hover:bg-foreground/10 active:bg-foreground/15 lg:hidden motion-reduce:transition-none"
               aria-expanded={menuOpen}
               aria-controls="mobile-nav"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
@@ -97,7 +122,7 @@ export function Header() {
               href="/Jag_Karnan_Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="focus-ring shrink-0 rounded-md bg-[#171717] px-2.5 py-1.5 text-xs font-medium text-white shadow-[rgb(235,235,235)_0px_0px_0px_1px] transition-[filter,transform,background-color] duration-200 ease-out hover:bg-[#2d2d2d] active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100 sm:px-3 sm:text-sm dark:bg-white dark:text-[#171717] dark:shadow-[0_0_0_1px_rgba(255,255,255,0.14)] dark:hover:bg-[#ebebeb]"
+              className="focus-ring shrink-0 rounded-md bg-[#171717] px-2.5 py-1 text-xs font-medium text-white shadow-[rgb(235,235,235)_0px_0px_0px_1px] transition-[filter,transform,background-color] duration-200 ease-out hover:bg-[#2d2d2d] active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100 sm:px-3 sm:text-sm dark:bg-white dark:text-[#171717] dark:shadow-[0_0_0_1px_rgba(255,255,255,0.14)] dark:hover:bg-[#ebebeb]"
             >
               Resume PDF
             </a>
@@ -111,11 +136,47 @@ export function Header() {
             aria-label="Page sections"
           >
             <div className="mx-auto flex w-full max-w-[1200px] flex-col px-4 py-2 sm:px-6 lg:px-8">
-              {navItems.map((item) => (
+              {navItems.slice(0, 3).map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="focus-ring rounded-lg px-3 py-3 text-sm text-foreground/80 transition-colors duration-200 hover:bg-foreground/5 hover:text-foreground active:bg-foreground/10"
+                  className={mobileNavLinkClass}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ))}
+              <div className="border-t border-foreground/10 pt-1" role="group" aria-label="Competencies">
+                <p className={mobileNavGroupLabelClass}>Competencies</p>
+                {COMPETENCIES_ITEMS.map((item) => (
+                  <Link
+                    key={item.id}
+                    href={item.href}
+                    className={mobileNavSubLinkClass}
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+              <div className="border-t border-foreground/10 pt-1" role="group" aria-label="Experience">
+                <p className={mobileNavGroupLabelClass}>Experience</p>
+                {EXPERIENCE_ITEMS.map((item) => (
+                  <Link
+                    key={item.id}
+                    href={item.href}
+                    className={mobileNavSubLinkClass}
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+              {navItems.slice(3).map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={mobileNavLinkClass}
                   onClick={() => setMenuOpen(false)}
                 >
                   {item.label}
