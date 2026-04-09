@@ -68,7 +68,17 @@ export function Header() {
   return (
     <header className="site-header sticky top-0 z-50 w-full bg-background/60 backdrop-blur print:hidden">
       <div className="relative w-full min-w-0 px-4 py-2 sm:px-6 sm:py-2.5 lg:px-8">
-        <div className="flex w-full min-w-0 items-center gap-2 sm:gap-3 lg:gap-4">
+        {menuOpen ? (
+          <button
+            type="button"
+            className="fixed inset-0 z-[5] bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/50 motion-reduce:backdrop-blur-none motion-reduce:bg-background/88 lg:hidden"
+            aria-label="Close menu"
+            onClick={() => setMenuOpen(false)}
+          />
+        ) : null}
+        <div
+          className={`relative z-10 flex w-full min-w-0 items-center gap-2 sm:gap-3 lg:gap-4 ${menuOpen ? "bg-background/95 shadow-sm" : ""}`}
+        >
           <Link
             href="/"
             className={`${nameLinkClass} shrink-0`}
@@ -132,7 +142,7 @@ export function Header() {
         {menuOpen ? (
           <nav
             id="mobile-nav"
-            className="site-header absolute left-0 right-0 top-full z-50 bg-background/95 backdrop-blur-md lg:hidden"
+            className="site-header absolute left-0 right-0 top-full z-10 border-t border-foreground/10 bg-background/98 py-2 shadow-lg shadow-black/10 backdrop-blur-md lg:hidden dark:shadow-black/30"
             aria-label="Page sections"
           >
             <div className="mx-auto flex w-full max-w-[1200px] flex-col px-4 py-2 sm:px-6 lg:px-8">

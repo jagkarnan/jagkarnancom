@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { FloatingWhatsAppButton } from "@/components/site/FloatingWhatsAppButton";
 import { Footer } from "@/components/site/Footer";
 import { Header } from "@/components/site/Header";
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -49,6 +50,7 @@ export default async function RootLayout({
           <Header />
           {children}
           <Footer />
+          <FloatingWhatsAppButton />
         </div>
       </body>
     </html>
