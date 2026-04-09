@@ -49,7 +49,7 @@ export default async function YoutubeVideosPage() {
                 rel="noopener noreferrer"
                 title="Opens YouTube in a new tab"
                 aria-label={`${youtubeChannel.handle} on YouTube — opens in a new tab`}
-                className="focus-ring rounded font-semibold text-sky-600 underline decoration-sky-600/35 underline-offset-[0.15em] transition-colors hover:text-sky-500 hover:decoration-sky-500/50 dark:text-sky-400 dark:decoration-sky-400/35 dark:hover:text-sky-300"
+                className="focus-ring rounded font-semibold text-accent underline decoration-accent/35 underline-offset-[0.15em] transition-colors hover:text-accent/85 hover:decoration-accent/50"
               >
                 {youtubeChannel.handle}
               </a>
@@ -73,7 +73,7 @@ export default async function YoutubeVideosPage() {
                 href={youtubeChannel.channelUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-medium text-sky-600 underline decoration-sky-600/30 underline-offset-2 dark:text-sky-400"
+                className="font-medium text-accent underline decoration-accent/30 underline-offset-2"
               >
                 YouTube
               </a>
@@ -89,9 +89,9 @@ export default async function YoutubeVideosPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`${v.title} — watch on YouTube (opens in new tab)`}
-                  className="focus-ring group block h-full rounded-2xl border border-foreground/10 bg-[var(--card)] shadow-sm shadow-[var(--glass-shadow-soft)] transition-[border-color,box-shadow,transform] duration-200 ease-out hover:border-[var(--glass-hover-border)] hover:shadow-md active:scale-[0.99] motion-reduce:transition-none motion-reduce:active:scale-100"
+                  className="surface-vercel-tile focus-ring group block h-full rounded-xl bg-[var(--card)] active:scale-[0.99] motion-reduce:transition-none motion-reduce:active:scale-100"
                 >
-                  <div className="relative aspect-video overflow-hidden rounded-t-2xl bg-foreground/5">
+                  <div className="relative aspect-video overflow-hidden rounded-t-xl bg-foreground/5">
                     <img
                       src={v.thumbnailUrl}
                       alt=""

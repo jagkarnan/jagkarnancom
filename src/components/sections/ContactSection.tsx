@@ -20,7 +20,7 @@ export function ContactSection() {
             title="Contact"
             subtitle="If you’re building AI products and care about quality, latency, and cost—let’s talk."
           />{" "}
-          <div className="glass-card rounded-2xl p-6 md:p-8">
+          <div className="glass-card rounded-xl p-6 md:p-8">
             {" "}
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               {" "}

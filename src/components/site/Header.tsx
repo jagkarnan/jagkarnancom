@@ -56,7 +56,7 @@ export function Header() {
   }, []);
 
   return (
-    <header className="site-header sticky top-0 z-50 w-full border-b border-foreground/10 bg-background/60 backdrop-blur print:hidden">
+    <header className="site-header sticky top-0 z-50 w-full bg-background/60 backdrop-blur print:hidden">
       <div className="relative w-full min-w-0 px-4 py-3 sm:px-6 sm:py-4 lg:px-8">
         <div className="flex w-full min-w-0 items-center gap-2 sm:gap-3 lg:gap-4">
           <Link
@@ -97,7 +97,7 @@ export function Header() {
               href="/Jag_Karnan_Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="focus-ring shrink-0 rounded-full border border-amber-500/80 bg-gradient-to-b from-amber-400 to-amber-600 px-2.5 py-1.5 text-xs font-semibold text-amber-950 shadow-sm shadow-amber-900/20 transition-[filter,transform] duration-200 ease-out hover:from-amber-300 hover:to-amber-500 active:scale-[0.97] motion-reduce:transition-none sm:px-3 sm:text-sm"
+              className="focus-ring shrink-0 rounded-md bg-[#171717] px-2.5 py-1.5 text-xs font-medium text-white shadow-[rgb(235,235,235)_0px_0px_0px_1px] transition-[filter,transform,background-color] duration-200 ease-out hover:bg-[#2d2d2d] active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100 sm:px-3 sm:text-sm dark:bg-white dark:text-[#171717] dark:shadow-[0_0_0_1px_rgba(255,255,255,0.14)] dark:hover:bg-[#ebebeb]"
             >
               Resume PDF
             </a>
@@ -107,10 +107,10 @@ export function Header() {
         {menuOpen ? (
           <nav
             id="mobile-nav"
-            className="absolute left-0 right-0 top-full z-50 border-b border-foreground/10 bg-background/95 backdrop-blur-md lg:hidden"
+            className="site-header absolute left-0 right-0 top-full z-50 bg-background/95 backdrop-blur-md lg:hidden"
             aria-label="Page sections"
           >
-            <div className="mx-auto flex w-full max-w-5xl flex-col px-4 py-2 sm:px-6 lg:px-8">
+            <div className="mx-auto flex w-full max-w-[1200px] flex-col px-4 py-2 sm:px-6 lg:px-8">
               {navItems.map((item) => (
                 <Link
                   key={item.href}

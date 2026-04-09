@@ -20,7 +20,7 @@ export function ExperienceSection() {
             {resume.experience.map((e) => (
               <div
                 key={`${e.company}-${e.role}`}
-                className="glass-card rounded-2xl p-6"
+                className="glass-card rounded-xl p-6"
               >
                 {" "}
                 <div className="flex flex-col gap-1 md:flex-row md:items-baseline md:justify-between">

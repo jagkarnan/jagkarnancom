@@ -73,7 +73,7 @@ function Block({
   return (
     <section
       id={id}
-      className="glass-card rounded-2xl p-4 sm:p-6"
+      className="glass-card rounded-xl p-4 sm:p-6"
       aria-labelledby={headingId}
     >
       <h2
@@ -181,7 +181,7 @@ function CertificationBoardCard({
       <div className="pointer-events-none absolute inset-1 rounded-[20px] border border-black/80 shadow-inner" />
       <div className="relative flex flex-1 flex-col gap-3">
         <div className="flex min-w-0 items-start gap-2.5 border-b border-black/40 pb-2">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 text-[11px] font-bold text-white shadow-sm">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-accent-2 text-[11px] font-bold text-white shadow-sm">
             {getIssuerInitials(c.subtitle)}
           </div>
           <div className="min-w-0 flex flex-col">
@@ -247,7 +247,7 @@ export default function Home({
       <Container>
         <div className="flex flex-col gap-8 md:gap-10">
           <section
-            className="glass-card rounded-2xl p-4 sm:p-6"
+            className="glass-card rounded-xl p-4 sm:p-6"
             aria-labelledby="hero-name-heading"
           >
             <div className="flex flex-col gap-5 md:flex-row md:gap-8">
@@ -270,7 +270,7 @@ export default function Home({
                 <div className="flex w-full flex-col gap-3 items-center md:items-start">
                   <h1
                     id="hero-name-heading"
-                    className="w-full text-center text-2xl font-semibold leading-tight tracking-tight text-foreground sm:text-3xl break-words md:text-left"
+                    className="geist-display w-full text-center text-2xl font-semibold text-foreground sm:text-3xl break-words md:text-left"
                   >
                     {resume.name}
                   </h1>
@@ -285,7 +285,7 @@ export default function Home({
                       </span>
                     </div>
                   ) : null}
-                  <blockquote className="mx-auto w-full max-w-prose rounded-xl border border-foreground/12 bg-foreground/[0.035] px-4 py-3.5 shadow-sm dark:border-foreground/18 dark:bg-foreground/[0.06] md:mx-0">
+                  <blockquote className="mx-auto w-full max-w-prose rounded-xl bg-foreground/[0.035] px-4 py-3.5 shadow-[0_0_0_1px_rgba(148,163,184,0.2)] dark:bg-foreground/[0.06] dark:shadow-[0_0_0_1px_rgba(255,255,255,0.1)] md:mx-0">
                     <p className="text-center text-pretty text-sm font-medium italic leading-snug text-foreground/80 sm:text-base md:text-left">
                       <span className="text-foreground/45 not-italic" aria-hidden>
                         &ldquo;

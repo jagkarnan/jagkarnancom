@@ -46,13 +46,13 @@ export default async function AiArticlePage({
         <nav className="mb-8 text-sm" aria-label="Breadcrumb">
           <Link
             href="/ai-papers"
-            className="font-medium text-sky-600 transition-colors hover:text-sky-500 dark:text-sky-400 dark:hover:text-sky-300"
+            className="font-medium text-accent transition-colors hover:text-accent/85"
           >
             ← AI Papers
           </Link>
         </nav>
 
-        <article className="glass-card rounded-2xl p-5 sm:p-8">
+        <article className="glass-card rounded-xl p-5 sm:p-8">
           <header className="border-b border-foreground/10 pb-6">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/45">
               Topic

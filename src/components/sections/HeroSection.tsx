@@ -126,7 +126,7 @@ export function HeroSection() {
               </div>{" "}
             </div>{" "}
           </div>{" "}
-          <aside className="glass-card rounded-3xl p-6 md:p-7">
+          <aside className="glass-card rounded-xl p-6 md:p-7">
             {" "}
             <h2 className="text-sm font-semibold leading-tight tracking-tight text-foreground/85">
               {" "}
@@ -146,7 +146,7 @@ export function HeroSection() {
                   placeholder="Your Name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className="w-full rounded-lg border border-foreground/15 bg-foreground/5 px-3 py-2 text-sm text-foreground placeholder:text-foreground/45 transition-[border-color,box-shadow] duration-200 ease-out focus:border-sky-500/45 focus:outline-none focus:ring-2 focus:ring-sky-500/25 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50"
+                  className="w-full rounded-lg border border-foreground/15 bg-foreground/5 px-3 py-2 text-sm text-foreground placeholder:text-foreground/45 transition-[border-color,box-shadow] duration-200 ease-out focus:border-[hsl(212_100%_48%_/_0.55)] focus:outline-none focus:ring-2 focus:ring-[hsl(212_100%_48%_/_0.28)] focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50"
                   required
                 />{" "}
               </div>{" "}
@@ -158,7 +158,7 @@ export function HeroSection() {
                   placeholder="Your Email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full rounded-lg border border-foreground/15 bg-foreground/5 px-3 py-2 text-sm text-foreground placeholder:text-foreground/45 transition-[border-color,box-shadow] duration-200 ease-out focus:border-sky-500/45 focus:outline-none focus:ring-2 focus:ring-sky-500/25 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50"
+                  className="w-full rounded-lg border border-foreground/15 bg-foreground/5 px-3 py-2 text-sm text-foreground placeholder:text-foreground/45 transition-[border-color,box-shadow] duration-200 ease-out focus:border-[hsl(212_100%_48%_/_0.55)] focus:outline-none focus:ring-2 focus:ring-[hsl(212_100%_48%_/_0.28)] focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50"
                   required
                 />{" "}
               </div>{" "}
@@ -170,7 +170,7 @@ export function HeroSection() {
                   value={formData.message}
                   onChange={handleInputChange}
                   rows={4}
-                  className="w-full resize-none rounded-lg border border-foreground/15 bg-foreground/5 px-3 py-2 text-sm text-foreground placeholder:text-foreground/45 transition-[border-color,box-shadow] duration-200 ease-out focus:border-sky-500/45 focus:outline-none focus:ring-2 focus:ring-sky-500/25 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50"
+                  className="w-full resize-none rounded-lg border border-foreground/15 bg-foreground/5 px-3 py-2 text-sm text-foreground placeholder:text-foreground/45 transition-[border-color,box-shadow] duration-200 ease-out focus:border-[hsl(212_100%_48%_/_0.55)] focus:outline-none focus:ring-2 focus:ring-[hsl(212_100%_48%_/_0.28)] focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50"
                   required
                 />{" "}
               </div>{" "}

@@ -34,15 +34,15 @@ export default function AiPapersPage() {
             <li key={article.slug}>
               <Link
                 href={`/ai-papers/${article.slug}`}
-                className="focus-ring group block rounded-2xl border border-foreground/10 bg-[var(--card)] p-5 shadow-sm shadow-[var(--glass-shadow-soft)] transition-[border-color,box-shadow,transform] duration-200 ease-out hover:border-[var(--glass-hover-border)] hover:shadow-md active:scale-[0.99] motion-reduce:transition-none motion-reduce:active:scale-100 sm:p-6"
+                className="surface-vercel-tile focus-ring group block rounded-xl bg-[var(--card)] p-5 active:scale-[0.99] motion-reduce:transition-none motion-reduce:active:scale-100 sm:p-6"
               >
-                <h2 className="text-lg font-semibold leading-tight tracking-tight text-foreground transition-colors group-hover:text-sky-600 dark:group-hover:text-sky-400 sm:text-xl">
+                <h2 className="text-lg font-semibold leading-tight tracking-tight text-foreground transition-colors group-hover:text-accent sm:text-xl">
                   {article.title}
                 </h2>
                 <p className="mt-2 text-sm leading-relaxed text-foreground/70 sm:text-base">
                   {article.summary}
                 </p>
-                <span className="mt-4 inline-flex text-sm font-medium text-sky-600 dark:text-sky-400">
+                <span className="mt-4 inline-flex text-sm font-medium text-accent">
                   Read article
                   <span className="ml-1 transition-transform group-hover:translate-x-0.5" aria-hidden>
                     →
