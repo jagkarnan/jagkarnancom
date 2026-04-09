@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { resume } from "@/content/resume";
 import { COMPETENCIES_ITEMS, CompetenciesNav } from "@/components/site/CompetenciesNav";
 import { EXPERIENCE_ITEMS, ExperienceNav } from "@/components/site/ExperienceNav";
@@ -48,9 +49,70 @@ function HamburgerIcon({ open }: { open: boolean }) {
   );
 }
 
+function MobileNavPanel({
+  onClose,
+}: {
+  onClose: () => void;
+}) {
+  return (
+    <nav
+      id="mobile-nav"
+      className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-y-contain px-4 py-2 pb-[max(0.5rem,env(safe-area-inset-bottom,0px))] touch-pan-y sm:px-6"
+      aria-label="Page sections"
+    >
+      <div className="mx-auto flex w-full max-w-[1200px] flex-col">
+        {navItems.slice(0, 3).map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className={mobileNavLinkClass}
+            onClick={onClose}
+          >
+            {item.label}
+          </Link>
+        ))}
+        <div className="flex flex-col border-t border-foreground/10 pt-1" role="group" aria-label="Competencies">
+          <p className={mobileNavGroupLabelClass}>Competencies</p>
+          <ul className="flex list-none flex-col p-0">
+            {COMPETENCIES_ITEMS.map((item) => (
+              <li key={item.id}>
+                <Link href={item.href} className={mobileNavSubLinkClass} onClick={onClose}>
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="flex flex-col border-t border-foreground/10 pt-1" role="group" aria-label="Experience">
+          <p className={mobileNavGroupLabelClass}>Experience</p>
+          <ul className="flex list-none flex-col p-0">
+            {EXPERIENCE_ITEMS.map((item) => (
+              <li key={item.id}>
+                <Link href={item.href} className={mobileNavSubLinkClass} onClick={onClose}>
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {navItems.slice(3).map((item) => (
+          <Link key={item.href} href={item.href} className={mobileNavLinkClass} onClick={onClose}>
+            {item.label}
+          </Link>
+        ))}
+      </div>
+    </nav>
+  );
+}
+
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [expandedInlineNav, setExpandedInlineNav] = useState<HeaderInlineNavKey | null>(null);
+  const [portalReady, setPortalReady] = useState(false);
+
+  useEffect(() => {
+    setPortalReady(true);
+  }, []);
 
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 1024px)");
@@ -65,24 +127,91 @@ export function Header() {
     if (!menuOpen) setExpandedInlineNav(null);
   }, [menuOpen]);
 
+  /** iOS: avoid rubber-band gap under fixed layers; restore scroll position on close. */
+  useEffect(() => {
+    if (!menuOpen) return;
+    const scrollY = window.scrollY;
+    const html = document.documentElement;
+    const { overflow: prevBodyOverflow, position: prevBodyPosition, top: prevBodyTop, width: prevBodyWidth } =
+      document.body.style;
+    const prevHtmlOverflow = html.style.overflow;
+
+    document.body.style.overflow = "hidden";
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = "100%";
+    html.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = prevBodyOverflow;
+      document.body.style.position = prevBodyPosition;
+      document.body.style.top = prevBodyTop;
+      document.body.style.width = prevBodyWidth;
+      html.style.overflow = prevHtmlOverflow;
+      window.scrollTo(0, scrollY);
+    };
+  }, [menuOpen]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [menuOpen]);
+
+  const closeMenu = () => setMenuOpen(false);
+
+  const mobileMenuPortal =
+    portalReady && menuOpen
+      ? createPortal(
+          <div
+            className="fixed inset-0 z-[250] flex h-[100dvh] max-h-[100dvh] w-full flex-col bg-background overscroll-none lg:hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site menu"
+          >
+            <div className="flex shrink-0 items-center gap-2 border-b border-foreground/10 bg-background px-4 py-2 pt-[max(0.5rem,env(safe-area-inset-top,0px))] sm:gap-3 sm:px-6 sm:py-2.5">
+              <Link href="/" className={`${nameLinkClass} min-w-0 shrink-0 truncate`} onClick={closeMenu}>
+                {resume.name}
+              </Link>
+              <div className="ml-auto flex shrink-0 items-center gap-2">
+                <ThemeToggle />
+                <a
+                  href="/Jag_Karnan_Resume.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="focus-ring shrink-0 rounded-md bg-[#171717] px-2.5 py-1 text-xs font-medium text-white shadow-[rgb(235,235,235)_0px_0px_0px_1px] transition-[filter,transform,background-color] duration-200 ease-out hover:bg-[#2d2d2d] active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100 sm:px-3 sm:text-sm dark:bg-white dark:text-[#171717] dark:shadow-[0_0_0_1px_rgba(255,255,255,0.14)] dark:hover:bg-[#ebebeb]"
+                >
+                  Resume PDF
+                </a>
+                <button
+                  type="button"
+                  className="focus-ring rounded-lg p-1.5 text-foreground/80 transition-colors duration-200 ease-out hover:bg-foreground/10 active:bg-foreground/15 motion-reduce:transition-none"
+                  aria-controls="mobile-nav"
+                  aria-label="Close menu"
+                  onClick={closeMenu}
+                >
+                  <HamburgerIcon open />
+                </button>
+              </div>
+            </div>
+            <MobileNavPanel onClose={closeMenu} />
+          </div>,
+          document.body,
+        )
+      : null;
+
   return (
+    <>
     <header className="site-header sticky top-0 z-50 w-full bg-background/60 backdrop-blur print:hidden">
       <div className="relative w-full min-w-0 px-4 py-2 sm:px-6 sm:py-2.5 lg:px-8">
-        {menuOpen ? (
-          <button
-            type="button"
-            className="fixed inset-0 z-[5] bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/50 motion-reduce:backdrop-blur-none motion-reduce:bg-background/88 lg:hidden"
-            aria-label="Close menu"
-            onClick={() => setMenuOpen(false)}
-          />
-        ) : null}
-        <div
-          className={`relative z-10 flex w-full min-w-0 items-center gap-2 sm:gap-3 lg:gap-4 ${menuOpen ? "bg-background/95 shadow-sm" : ""}`}
-        >
+        <div className="relative z-10 flex w-full min-w-0 items-center gap-2 sm:gap-3 lg:gap-4">
           <Link
             href="/"
             className={`${nameLinkClass} shrink-0`}
-            onClick={() => setMenuOpen(false)}
+            onClick={closeMenu}
           >
             {resume.name}
           </Link>
@@ -138,78 +267,9 @@ export function Header() {
             </button>
           </div>
         </div>
-
-        {menuOpen ? (
-          <nav
-            id="mobile-nav"
-            className="site-header absolute left-0 right-0 top-full z-10 border-t border-foreground/10 bg-background/98 py-2 shadow-lg shadow-black/10 backdrop-blur-md lg:hidden dark:shadow-black/30"
-            aria-label="Page sections"
-          >
-            <div className="mx-auto flex w-full max-w-[1200px] flex-col px-4 py-2 sm:px-6 lg:px-8">
-              {navItems.slice(0, 3).map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={mobileNavLinkClass}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              ))}
-              <div
-                className="flex flex-col border-t border-foreground/10 pt-1"
-                role="group"
-                aria-label="Competencies"
-              >
-                <p className={mobileNavGroupLabelClass}>Competencies</p>
-                <ul className="flex list-none flex-col p-0">
-                  {COMPETENCIES_ITEMS.map((item) => (
-                    <li key={item.id}>
-                      <Link
-                        href={item.href}
-                        className={mobileNavSubLinkClass}
-                        onClick={() => setMenuOpen(false)}
-                      >
-                        {item.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div
-                className="flex flex-col border-t border-foreground/10 pt-1"
-                role="group"
-                aria-label="Experience"
-              >
-                <p className={mobileNavGroupLabelClass}>Experience</p>
-                <ul className="flex list-none flex-col p-0">
-                  {EXPERIENCE_ITEMS.map((item) => (
-                    <li key={item.id}>
-                      <Link
-                        href={item.href}
-                        className={mobileNavSubLinkClass}
-                        onClick={() => setMenuOpen(false)}
-                      >
-                        {item.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              {navItems.slice(3).map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={mobileNavLinkClass}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </div>
-          </nav>
-        ) : null}
       </div>
     </header>
+    {mobileMenuPortal}
+    </>
   );
 }

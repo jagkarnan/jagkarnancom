@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { startTransition, useCallback, useEffect, useId, useRef, useState } from "react";
 
 import type { HeaderInlineNavKey } from "@/components/site/headerInlineNav";
 
@@ -25,13 +25,16 @@ function useExperienceHashSection(): string | null {
 
   const sync = useCallback(() => {
     if (typeof window === "undefined") return;
-    if (window.location.pathname !== "/") {
-      setId(null);
-      return;
-    }
+    const path = window.location.pathname;
     const h = window.location.hash.replace(/^#/, "");
-    const hit = EXPERIENCE_ITEMS.find((i) => i.id === h);
-    setId(hit ? h : null);
+    startTransition(() => {
+      if (path !== "/") {
+        setId(null);
+        return;
+      }
+      const hit = EXPERIENCE_ITEMS.find((i) => i.id === h);
+      setId(hit ? h : null);
+    });
   }, []);
 
   useEffect(() => {
