@@ -87,6 +87,12 @@ export const resume: Resume = {
     },
   ],
   techSkills: [
+    "Agentic AI",
+    "RAG",
+    "LLM API",
+    "LangChain",
+    "CrewAI",
+    "MCP",
     "Python",
     "JavaScript",
     "TypeScript",
