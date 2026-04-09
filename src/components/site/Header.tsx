@@ -108,6 +108,14 @@ export function Header() {
 
           <div className="ml-auto flex shrink-0 items-center gap-2">
             <ThemeToggle />
+            <a
+              href="/Jag_Karnan_Resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="focus-ring shrink-0 rounded-md bg-[#171717] px-2.5 py-1 text-xs font-medium text-white shadow-[rgb(235,235,235)_0px_0px_0px_1px] transition-[filter,transform,background-color] duration-200 ease-out hover:bg-[#2d2d2d] active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100 sm:px-3 sm:text-sm dark:bg-white dark:text-[#171717] dark:shadow-[0_0_0_1px_rgba(255,255,255,0.14)] dark:hover:bg-[#ebebeb]"
+            >
+              Resume PDF
+            </a>
             <button
               type="button"
               className="focus-ring rounded-lg p-1.5 text-foreground/80 transition-colors duration-200 ease-out hover:bg-foreground/10 active:bg-foreground/15 lg:hidden motion-reduce:transition-none"
@@ -118,14 +126,6 @@ export function Header() {
             >
               <HamburgerIcon open={menuOpen} />
             </button>
-            <a
-              href="/Jag_Karnan_Resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="focus-ring shrink-0 rounded-md bg-[#171717] px-2.5 py-1 text-xs font-medium text-white shadow-[rgb(235,235,235)_0px_0px_0px_1px] transition-[filter,transform,background-color] duration-200 ease-out hover:bg-[#2d2d2d] active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100 sm:px-3 sm:text-sm dark:bg-white dark:text-[#171717] dark:shadow-[0_0_0_1px_rgba(255,255,255,0.14)] dark:hover:bg-[#ebebeb]"
-            >
-              Resume PDF
-            </a>
           </div>
         </div>
 
