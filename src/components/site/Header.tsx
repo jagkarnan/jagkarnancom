@@ -1,13 +1,18 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { resume } from "@/content/resume";
 import { COMPETENCIES_ITEMS, CompetenciesNav } from "@/components/site/CompetenciesNav";
 import { EXPERIENCE_ITEMS, ExperienceNav } from "@/components/site/ExperienceNav";
 import type { HeaderInlineNavKey } from "@/components/site/headerInlineNav";
+import { isNavHrefActive } from "@/components/site/isNavHrefActive";
+import { NAV_SELECTED_GLASS } from "@/components/site/navGlassClasses";
 import { ThemeToggle } from "@/components/site/ThemeToggle";
+import { useHomePageHash } from "@/components/site/useHomePageHash";
+import { LocationPinIcon } from "@/components/ui/LocationPinIcon";
 
 const navItems = [
   { href: "/ai-papers", label: "AI Papers" },
@@ -25,10 +30,26 @@ const nameLinkClass =
 const mobileNavLinkClass =
   "focus-ring rounded-lg px-3 py-3 text-sm text-foreground/80 transition-colors duration-200 hover:bg-foreground/5 hover:text-foreground active:bg-foreground/10";
 
+/** Same base + hover/active as top-level mobile links; indented under group labels. */
 const mobileNavSubLinkClass =
-  "focus-ring block w-full rounded-lg py-2.5 pl-10 pr-3 text-left text-sm text-foreground/75 transition-colors duration-200 hover:bg-foreground/5 hover:text-foreground active:bg-foreground/10";
+  "focus-ring block w-full rounded-lg py-3 pl-10 pr-3 text-left text-sm text-foreground/80 transition-colors duration-200 hover:bg-foreground/5 hover:text-foreground active:bg-foreground/10";
 
 const mobileNavGroupLabelClass = "px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-foreground/50";
+
+function BrandLockup() {
+  if (!resume.displayLocation) {
+    return <span className="min-w-0 truncate">{resume.name}</span>;
+  }
+  return (
+    <span className="flex min-w-0 items-center gap-2">
+      <span className="min-w-0 truncate">{resume.name}</span>
+      <span className="flex shrink-0 items-center gap-1 text-xs font-medium text-foreground/65 sm:text-sm">
+        <LocationPinIcon className="h-3.5 w-3.5 shrink-0 text-foreground/55" />
+        <span>{resume.displayLocation}</span>
+      </span>
+    </span>
+  );
+}
 
 function HamburgerIcon({ open }: { open: boolean }) {
   return (
@@ -51,8 +72,12 @@ function HamburgerIcon({ open }: { open: boolean }) {
 
 function MobileNavPanel({
   onClose,
+  pathname,
+  homeHash,
 }: {
   onClose: () => void;
+  pathname: string;
+  homeHash: string | null;
 }) {
   return (
     <nav
@@ -65,7 +90,9 @@ function MobileNavPanel({
           <Link
             key={item.href}
             href={item.href}
-            className={mobileNavLinkClass}
+            className={`${mobileNavLinkClass}${
+              isNavHrefActive(pathname, homeHash, item.href) ? ` ${NAV_SELECTED_GLASS}` : ""
+            }`}
             onClick={onClose}
           >
             {item.label}
@@ -74,29 +101,50 @@ function MobileNavPanel({
         <div className="flex flex-col border-t border-foreground/10 pt-1" role="group" aria-label="Competencies">
           <p className={mobileNavGroupLabelClass}>Competencies</p>
           <ul className="flex list-none flex-col p-0">
-            {COMPETENCIES_ITEMS.map((item) => (
-              <li key={item.id}>
-                <Link href={item.href} className={mobileNavSubLinkClass} onClick={onClose}>
-                  {item.label}
-                </Link>
-              </li>
-            ))}
+            {COMPETENCIES_ITEMS.map((item) => {
+              const subActive = pathname === "/" && homeHash === item.id;
+              return (
+                <li key={item.id}>
+                  <Link
+                    href={item.href}
+                    className={`${mobileNavSubLinkClass}${subActive ? ` ${NAV_SELECTED_GLASS}` : ""}`}
+                    onClick={onClose}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </div>
         <div className="flex flex-col border-t border-foreground/10 pt-1" role="group" aria-label="Experience">
           <p className={mobileNavGroupLabelClass}>Experience</p>
           <ul className="flex list-none flex-col p-0">
-            {EXPERIENCE_ITEMS.map((item) => (
-              <li key={item.id}>
-                <Link href={item.href} className={mobileNavSubLinkClass} onClick={onClose}>
-                  {item.label}
-                </Link>
-              </li>
-            ))}
+            {EXPERIENCE_ITEMS.map((item) => {
+              const subActive = pathname === "/" && homeHash === item.id;
+              return (
+                <li key={item.id}>
+                  <Link
+                    href={item.href}
+                    className={`${mobileNavSubLinkClass}${subActive ? ` ${NAV_SELECTED_GLASS}` : ""}`}
+                    onClick={onClose}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </div>
         {navItems.slice(3).map((item) => (
-          <Link key={item.href} href={item.href} className={mobileNavLinkClass} onClick={onClose}>
+          <Link
+            key={item.href}
+            href={item.href}
+            className={`${mobileNavLinkClass}${
+              isNavHrefActive(pathname, homeHash, item.href) ? ` ${NAV_SELECTED_GLASS}` : ""
+            }`}
+            onClick={onClose}
+          >
             {item.label}
           </Link>
         ))}
@@ -106,6 +154,8 @@ function MobileNavPanel({
 }
 
 export function Header() {
+  const pathname = usePathname();
+  const homeHash = useHomePageHash();
   const [menuOpen, setMenuOpen] = useState(false);
   const [expandedInlineNav, setExpandedInlineNav] = useState<HeaderInlineNavKey | null>(null);
   const [portalReady, setPortalReady] = useState(false);
@@ -173,8 +223,13 @@ export function Header() {
             aria-label="Site menu"
           >
             <div className="flex shrink-0 items-center gap-2 border-b border-foreground/10 bg-background px-4 py-2 pt-[max(0.5rem,env(safe-area-inset-top,0px))] sm:gap-3 sm:px-6 sm:py-2.5">
-              <Link href="/" className={`${nameLinkClass} min-w-0 shrink-0 truncate`} onClick={closeMenu}>
-                {resume.name}
+              <Link
+                href="/"
+                className={`${nameLinkClass} flex min-w-0 flex-1 basis-0 items-center`}
+                onClick={closeMenu}
+                aria-label={resume.displayLocation ? `${resume.name}, ${resume.displayLocation}` : resume.name}
+              >
+                <BrandLockup />
               </Link>
               <div className="ml-auto flex shrink-0 items-center gap-2">
                 <ThemeToggle />
@@ -182,7 +237,7 @@ export function Header() {
                   href="/Jag_Karnan_Resume.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="focus-ring shrink-0 rounded-md bg-[#171717] px-2.5 py-1 text-xs font-medium text-white shadow-[rgb(235,235,235)_0px_0px_0px_1px] transition-[filter,transform,background-color] duration-200 ease-out hover:bg-[#2d2d2d] active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100 sm:px-3 sm:text-sm dark:bg-white dark:text-[#171717] dark:shadow-[0_0_0_1px_rgba(255,255,255,0.14)] dark:hover:bg-[#ebebeb]"
+                  className="focus-ring shrink-0 rounded-md bg-[#c73e1d] px-2.5 py-1 text-xs font-medium text-white shadow-[0_0_0_1px_rgba(0,0,0,0.15)] transition-[filter,transform,background-color] duration-200 ease-out hover:bg-[#9e2e18] active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100 sm:px-3 sm:text-sm dark:bg-[#c73e1d] dark:text-white dark:shadow-[0_0_0_1px_rgba(255,255,255,0.18)] dark:hover:bg-[#9e2e18]"
                 >
                   Resume PDF
                 </a>
@@ -197,7 +252,7 @@ export function Header() {
                 </button>
               </div>
             </div>
-            <MobileNavPanel onClose={closeMenu} />
+            <MobileNavPanel onClose={closeMenu} pathname={pathname} homeHash={homeHash} />
           </div>,
           document.body,
         )
@@ -210,10 +265,11 @@ export function Header() {
         <div className="relative z-10 flex w-full min-w-0 items-center gap-2 sm:gap-3 lg:gap-4">
           <Link
             href="/"
-            className={`${nameLinkClass} shrink-0`}
+            className={`${nameLinkClass} flex min-w-0 shrink-0 items-center`}
             onClick={closeMenu}
+            aria-label={resume.displayLocation ? `${resume.name}, ${resume.displayLocation}` : resume.name}
           >
-            {resume.name}
+            <BrandLockup />
           </Link>
 
           {/* lg+: single row so expanding Competencies does not wrap and jump header height; scroll horizontally if needed. */}
@@ -223,7 +279,13 @@ export function Header() {
           >
             <div className="flex min-w-0 max-w-full flex-nowrap items-center justify-center gap-x-0.5 overflow-x-auto overflow-y-visible overscroll-x-contain [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-x-1 [&::-webkit-scrollbar]:hidden">
               {navItems.slice(0, 3).map((item) => (
-                <Link key={item.href} href={item.href} className={navLinkClass}>
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`${navLinkClass}${
+                    isNavHrefActive(pathname, homeHash, item.href) ? ` ${NAV_SELECTED_GLASS}` : ""
+                  }`}
+                >
                   {item.label}
                 </Link>
               ))}
@@ -238,7 +300,13 @@ export function Header() {
                 onExpandedNavChange={setExpandedInlineNav}
               />
               {navItems.slice(3).map((item) => (
-                <Link key={item.href} href={item.href} className={navLinkClass}>
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`${navLinkClass}${
+                    isNavHrefActive(pathname, homeHash, item.href) ? ` ${NAV_SELECTED_GLASS}` : ""
+                  }`}
+                >
                   {item.label}
                 </Link>
               ))}
@@ -251,7 +319,7 @@ export function Header() {
               href="/Jag_Karnan_Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="focus-ring shrink-0 rounded-md bg-[#171717] px-2.5 py-1 text-xs font-medium text-white shadow-[rgb(235,235,235)_0px_0px_0px_1px] transition-[filter,transform,background-color] duration-200 ease-out hover:bg-[#2d2d2d] active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100 sm:px-3 sm:text-sm dark:bg-white dark:text-[#171717] dark:shadow-[0_0_0_1px_rgba(255,255,255,0.14)] dark:hover:bg-[#ebebeb]"
+              className="focus-ring shrink-0 rounded-md bg-[#c73e1d] px-2.5 py-1 text-xs font-medium text-white shadow-[0_0_0_1px_rgba(0,0,0,0.15)] transition-[filter,transform,background-color] duration-200 ease-out hover:bg-[#9e2e18] active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100 sm:px-3 sm:text-sm dark:bg-[#c73e1d] dark:text-white dark:shadow-[0_0_0_1px_rgba(255,255,255,0.18)] dark:hover:bg-[#9e2e18]"
             >
               Resume PDF
             </a>

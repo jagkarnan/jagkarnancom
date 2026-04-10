@@ -14,7 +14,9 @@ import {
   ObfuscatedTelAnchor,
   ObfuscatedWhatsAppAnchor,
 } from "@/components/contact/ObfuscatedContactAnchors";
+import { useSectionHeadingFlash } from "@/components/site/useSectionHeadingFlash";
 import { Container } from "@/components/ui/Container";
+import { LocationPinIcon } from "@/components/ui/LocationPinIcon";
 import { Timeline } from "@/components/ui/Timeline";
 import { MailCheckIcon, LinkedinIcon, GithubIcon, YoutubeIcon, SmartphoneChargingIcon, MessageCircleIcon } from "lucide-animated";
 
@@ -64,10 +66,12 @@ function Block({
   title,
   children,
   id,
+  headingFlash,
 }: {
   title: string;
   children: React.ReactNode;
   id?: string;
+  headingFlash?: boolean;
 }) {
   const headingId = id ? `${id}-heading` : undefined;
   return (
@@ -80,7 +84,13 @@ function Block({
         id={headingId}
         className="text-xs font-semibold uppercase leading-tight tracking-[0.18em] text-foreground/45 sm:text-[13px] sm:tracking-[0.2em]"
       >
-        {title}
+        <span
+          className={`relative inline-block max-w-full pb-1${
+            headingFlash ? " section-heading-nav-flash" : ""
+          }`}
+        >
+          {title}
+        </span>
       </h2>
       <div className="mt-4 md:mt-6">{children}</div>
     </section>
@@ -238,6 +248,7 @@ export default function Home({
   const goldMedalLabel = getUniversityGoldMedalLabel();
   const [photoOpen, setPhotoOpen] = useState(false);
   const photoAlt = `Photo of ${resume.name}`;
+  const flashSectionId = useSectionHeadingFlash();
 
   return (
     <main
@@ -272,7 +283,15 @@ export default function Home({
                     id="hero-name-heading"
                     className="geist-display w-full text-center text-2xl font-semibold text-foreground sm:text-3xl break-words md:text-left"
                   >
-                    {resume.name}
+                    <span className="inline-flex flex-wrap items-center justify-center gap-x-2 gap-y-1 md:justify-start">
+                      <span>{resume.name}</span>
+                      {resume.displayLocation ? (
+                        <span className="inline-flex items-center gap-1 text-sm font-medium text-foreground/70 sm:text-base">
+                          <LocationPinIcon className="h-3 w-3 shrink-0 text-foreground/55 sm:h-3.5 sm:w-3.5" />
+                          {resume.displayLocation}
+                        </span>
+                      ) : null}
+                    </span>
                   </h1>
                   {goldMedalLabel ? (
                     <div className="flex justify-center md:justify-start">
@@ -305,7 +324,7 @@ export default function Home({
               </div>
             </div>
           </section>
-          <Block title="Contact" id="contact">
+          <Block title="Contact" id="contact" headingFlash={flashSectionId === "contact"}>
             <div className="flex flex-col gap-4 text-sm text-foreground/80">
               <div className="flex flex-wrap gap-2 sm:gap-3">
                 <ObfuscatedMailtoAnchor className="focus-ring inline-flex min-h-11 min-w-[2.75rem] items-center gap-2 rounded-xl border border-foreground/10 bg-foreground/[0.04] px-3 py-2 font-medium text-foreground/85 transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/18 hover:bg-foreground/[0.07] active:scale-[0.98] active:bg-foreground/[0.09] motion-reduce:active:scale-100 sm:px-4">
@@ -343,7 +362,7 @@ export default function Home({
               </div>
             </div>
           </Block>
-          <Block title="AI Skills" id="ai-skills">
+          <Block title="AI Skills" id="ai-skills" headingFlash={flashSectionId === "ai-skills"}>
             <ul className="space-y-4 text-sm leading-relaxed text-foreground/75">
               {resume.skills.map((s) => (
                 <li key={s.name} className="flex gap-3 text-pretty">
@@ -356,7 +375,7 @@ export default function Home({
               ))}
             </ul>
           </Block>
-          <Block title="Tech Skills" id="tech-skills">
+          <Block title="Tech Skills" id="tech-skills" headingFlash={flashSectionId === "tech-skills"}>
             <div className="flex flex-wrap gap-2 text-sm text-foreground/75">
               {(resume.techSkills ?? []).map((t) => (
                 <span
@@ -368,7 +387,11 @@ export default function Home({
               ))}
             </div>
           </Block>
-          <Block title="Certifications" id="certifications">
+          <Block
+            title="Certifications"
+            id="certifications"
+            headingFlash={flashSectionId === "certifications"}
+          >
             <div className="flex flex-col">
               {certificationsByDecade.map((group, i) => (
                 <section
@@ -401,7 +424,7 @@ export default function Home({
               ))}
             </div>
           </Block>
-          <Block title="Education" id="education">
+          <Block title="Education" id="education" headingFlash={flashSectionId === "education"}>
             <div className="space-y-6 md:space-y-8">
               {[...resume.education]
                 .sort(
@@ -430,7 +453,11 @@ export default function Home({
                 ))}
             </div>
           </Block>
-          <Block title="Corporate Exposure" id="corporate-exposure">
+          <Block
+            title="Corporate Exposure"
+            id="corporate-exposure"
+            headingFlash={flashSectionId === "corporate-exposure"}
+          >
             <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12">
               {CORPORATE_EXPERIENCE.map((company) => (
                 <div
@@ -453,7 +480,11 @@ export default function Home({
               ))}
             </div>
           </Block>
-          <Block title="Work Experience" id="work-experience">
+          <Block
+            title="Work Experience"
+            id="work-experience"
+            headingFlash={flashSectionId === "work-experience"}
+          >
             <div className="space-y-6 md:space-y-8">
               {resume.experience.map((e) => (
                 <div
@@ -485,7 +516,11 @@ export default function Home({
               ))}
             </div>
           </Block>
-          <Block title="Major Milestones" id="milestones">
+          <Block
+            title="Major Milestones"
+            id="milestones"
+            headingFlash={flashSectionId === "milestones"}
+          >
             <Timeline milestones={resume.milestones} />
           </Block>
         </div>

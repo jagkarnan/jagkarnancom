@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { startTransition, useCallback, useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 
 import type { HeaderInlineNavKey } from "@/components/site/headerInlineNav";
+import { NAV_INLINE_TRIGGER_OPEN_GLASS, NAV_SELECTED_GLASS } from "@/components/site/navGlassClasses";
+import { useHashLinkClickResync } from "@/components/site/useHashLinkClickResync";
 
 export const EXPERIENCE_ITEMS = [
   { href: "/#corporate-exposure", id: "corporate-exposure", label: "Corporate Exposure" },
@@ -19,7 +21,10 @@ function CloseIcon() {
   );
 }
 
-function useExperienceHashSection(): string | null {
+function useExperienceHashSection(): {
+  selectedId: string | null;
+  primeSelectedId: (segment: string) => void;
+} {
   const pathname = usePathname();
   const [id, setId] = useState<string | null>(null);
 
@@ -27,14 +32,18 @@ function useExperienceHashSection(): string | null {
     if (typeof window === "undefined") return;
     const path = window.location.pathname;
     const h = window.location.hash.replace(/^#/, "");
-    startTransition(() => {
-      if (path !== "/") {
-        setId(null);
-        return;
-      }
-      const hit = EXPERIENCE_ITEMS.find((i) => i.id === h);
-      setId(hit ? h : null);
-    });
+    if (path !== "/") {
+      setId(null);
+      return;
+    }
+    const hit = EXPERIENCE_ITEMS.find((i) => i.id === h);
+    setId(hit ? h : null);
+  }, []);
+
+  const primeSelectedId = useCallback((segment: string) => {
+    if (EXPERIENCE_ITEMS.some((i) => i.id === segment)) {
+      setId(segment);
+    }
   }, []);
 
   useEffect(() => {
@@ -51,7 +60,9 @@ function useExperienceHashSection(): string | null {
     sync();
   }, [pathname, sync]);
 
-  return id;
+  useHashLinkClickResync(pathname, sync);
+
+  return { selectedId: id, primeSelectedId };
 }
 
 const EXPERIENCE_KEY: HeaderInlineNavKey = "experience";
@@ -71,7 +82,7 @@ export function ExperienceNav({
   const rootRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const panelId = useId().replace(/:/g, "");
-  const selectedId = useExperienceHashSection();
+  const { selectedId, primeSelectedId } = useExperienceHashSection();
 
   useEffect(() => {
     if (!open) return;
@@ -109,8 +120,10 @@ export function ExperienceNav({
           onClick={toggle}
           className={
             open
-              ? "flex w-[6.5rem] shrink-0 items-center justify-center bg-gradient-to-b from-accent to-accent-2 px-3 py-2"
-              : triggerClassName
+              ? `flex w-[6.5rem] shrink-0 items-center justify-center px-3 py-2 ${NAV_INLINE_TRIGGER_OPEN_GLASS}`
+              : selectedId
+                ? `${triggerClassName} ${NAV_SELECTED_GLASS}`
+                : triggerClassName
           }
         >
           <span
@@ -141,19 +154,12 @@ export function ExperienceNav({
                 <Link
                   key={item.id}
                   href={item.href}
-                  className={`focus-ring relative z-0 shrink-0 whitespace-nowrap rounded-full px-2 py-1 text-center text-[11px] font-medium leading-tight transition-colors sm:px-2.5 sm:text-xs lg:text-[13px] ${
-                    isSelected
-                      ? "text-foreground"
-                      : "text-foreground/75 hover:bg-foreground/[0.07] hover:text-foreground"
+                  onClick={() => primeSelectedId(item.id)}
+                  className={`${triggerClassName} shrink-0 whitespace-nowrap${
+                    isSelected ? ` ${NAV_SELECTED_GLASS}` : ""
                   }`}
                 >
-                  {isSelected ? (
-                    <span
-                      className="pointer-events-none absolute inset-0 z-0 rounded-full bg-white/15 backdrop-blur-md dark:bg-white/10"
-                      aria-hidden
-                    />
-                  ) : null}
-                  <span className="relative z-10">{item.label}</span>
+                  {item.label}
                 </Link>
               );
             })}

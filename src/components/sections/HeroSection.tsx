@@ -7,6 +7,7 @@ import {
 } from "@/components/contact/ObfuscatedContactAnchors";
 import { resume } from "@/content/resume";
 import { Container } from "@/components/ui/Container";
+import { LocationPinIcon } from "@/components/ui/LocationPinIcon";
 import { ExternalLink } from "@/components/ui/ExternalLink";
 import { useState } from "react";
 import {
@@ -78,8 +79,14 @@ export function HeroSection() {
                 alt="Jag Karnan"
                 className="h-40 w-40 rounded-full border-2 border-foreground/20 object-cover ring-2 ring-foreground/5"
               />
-              <h1 className="text-3xl font-semibold leading-tight tracking-tight md:text-5xl">
-                {resume.name}
+              <h1 className="flex flex-wrap items-center gap-x-3 gap-y-1 text-3xl font-semibold leading-tight tracking-tight md:text-5xl">
+                <span>{resume.name}</span>
+                {resume.displayLocation ? (
+                  <span className="inline-flex items-center gap-1 text-base font-medium text-foreground/70 md:text-xl">
+                    <LocationPinIcon className="h-3 w-3 shrink-0 text-foreground/55 md:h-3.5 md:w-3.5" />
+                    {resume.displayLocation}
+                  </span>
+                ) : null}
               </h1>
             </div>{" "}
             <p className="text-base leading-snug text-foreground/80 md:text-lg">

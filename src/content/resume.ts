@@ -42,6 +42,8 @@ export type Resume = {
   name: string;
   /** Legal / certificate name (e.g. for formal résumé and PDF) */
   legalName?: string;
+  /** Short city/region label shown next to the name in the header and hero */
+  displayLocation?: string;
   headline: string;
   location?: string;
   summary: string;
@@ -57,6 +59,7 @@ export type Resume = {
 export const resume: Resume = {
   name: "Jag Karnan",
   legalName: "Jegadeesan Karunakaran",
+  displayLocation: "Singapore",
   headline: "Your AI Partner to Identify What Matters and Drive Profitable Business Growth",
   location: "Singapore (Singapore PR • Availability: Immediate)",
   summary:
