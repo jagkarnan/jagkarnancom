@@ -82,7 +82,7 @@ export function HeroSection() {
               <h1 className="flex flex-wrap items-center gap-x-3 gap-y-1 text-3xl font-semibold leading-tight tracking-tight md:text-5xl">
                 <span>{resume.name}</span>
                 {resume.displayLocation ? (
-                  <span className="inline-flex items-center gap-1 text-base font-medium text-foreground/70 md:text-xl">
+                  <span className="inline-flex items-center gap-1.5 text-base font-medium tracking-normal text-foreground/70 md:text-xl md:tracking-wide">
                     <LocationPinIcon className="h-3 w-3 shrink-0 text-foreground/55 md:h-3.5 md:w-3.5" />
                     {resume.displayLocation}
                   </span>

@@ -286,7 +286,7 @@ export default function Home({
                     <span className="inline-flex flex-wrap items-center justify-center gap-x-2 gap-y-1 md:justify-start">
                       <span>{resume.name}</span>
                       {resume.displayLocation ? (
-                        <span className="inline-flex items-center gap-1 text-sm font-medium text-foreground/70 sm:text-base">
+                        <span className="inline-flex items-center gap-1.5 text-sm font-medium tracking-normal text-foreground/70 sm:text-base sm:tracking-wide">
                           <LocationPinIcon className="h-3 w-3 shrink-0 text-foreground/55 sm:h-3.5 sm:w-3.5" />
                           {resume.displayLocation}
                         </span>

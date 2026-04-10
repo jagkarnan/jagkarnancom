@@ -12,7 +12,6 @@ import { isNavHrefActive } from "@/components/site/isNavHrefActive";
 import { NAV_SELECTED_GLASS } from "@/components/site/navGlassClasses";
 import { ThemeToggle } from "@/components/site/ThemeToggle";
 import { useHomePageHash } from "@/components/site/useHomePageHash";
-import { LocationPinIcon } from "@/components/ui/LocationPinIcon";
 
 const navItems = [
   { href: "/ai-papers", label: "AI Papers" },
@@ -37,18 +36,7 @@ const mobileNavSubLinkClass =
 const mobileNavGroupLabelClass = "px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-foreground/50";
 
 function BrandLockup() {
-  if (!resume.displayLocation) {
-    return <span className="min-w-0 truncate">{resume.name}</span>;
-  }
-  return (
-    <span className="flex min-w-0 items-center gap-2">
-      <span className="min-w-0 truncate">{resume.name}</span>
-      <span className="flex shrink-0 items-center gap-1 text-xs font-medium text-foreground/65 sm:text-sm">
-        <LocationPinIcon className="h-3.5 w-3.5 shrink-0 text-foreground/55" />
-        <span>{resume.displayLocation}</span>
-      </span>
-    </span>
-  );
+  return <span className="min-w-0 truncate">{resume.name}</span>;
 }
 
 function HamburgerIcon({ open }: { open: boolean }) {
@@ -227,7 +215,7 @@ export function Header() {
                 href="/"
                 className={`${nameLinkClass} flex min-w-0 flex-1 basis-0 items-center`}
                 onClick={closeMenu}
-                aria-label={resume.displayLocation ? `${resume.name}, ${resume.displayLocation}` : resume.name}
+                aria-label={resume.name}
               >
                 <BrandLockup />
               </Link>
@@ -267,7 +255,7 @@ export function Header() {
             href="/"
             className={`${nameLinkClass} flex min-w-0 shrink-0 items-center`}
             onClick={closeMenu}
-            aria-label={resume.displayLocation ? `${resume.name}, ${resume.displayLocation}` : resume.name}
+            aria-label={resume.name}
           >
             <BrandLockup />
           </Link>
