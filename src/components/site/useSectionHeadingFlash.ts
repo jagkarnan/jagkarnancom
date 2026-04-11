@@ -90,7 +90,7 @@ export function useSectionHeadingFlash(): string | null {
       timeoutIds.push(t);
     };
 
-    let idleTimer: ReturnType<typeof setTimeout> | undefined;
+    let idleTimer: number | undefined;
 
     const onScroll = () => {
       if (cancelled || flashScheduled) return;

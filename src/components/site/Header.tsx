@@ -21,17 +21,17 @@ const navItems = [
 ] as const;
 
 const navLinkClass =
-  "focus-ring rounded-md px-2 py-1 text-center text-[11px] font-medium leading-tight text-foreground/70 transition-colors duration-200 ease-out hover:bg-foreground/[0.06] hover:text-foreground active:bg-foreground/10 motion-reduce:transition-none lg:px-2 lg:text-xs xl:px-2.5 xl:text-sm";
+  "focus-ring rounded-md border border-transparent px-2 py-1 text-center text-[11px] font-medium leading-tight text-foreground/70 transition-colors duration-200 ease-out hover:bg-foreground/[0.06] hover:text-foreground active:bg-foreground/10 motion-reduce:transition-none lg:px-2 lg:text-xs xl:px-2.5 xl:text-sm";
 
 const nameLinkClass =
   "focus-ring shrink-0 rounded-lg px-2 py-1.5 text-sm font-semibold tracking-tight text-foreground transition-colors duration-200 ease-out hover:bg-foreground/[0.06] active:bg-foreground/10 sm:px-3 sm:text-base motion-reduce:transition-none";
 
 const mobileNavLinkClass =
-  "focus-ring rounded-lg px-3 py-3 text-sm text-foreground/80 transition-colors duration-200 hover:bg-foreground/5 hover:text-foreground active:bg-foreground/10";
+  "focus-ring rounded-lg border border-transparent px-3 py-3 text-sm text-foreground/80 transition-colors duration-200 hover:bg-foreground/5 hover:text-foreground active:bg-foreground/10";
 
 /** Same base + hover/active as top-level mobile links; indented under group labels. */
 const mobileNavSubLinkClass =
-  "focus-ring block w-full rounded-lg py-3 pl-10 pr-3 text-left text-sm text-foreground/80 transition-colors duration-200 hover:bg-foreground/5 hover:text-foreground active:bg-foreground/10";
+  "focus-ring block w-full rounded-lg border border-transparent py-3 pl-10 pr-3 text-left text-sm text-foreground/80 transition-colors duration-200 hover:bg-foreground/5 hover:text-foreground active:bg-foreground/10";
 
 const mobileNavGroupLabelClass = "px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-foreground/50";
 

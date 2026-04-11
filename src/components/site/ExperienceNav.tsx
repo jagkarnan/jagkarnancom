@@ -109,7 +109,7 @@ export function ExperienceNav({
       <div
         className={
           open
-            ? "header-inline-nav-bar--enter inline-flex max-w-full items-center overflow-hidden rounded-2xl bg-[var(--card)] shadow-md shadow-[var(--glass-shadow-soft)] ring-1 ring-foreground/15"
+            ? "header-inline-nav-bar--enter inline-flex max-w-full items-center overflow-hidden rounded-2xl border border-foreground/15 bg-[var(--card)] shadow-md shadow-[var(--glass-shadow-soft)]"
             : "inline-flex"
         }
       >

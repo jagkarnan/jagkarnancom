@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 
 const NOTE =
-  "To keep in real and authentic, all these articles are written without using any AI.";
+  "To keep it real and authentic, all these articles are written without using any AI. AI was used for graphic illustrations only.";
 
 type Phase = "closed" | "opening" | "open" | "closing";
 
