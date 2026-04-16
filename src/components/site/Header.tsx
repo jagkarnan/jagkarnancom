@@ -10,15 +10,18 @@ import { EXPERIENCE_ITEMS, ExperienceNav } from "@/components/site/ExperienceNav
 import type { HeaderInlineNavKey } from "@/components/site/headerInlineNav";
 import { isNavHrefActive } from "@/components/site/isNavHrefActive";
 import { NAV_SELECTED_GLASS } from "@/components/site/navGlassClasses";
+import { ResumeDownloadMenu } from "@/components/site/ResumeDownloadMenu";
 import { ThemeToggle } from "@/components/site/ThemeToggle";
 import { useHomePageHash } from "@/components/site/useHomePageHash";
 
+/** Top-level nav links split around Competencies / Experience. Re-enable AI Papers here when it should appear in the menu again. */
 const navItems = [
-  { href: "/ai-papers", label: "AI Papers" },
   { href: "/youtube-videos", label: "YouTube Videos" },
   { href: "/#contact", label: "Contact" },
   { href: "/#milestones", label: "Major Milestones" },
 ] as const;
+
+const NAV_ITEMS_BEFORE_INLINE = 2;
 
 const navLinkClass =
   "focus-ring rounded-md border border-transparent px-2 py-1 text-center text-[11px] font-medium leading-tight text-foreground/70 transition-colors duration-200 ease-out hover:bg-foreground/[0.06] hover:text-foreground active:bg-foreground/10 motion-reduce:transition-none lg:px-2 lg:text-xs xl:px-2.5 xl:text-sm";
@@ -74,7 +77,7 @@ function MobileNavPanel({
       aria-label="Page sections"
     >
       <div className="mx-auto flex w-full max-w-[1200px] flex-col">
-        {navItems.slice(0, 3).map((item) => (
+        {navItems.slice(0, NAV_ITEMS_BEFORE_INLINE).map((item) => (
           <Link
             key={item.href}
             href={item.href}
@@ -124,7 +127,7 @@ function MobileNavPanel({
             })}
           </ul>
         </div>
-        {navItems.slice(3).map((item) => (
+        {navItems.slice(NAV_ITEMS_BEFORE_INLINE).map((item) => (
           <Link
             key={item.href}
             href={item.href}
@@ -210,7 +213,7 @@ export function Header() {
             aria-modal="true"
             aria-label="Site menu"
           >
-            <div className="flex shrink-0 items-center gap-2 border-b border-foreground/10 bg-background px-4 py-2 pt-[max(0.5rem,env(safe-area-inset-top,0px))] sm:gap-3 sm:px-6 sm:py-2.5">
+            <div className="relative z-20 flex shrink-0 items-center gap-2 border-b border-foreground/10 bg-background px-4 py-2 pt-[max(0.5rem,env(safe-area-inset-top,0px))] sm:gap-3 sm:px-6 sm:py-2.5">
               <Link
                 href="/"
                 className={`${nameLinkClass} flex min-w-0 flex-1 basis-0 items-center`}
@@ -221,14 +224,7 @@ export function Header() {
               </Link>
               <div className="ml-auto flex shrink-0 items-center gap-2">
                 <ThemeToggle />
-                <a
-                  href="/Jag_Karnan_Resume.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="focus-ring shrink-0 rounded-md bg-[#c73e1d] px-2.5 py-1 text-xs font-medium text-white shadow-[0_0_0_1px_rgba(0,0,0,0.15)] transition-[filter,transform,background-color] duration-200 ease-out hover:bg-[#9e2e18] active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100 sm:px-3 sm:text-sm dark:bg-[#c73e1d] dark:text-white dark:shadow-[0_0_0_1px_rgba(255,255,255,0.18)] dark:hover:bg-[#9e2e18]"
-                >
-                  Resume PDF
-                </a>
+                <ResumeDownloadMenu onAfterPick={closeMenu} />
                 <button
                   type="button"
                   className="focus-ring rounded-lg p-1.5 text-foreground/80 transition-colors duration-200 ease-out hover:bg-foreground/10 active:bg-foreground/15 motion-reduce:transition-none"
@@ -266,7 +262,7 @@ export function Header() {
             aria-label="Page sections"
           >
             <div className="flex min-w-0 max-w-full flex-nowrap items-center justify-center gap-x-0.5 overflow-x-auto overflow-y-visible overscroll-x-contain [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-x-1 [&::-webkit-scrollbar]:hidden">
-              {navItems.slice(0, 3).map((item) => (
+              {navItems.slice(0, NAV_ITEMS_BEFORE_INLINE).map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
@@ -287,7 +283,7 @@ export function Header() {
                 expandedNav={expandedInlineNav}
                 onExpandedNavChange={setExpandedInlineNav}
               />
-              {navItems.slice(3).map((item) => (
+              {navItems.slice(NAV_ITEMS_BEFORE_INLINE).map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
@@ -303,14 +299,7 @@ export function Header() {
 
           <div className="ml-auto flex shrink-0 items-center gap-2">
             <ThemeToggle />
-            <a
-              href="/Jag_Karnan_Resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="focus-ring shrink-0 rounded-md bg-[#c73e1d] px-2.5 py-1 text-xs font-medium text-white shadow-[0_0_0_1px_rgba(0,0,0,0.15)] transition-[filter,transform,background-color] duration-200 ease-out hover:bg-[#9e2e18] active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100 sm:px-3 sm:text-sm dark:bg-[#c73e1d] dark:text-white dark:shadow-[0_0_0_1px_rgba(255,255,255,0.18)] dark:hover:bg-[#9e2e18]"
-            >
-              Resume PDF
-            </a>
+            <ResumeDownloadMenu />
             <button
               type="button"
               className="focus-ring rounded-lg p-1.5 text-foreground/80 transition-colors duration-200 ease-out hover:bg-foreground/10 active:bg-foreground/15 lg:hidden motion-reduce:transition-none"

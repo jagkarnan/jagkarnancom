@@ -39,7 +39,7 @@ export function buildCertificationBoardItems(): CertificationBoardItem[] {
       source: "milestone" as const,
     }));
   return [...fromCerts, ...fromMilestones].sort(
-    (a, b) => parseInt(b.year || "0", 10) - parseInt(a.year || "0", 10),
+    (a, b) => parseCertificationYear(b.year) - parseCertificationYear(a.year),
   );
 }
 
@@ -51,7 +51,7 @@ export const CERTIFICATION_DECADES = [
 ] as const;
 
 export function parseCertificationYear(yearStr: string): number {
-  const m = yearStr.trim().match(/^(\d{4})/);
+  const m = yearStr.trim().match(/(\d{4})/);
   return m ? parseInt(m[1], 10) : NaN;
 }
 

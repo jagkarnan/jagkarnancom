@@ -120,6 +120,16 @@ export const resume: Resume = {
   ],
   certifications: [
     {
+      name: "Claude Cowork",
+      issuer: "Anthropic Academy",
+      date: "2026",
+    },
+    {
+      name: "Software Engineering",
+      issuer: "IBM",
+      date: "2026",
+    },
+    {
       name: "Project Management Professional (PMP)",
       issuer: "Project Management Institute, USA",
       date: "2014",
