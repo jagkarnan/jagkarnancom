@@ -244,7 +244,7 @@ export function Timeline({ milestones }: TimelineProps) {
                   {item.year}
                 </span>
                 <span className="experience-journey-year experience-journey-yr-count text-[10px] font-bold leading-tight text-amber-500/95">
-                  {item.year - careerStartYear + 1} yr
+                  {item.year - careerStartYear + 1} yrs
                 </span>
               </div>
             </Fragment>
