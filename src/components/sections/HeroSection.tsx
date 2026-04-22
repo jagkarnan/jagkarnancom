@@ -89,6 +89,11 @@ export function HeroSection() {
                 ) : null}
               </h1>
             </div>{" "}
+            {resume.roleLine ? (
+              <p className="text-base font-medium text-foreground/85 md:text-lg">
+                {resume.roleLine}
+              </p>
+            ) : null}{" "}
             <p className="text-base leading-snug text-foreground/80 md:text-lg">
               {" "}
               {resume.headline}{" "}

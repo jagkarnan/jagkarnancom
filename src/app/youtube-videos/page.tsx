@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { youtubeChannel } from "@/content/youtubeChannel";
-import { getChannelVideosFromFeed } from "@/lib/youtubeFeed";
+import { getChannelVideos } from "@/lib/youtubeFeed";
 import { Container } from "@/components/ui/Container";
+import { YoutubeVideosGallery } from "@/components/youtube/YoutubeVideosGallery";
 
 export const metadata: Metadata = {
   title: "YouTube Videos",
@@ -10,27 +11,13 @@ export const metadata: Metadata = {
   alternates: { canonical: "/youtube-videos" },
 };
 
-/**
- * Next.js only accepts a static literal here — keep equal to
- * `YOUTUBE_FEED_REVALIDATE_SECONDS` in `@/lib/youtubeFeed`.
- */
-export const revalidate = 300;
-
-function formatDate(iso: string) {
-  if (!iso) return "";
-  try {
-    return new Intl.DateTimeFormat("en", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    }).format(new Date(iso));
-  } catch {
-    return iso;
-  }
-}
+/** Always fetch fresh video list on each request (avoids ISR serving a cached “0 videos” after a feed/API blip). */
+export const dynamic = "force-dynamic";
 
 export default async function YoutubeVideosPage() {
-  const videos = await getChannelVideosFromFeed();
+  const videos = await getChannelVideos();
+  const longCount = videos.filter((v) => !v.isShort).length;
+  const shortCount = videos.filter((v) => v.isShort).length;
 
   return (
     <main className="min-w-0 overflow-x-hidden pb-12 md:pb-14" aria-label="YouTube videos">
@@ -57,7 +44,14 @@ export default async function YoutubeVideosPage() {
             </span>
           </h1>
           <p className="mt-1.5 text-xs text-foreground/50 sm:text-sm">
-            Total videos: {videos.length}
+            {shortCount > 0 ? (
+              <>
+                Showing {longCount} video{longCount === 1 ? "" : "s"} and {shortCount} Short
+                {shortCount === 1 ? "" : "s"} ({videos.length} total).
+              </>
+            ) : (
+              <>Total videos: {videos.length}</>
+            )}
           </p>
         </div>
 
@@ -81,52 +75,7 @@ export default async function YoutubeVideosPage() {
             </p>
           </div>
         ) : (
-          <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {videos.map((v) => (
-              <li key={v.videoId}>
-                <a
-                  href={v.watchUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${v.title} — watch on YouTube (opens in new tab)`}
-                  className="surface-vercel-tile focus-ring group block h-full rounded-xl bg-[var(--card)] active:scale-[0.99] motion-reduce:transition-none motion-reduce:active:scale-100"
-                >
-                  <div className="relative aspect-video overflow-hidden rounded-t-xl bg-foreground/5">
-                    <img
-                      src={v.thumbnailUrl}
-                      alt=""
-                      className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105 motion-reduce:group-hover:scale-100"
-                      width={480}
-                      height={360}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
-                    <span className="absolute bottom-3 left-3 right-3 text-sm font-semibold leading-snug text-white drop-shadow-sm sm:text-base">
-                      {v.title}
-                    </span>
-                    <span className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-red-600 text-white shadow-lg transition-transform duration-200 group-hover:scale-110 motion-reduce:group-hover:scale-100">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </span>
-                  </div>
-                  <div className="px-4 py-3 sm:px-5 sm:py-4">
-                    <p className="text-xs font-medium text-foreground/50">{formatDate(v.publishedAt)}</p>
-                    <p className="mt-1 line-clamp-2 text-sm font-medium leading-snug text-foreground/90 sm:text-base">
-                      {v.title}
-                    </p>
-                    <span className="mt-3 inline-flex text-sm font-medium text-red-600 dark:text-red-400">
-                      Watch on YouTube
-                      <span className="ml-1 transition-transform group-hover:translate-x-0.5" aria-hidden>
-                        ↗
-                      </span>
-                    </span>
-                  </div>
-                </a>
-              </li>
-            ))}
-          </ul>
+          <YoutubeVideosGallery videos={videos} />
         )}
       </Container>
     </main>

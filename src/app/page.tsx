@@ -293,6 +293,11 @@ export default function Home({
                       ) : null}
                     </span>
                   </h1>
+                  {resume.roleLine ? (
+                    <p className="w-full text-center text-base font-medium text-foreground/85 sm:text-lg md:text-left">
+                      {resume.roleLine}
+                    </p>
+                  ) : null}
                   {goldMedalLabel ? (
                     <div className="flex justify-center md:justify-start">
                       <span

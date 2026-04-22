@@ -44,6 +44,8 @@ export type Resume = {
   legalName?: string;
   /** Short city/region label shown next to the name in the header and hero */
   displayLocation?: string;
+  /** Shown on the line directly under the name in the hero */
+  roleLine?: string;
   headline: string;
   location?: string;
   summary: string;
@@ -60,6 +62,7 @@ export const resume: Resume = {
   name: "Jag Karnan",
   legalName: "Jegadeesan Karunakaran",
   displayLocation: "Singapore",
+  roleLine: "AI Leader, AI Engineering",
   headline: "Your AI Partner to Identify What Matters and Drive Profitable Business Growth",
   location: "Singapore (Singapore PR • Availability: Immediate)",
   summary:
@@ -121,6 +124,11 @@ export const resume: Resume = {
   certifications: [
     {
       name: "Claude Cowork",
+      issuer: "Anthropic Academy",
+      date: "2026",
+    },
+    {
+      name: "Claude 101",
       issuer: "Anthropic Academy",
       date: "2026",
     },

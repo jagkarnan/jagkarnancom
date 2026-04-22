@@ -1,7 +1,8 @@
 /**
- * Public channel — used for RSS and outbound links.
- * New videos appear in YouTube’s Atom feed automatically; refresh cadence is
- * `YOUTUBE_FEED_REVALIDATE_SECONDS` in `@/lib/youtubeFeed`.
+ * Public channel — used for RSS, Data API, HTML scrape, and outbound links.
+ * Video list (`@/lib/youtubeFeed`): prefers `YOUTUBE_API_KEY`, then Atom feed, then
+ * parsing the public `/videos` tab (`ytInitialData`) when RSS is blocked. Shorts HTML has no
+ * reliable upload date; with `YOUTUBE_API_KEY`, `videos.list` fills ISO dates for sorting.
  */
 export const youtubeChannel = {
   /** @see https://www.youtube.com/@jagkarnanai */
