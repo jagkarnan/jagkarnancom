@@ -1,16 +1,21 @@
 import { youtubeChannel } from "@/content/youtubeChannel";
 import {
-  finalizeYoutubeGalleryVideos,
+  enrichYoutubeGalleryVideos,
   parseViewCountFromText,
   parseViewsFromShortsAccessibility,
   publishedMsFromIso,
+  sortVideosForDisplay,
+  type YoutubeSortMode,
 } from "@/lib/youtubeVideoMeta";
 import type { YoutubeFeedVideo } from "@/lib/youtubeFeedTypes";
 
 export type { YoutubeFeedVideo } from "@/lib/youtubeFeedTypes";
 
-const MAX_LONG_FORM = 15;
-const MAX_SHORTS = 15;
+/** YouTube playlist/search page size (API max 50). */
+const API_LIST_PAGE_SIZE = 50;
+
+const GALLERY_CACHE_TTL_MS = 5 * 60 * 1000;
+let galleryCache: { list: YoutubeFeedVideo[]; expiresAt: number } | null = null;
 
 function decodeXmlEntities(s: string): string {
   return s
@@ -71,6 +76,7 @@ type PlaylistItemsResponse = {
       thumbnails?: { high?: { url?: string }; medium?: { url?: string }; default?: { url?: string } };
     };
   }>;
+  nextPageToken?: string;
   error?: { message?: string };
 };
 
@@ -83,6 +89,7 @@ type SearchListResponse = {
       thumbnails?: { high?: { url?: string }; medium?: { url?: string }; default?: { url?: string } };
     };
   }>;
+  nextPageToken?: string;
   error?: { message?: string };
 };
 
@@ -113,95 +120,106 @@ async function resolveUploadsPlaylistId(apiKey: string): Promise<string | null> 
   }
 }
 
-async function fetchPlaylistItems(apiKey: string, playlistId: string): Promise<YoutubeFeedVideo[] | null> {
-  const url = new URL("https://www.googleapis.com/youtube/v3/playlistItems");
-  url.searchParams.set("part", "snippet");
-  url.searchParams.set("playlistId", playlistId);
-  url.searchParams.set("maxResults", String(MAX_LONG_FORM));
-  url.searchParams.set("key", apiKey);
-
-  try {
-    const res = await fetch(url.toString(), {
-      headers: { Accept: "application/json" },
-      cache: "no-store",
-      signal: AbortSignal.timeout(12_000),
-    });
-    if (!res.ok) return null;
-    const data = (await res.json()) as PlaylistItemsResponse;
-    if (data.error?.message) return null;
-    const items = data.items ?? [];
-    const videos: YoutubeFeedVideo[] = [];
-    for (const row of items) {
-      const sn = row.snippet;
-      const videoId = sn?.resourceId?.videoId;
-      const title = sn?.title?.trim();
-      if (!videoId || !title) continue;
-      const thumb =
-        sn?.thumbnails?.high?.url ??
-        sn?.thumbnails?.medium?.url ??
-        sn?.thumbnails?.default?.url ??
-        `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
-      const publishedAt = sn?.publishedAt ?? "";
-      videos.push({
-        videoId,
-        title,
-        publishedAt,
-        sortPublishedMs: publishedMsFromIso(publishedAt),
-        thumbnailUrl: thumb,
-        watchUrl: `https://www.youtube.com/watch?v=${videoId}`,
-      });
-    }
-    return videos.length > 0 ? videos : null;
-  } catch {
-    return null;
-  }
+function playlistItemRowToVideo(row: NonNullable<PlaylistItemsResponse["items"]>[number]): YoutubeFeedVideo | null {
+  const sn = row.snippet;
+  const videoId = sn?.resourceId?.videoId;
+  const title = sn?.title?.trim();
+  if (!videoId || !title) return null;
+  const thumb =
+    sn?.thumbnails?.high?.url ??
+    sn?.thumbnails?.medium?.url ??
+    sn?.thumbnails?.default?.url ??
+    `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+  const publishedAt = sn?.publishedAt ?? "";
+  return {
+    videoId,
+    title,
+    publishedAt,
+    sortPublishedMs: publishedMsFromIso(publishedAt),
+    thumbnailUrl: thumb,
+    watchUrl: `https://www.youtube.com/watch?v=${videoId}`,
+  };
 }
 
-async function fetchShortsViaSearchApi(apiKey: string): Promise<YoutubeFeedVideo[] | null> {
-  const url = new URL("https://www.googleapis.com/youtube/v3/search");
-  url.searchParams.set("part", "snippet");
-  url.searchParams.set("channelId", youtubeChannel.channelId);
-  url.searchParams.set("type", "video");
-  url.searchParams.set("videoDuration", "short");
-  url.searchParams.set("order", "date");
-  url.searchParams.set("maxResults", String(MAX_SHORTS));
-  url.searchParams.set("key", apiKey);
-
-  try {
-    const res = await fetch(url.toString(), {
-      headers: { Accept: "application/json" },
-      cache: "no-store",
-      signal: AbortSignal.timeout(12_000),
-    });
-    if (!res.ok) return null;
-    const data = (await res.json()) as SearchListResponse;
-    if (data.error?.message) return null;
-    const items = data.items ?? [];
-    const out: YoutubeFeedVideo[] = [];
-    for (const row of items) {
-      const videoId = row.id?.videoId;
-      const title = row.snippet?.title?.trim();
-      if (!videoId || !title) continue;
-      const sn = row.snippet;
-      const thumb =
-        sn?.thumbnails?.high?.url ??
-        sn?.thumbnails?.medium?.url ??
-        sn?.thumbnails?.default?.url ??
-        `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
-      const publishedAt = sn?.publishedAt ?? "";
-      out.push({
-        videoId,
-        title,
-        publishedAt,
-        sortPublishedMs: publishedMsFromIso(publishedAt),
-        thumbnailUrl: thumb,
-        watchUrl: `https://www.youtube.com/shorts/${videoId}`,
+async function fetchAllPlaylistItemsForPlaylist(apiKey: string, playlistId: string): Promise<YoutubeFeedVideo[]> {
+  const videos: YoutubeFeedVideo[] = [];
+  let pageToken: string | undefined;
+  do {
+    const url = new URL("https://www.googleapis.com/youtube/v3/playlistItems");
+    url.searchParams.set("part", "snippet");
+    url.searchParams.set("playlistId", playlistId);
+    url.searchParams.set("maxResults", String(API_LIST_PAGE_SIZE));
+    url.searchParams.set("key", apiKey);
+    if (pageToken) url.searchParams.set("pageToken", pageToken);
+    try {
+      const res = await fetch(url.toString(), {
+        headers: { Accept: "application/json" },
+        cache: "no-store",
+        signal: AbortSignal.timeout(25_000),
       });
+      if (!res.ok) break;
+      const data = (await res.json()) as PlaylistItemsResponse;
+      if (data.error?.message) break;
+      for (const row of data.items ?? []) {
+        const v = playlistItemRowToVideo(row);
+        if (v) videos.push(v);
+      }
+      pageToken = data.nextPageToken;
+    } catch {
+      break;
     }
-    return out.length > 0 ? out : null;
-  } catch {
-    return null;
-  }
+  } while (pageToken);
+  return videos;
+}
+
+async function fetchAllShortsViaSearchApi(apiKey: string): Promise<YoutubeFeedVideo[]> {
+  const out: YoutubeFeedVideo[] = [];
+  let pageToken: string | undefined;
+  do {
+    const url = new URL("https://www.googleapis.com/youtube/v3/search");
+    url.searchParams.set("part", "snippet");
+    url.searchParams.set("channelId", youtubeChannel.channelId);
+    url.searchParams.set("type", "video");
+    url.searchParams.set("videoDuration", "short");
+    url.searchParams.set("order", "date");
+    url.searchParams.set("maxResults", String(API_LIST_PAGE_SIZE));
+    url.searchParams.set("key", apiKey);
+    if (pageToken) url.searchParams.set("pageToken", pageToken);
+    try {
+      const res = await fetch(url.toString(), {
+        headers: { Accept: "application/json" },
+        cache: "no-store",
+        signal: AbortSignal.timeout(25_000),
+      });
+      if (!res.ok) break;
+      const data = (await res.json()) as SearchListResponse;
+      if (data.error?.message) break;
+      for (const row of data.items ?? []) {
+        const videoId = row.id?.videoId;
+        const title = row.snippet?.title?.trim();
+        if (!videoId || !title) continue;
+        const sn = row.snippet;
+        const thumb =
+          sn?.thumbnails?.high?.url ??
+          sn?.thumbnails?.medium?.url ??
+          sn?.thumbnails?.default?.url ??
+          `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+        const publishedAt = sn?.publishedAt ?? "";
+        out.push({
+          videoId,
+          title,
+          publishedAt,
+          sortPublishedMs: publishedMsFromIso(publishedAt),
+          thumbnailUrl: thumb,
+          watchUrl: `https://www.youtube.com/shorts/${videoId}`,
+        });
+      }
+      pageToken = data.nextPageToken;
+    } catch {
+      break;
+    }
+  } while (pageToken);
+  return out;
 }
 
 type VideoResourceItem = {
@@ -269,16 +287,16 @@ async function mergeVideoDetailsFromVideosList(
   });
 }
 
-async function fetchLongFormViaDataApi(apiKey: string): Promise<YoutubeFeedVideo[] | null> {
+async function fetchAllLongFormViaDataApi(apiKey: string): Promise<YoutubeFeedVideo[]> {
   const resolved = await resolveUploadsPlaylistId(apiKey);
   const fallback = uploadsPlaylistIdFromChannelId(youtubeChannel.channelId);
   const candidates = [resolved, fallback].filter((id): id is string => typeof id === "string" && id.length > 0);
   const playlistIds = [...new Set(candidates)];
   for (const playlistId of playlistIds) {
-    const videos = await fetchPlaylistItems(apiKey, playlistId);
-    if (videos && videos.length > 0) return videos;
+    const videos = await fetchAllPlaylistItemsForPlaylist(apiKey, playlistId);
+    if (videos.length > 0) return videos;
   }
-  return null;
+  return [];
 }
 
 const FEED_FETCH_USER_AGENTS = [
@@ -416,7 +434,7 @@ function parseLongFormFromYtData(data: unknown): YoutubeFeedVideo[] {
     for (const k of Object.keys(rec)) walk(rec[k]);
   }
   walk(data);
-  return videos.slice(0, MAX_LONG_FORM);
+  return videos;
 }
 
 function parseShortsFromYtData(data: unknown): YoutubeFeedVideo[] {
@@ -466,7 +484,7 @@ function parseShortsFromYtData(data: unknown): YoutubeFeedVideo[] {
     for (const k of Object.keys(rec)) walk(rec[k]);
   }
   walk(data);
-  return shorts.slice(0, MAX_SHORTS);
+  return shorts;
 }
 
 function parseHtmlTab(html: string, kind: "videos" | "shorts"): YoutubeFeedVideo[] {
@@ -533,13 +551,13 @@ async function fetchShortsTabHtmlOnly(): Promise<YoutubeFeedVideo[]> {
 }
 
 function mergeGallery(longForm: YoutubeFeedVideo[], shorts: YoutubeFeedVideo[]): YoutubeFeedVideo[] {
-  const longTagged = longForm.slice(0, MAX_LONG_FORM).map((v) => ({
+  const longTagged = longForm.map((v) => ({
     ...v,
     isShort: false as const,
     watchUrl: v.watchUrl.startsWith("http") ? v.watchUrl : `https://www.youtube.com/watch?v=${v.videoId}`,
   }));
   const seen = new Set(longTagged.map((v) => v.videoId));
-  const shortTagged = shorts.slice(0, MAX_SHORTS).map((v) => ({
+  const shortTagged = shorts.map((v) => ({
     ...v,
     isShort: true as const,
     watchUrl: `https://www.youtube.com/shorts/${v.videoId}`,
@@ -548,29 +566,22 @@ function mergeGallery(longForm: YoutubeFeedVideo[], shorts: YoutubeFeedVideo[]):
   return [...longTagged, ...uniqueShorts];
 }
 
-async function fetchGalleryViaDataApi(apiKey: string): Promise<YoutubeFeedVideo[] | null> {
+async function fetchGalleryViaDataApiFull(apiKey: string): Promise<YoutubeFeedVideo[] | null> {
   const [longForm, shorts] = await Promise.all([
-    fetchLongFormViaDataApi(apiKey),
-    fetchShortsViaSearchApi(apiKey),
+    fetchAllLongFormViaDataApi(apiKey),
+    fetchAllShortsViaSearchApi(apiKey),
   ]);
-  const longArr = longForm ?? [];
-  const shortArr = shorts ?? [];
-  if (longArr.length === 0 && shortArr.length === 0) return null;
-  const merged = mergeGallery(longArr, shortArr);
+  if (longForm.length === 0 && shorts.length === 0) return null;
+  const merged = mergeGallery(longForm, shorts);
   return mergeVideoDetailsFromVideosList(apiKey, merged);
 }
 
-/**
- * Long-form + Shorts. Data API (if key) → scrape `/videos` + `/shorts` → Atom (+ scrape Shorts).
- * With `YOUTUBE_API_KEY`, a `videos.list` pass adds **ISO publish dates** for Shorts (missing on
- * the public Shorts HTML) and view counts, so **Latest** sort is accurate for both.
- */
-export async function getChannelVideos(): Promise<YoutubeFeedVideo[]> {
+async function buildEnrichedGalleryList(): Promise<YoutubeFeedVideo[]> {
   let list: YoutubeFeedVideo[] = [];
   let usedPlaylistSearchApi = false;
   const apiKey = process.env.YOUTUBE_API_KEY?.trim();
   if (apiKey) {
-    const fromApi = await fetchGalleryViaDataApi(apiKey);
+    const fromApi = await fetchGalleryViaDataApiFull(apiKey);
     if (fromApi && fromApi.length > 0) {
       list = fromApi;
       usedPlaylistSearchApi = true;
@@ -599,7 +610,57 @@ export async function getChannelVideos(): Promise<YoutubeFeedVideo[]> {
     list = await mergeVideoDetailsFromVideosList(apiKey, list);
   }
 
-  return finalizeYoutubeGalleryVideos(list);
+  return enrichYoutubeGalleryVideos(list);
+}
+
+async function getCachedEnrichedGallery(): Promise<YoutubeFeedVideo[]> {
+  const now = Date.now();
+  if (galleryCache && now < galleryCache.expiresAt) {
+    return galleryCache.list;
+  }
+  const list = await buildEnrichedGalleryList();
+  galleryCache = { list, expiresAt: now + GALLERY_CACHE_TTL_MS };
+  return list;
+}
+
+export type ChannelVideosPageResult = {
+  items: YoutubeFeedVideo[];
+  total: number;
+  hasMore: boolean;
+  longCount: number;
+  shortCount: number;
+};
+
+/**
+ * Paginated slice after sort. Used by the YouTube page (first 10) and `/api/youtube-videos`.
+ */
+export async function getChannelVideosPage(
+  offset: number,
+  limit: number,
+  sort: YoutubeSortMode,
+): Promise<ChannelVideosPageResult> {
+  const all = await getCachedEnrichedGallery();
+  const longCount = all.filter((v) => !v.isShort).length;
+  const shortCount = all.filter((v) => v.isShort).length;
+  const sorted = sortVideosForDisplay(all, sort);
+  const safeOffset = Math.max(0, offset);
+  const safeLimit = Math.max(0, limit);
+  const items = sorted.slice(safeOffset, safeOffset + safeLimit);
+  return {
+    items,
+    total: sorted.length,
+    hasMore: safeOffset + safeLimit < sorted.length,
+    longCount,
+    shortCount,
+  };
+}
+
+/**
+ * Full channel gallery sorted **Latest** (newest first). Prefer `getChannelVideosPage` for UI.
+ */
+export async function getChannelVideos(): Promise<YoutubeFeedVideo[]> {
+  const all = await getCachedEnrichedGallery();
+  return sortVideosForDisplay(all, "latest");
 }
 
 /** @deprecated Use `getChannelVideos` — name kept for any older imports. */

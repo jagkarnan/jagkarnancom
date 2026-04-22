@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { youtubeChannel } from "@/content/youtubeChannel";
-import { getChannelVideos } from "@/lib/youtubeFeed";
+import { getChannelVideosPage } from "@/lib/youtubeFeed";
 import { Container } from "@/components/ui/Container";
 import { YoutubeVideosGallery } from "@/components/youtube/YoutubeVideosGallery";
 
@@ -14,10 +14,14 @@ export const metadata: Metadata = {
 /** Always fetch fresh video list on each request (avoids ISR serving a cached “0 videos” after a feed/API blip). */
 export const dynamic = "force-dynamic";
 
+const INITIAL_PAGE_SIZE = 10;
+
 export default async function YoutubeVideosPage() {
-  const videos = await getChannelVideos();
-  const longCount = videos.filter((v) => !v.isShort).length;
-  const shortCount = videos.filter((v) => v.isShort).length;
+  const { items: initialVideos, total, hasMore, longCount, shortCount } = await getChannelVideosPage(
+    0,
+    INITIAL_PAGE_SIZE,
+    "latest",
+  );
 
   return (
     <main className="min-w-0 overflow-x-hidden pb-12 md:pb-14" aria-label="YouTube videos">
@@ -46,16 +50,16 @@ export default async function YoutubeVideosPage() {
           <p className="mt-1.5 text-xs text-foreground/50 sm:text-sm">
             {shortCount > 0 ? (
               <>
-                Showing {longCount} video{longCount === 1 ? "" : "s"} and {shortCount} Short
-                {shortCount === 1 ? "" : "s"} ({videos.length} total).
+                {longCount} video{longCount === 1 ? "" : "s"} and {shortCount} Short
+                {shortCount === 1 ? "" : "s"} ({total} total).
               </>
             ) : (
-              <>Total videos: {videos.length}</>
+              <>{total} video{total === 1 ? "" : "s"} total.</>
             )}
           </p>
         </div>
 
-        {videos.length === 0 ? (
+        {total === 0 ? (
           <div
             className="rounded-2xl border border-amber-500/30 bg-amber-500/10 px-5 py-6 text-sm leading-relaxed text-foreground/80 sm:px-6"
             role="status"
@@ -75,7 +79,11 @@ export default async function YoutubeVideosPage() {
             </p>
           </div>
         ) : (
-          <YoutubeVideosGallery videos={videos} />
+          <YoutubeVideosGallery
+            initialVideos={initialVideos}
+            initialHasMore={hasMore}
+            pageSize={INITIAL_PAGE_SIZE}
+          />
         )}
       </Container>
     </main>

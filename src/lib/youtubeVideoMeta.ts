@@ -104,15 +104,23 @@ export function sortVideosForDisplay(videos: YoutubeFeedVideo[], mode: YoutubeSo
       return b.videoId.localeCompare(a.videoId);
     });
   } else {
-    copy.sort((a, b) => (b.viewCount ?? -1) - (a.viewCount ?? -1));
+    copy.sort((a, b) => {
+      const vb = b.viewCount ?? -1;
+      const va = a.viewCount ?? -1;
+      if (vb !== va) return vb - va;
+      return b.videoId.localeCompare(a.videoId);
+    });
   }
   return copy;
 }
 
-export function finalizeYoutubeGalleryVideos(videos: YoutubeFeedVideo[]): YoutubeFeedVideo[] {
-  const enriched = videos.map((v) => {
+export function enrichYoutubeGalleryVideos(videos: YoutubeFeedVideo[]): YoutubeFeedVideo[] {
+  return videos.map((v) => {
     const sortPublishedMs = inferSortPublishedMs(v);
     return { ...v, sortPublishedMs };
   });
-  return sortVideosForDisplay(enriched, "latest");
+}
+
+export function finalizeYoutubeGalleryVideos(videos: YoutubeFeedVideo[]): YoutubeFeedVideo[] {
+  return sortVideosForDisplay(enrichYoutubeGalleryVideos(videos), "latest");
 }
