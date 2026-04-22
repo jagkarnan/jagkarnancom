@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import type { YoutubeFeedVideo } from "@/lib/youtubeFeedTypes";
 import {
   formatViewCount,
+  inferSortPublishedMs,
   sortVideosForDisplay,
   type YoutubeSortMode,
 } from "@/lib/youtubeVideoMeta";
@@ -27,7 +28,13 @@ type Props = {
 
 export function YoutubeVideosGallery({ videos }: Props) {
   const [sort, setSort] = useState<YoutubeSortMode>("latest");
-  const ordered = useMemo(() => sortVideosForDisplay(videos, sort), [videos, sort]);
+  const ordered = useMemo(() => {
+    const enriched = videos.map((v) => ({
+      ...v,
+      sortPublishedMs: inferSortPublishedMs(v) ?? v.sortPublishedMs,
+    }));
+    return sortVideosForDisplay(enriched, sort);
+  }, [videos, sort]);
 
   return (
     <div>
@@ -108,7 +115,10 @@ export function YoutubeVideosGallery({ videos }: Props) {
               </div>
               <div className="px-4 py-3 sm:px-5 sm:py-4">
                 <p className="text-xs font-medium text-foreground/50">
-                  {[formatDate(v.publishedAt), typeof v.viewCount === "number" ? formatViewCount(v.viewCount) : null]
+                  {[
+                    formatDate(v.publishedAt),
+                    typeof v.viewCount === "number" && v.viewCount >= 100 ? formatViewCount(v.viewCount) : null,
+                  ]
                     .filter(Boolean)
                     .join(" · ")}
                 </p>

@@ -36,7 +36,16 @@ export function inferSortPublishedMs(v: Pick<YoutubeFeedVideo, "publishedAt" | "
   if (typeof v.sortPublishedMs === "number" && !Number.isNaN(v.sortPublishedMs)) {
     return v.sortPublishedMs;
   }
-  return publishedMsFromIso(v.publishedAt) ?? publishedMsFromRelative(v.publishedAt);
+  const fromIso = publishedMsFromIso(v.publishedAt);
+  if (fromIso !== undefined) return fromIso;
+  const fromRel = publishedMsFromRelative(v.publishedAt);
+  if (fromRel !== undefined) return fromRel;
+  const raw = v.publishedAt?.trim();
+  if (raw) {
+    const t = Date.parse(raw);
+    if (!Number.isNaN(t)) return t;
+  }
+  return undefined;
 }
 
 /**
@@ -88,10 +97,12 @@ export type YoutubeSortMode = "latest" | "popular";
 export function sortVideosForDisplay(videos: YoutubeFeedVideo[], mode: YoutubeSortMode): YoutubeFeedVideo[] {
   const copy = [...videos];
   if (mode === "latest") {
-    copy.sort(
-      (a, b) =>
-        (b.sortPublishedMs ?? Number.NEGATIVE_INFINITY) - (a.sortPublishedMs ?? Number.NEGATIVE_INFINITY),
-    );
+    copy.sort((a, b) => {
+      const tb = b.sortPublishedMs ?? Number.NEGATIVE_INFINITY;
+      const ta = a.sortPublishedMs ?? Number.NEGATIVE_INFINITY;
+      if (tb !== ta) return tb - ta;
+      return b.videoId.localeCompare(a.videoId);
+    });
   } else {
     copy.sort((a, b) => (b.viewCount ?? -1) - (a.viewCount ?? -1));
   }
