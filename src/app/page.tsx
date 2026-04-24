@@ -332,10 +332,6 @@ export default function Home({
           <Block title="Contact" id="contact" headingFlash={flashSectionId === "contact"}>
             <div className="flex flex-col gap-4 text-sm text-foreground/80">
               <div className="flex flex-wrap gap-2 sm:gap-3">
-                <ObfuscatedMailtoAnchor className="focus-ring inline-flex min-h-11 min-w-[2.75rem] items-center gap-2 rounded-xl border border-foreground/10 bg-foreground/[0.04] px-3 py-2 font-medium text-foreground/85 transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/18 hover:bg-foreground/[0.07] active:scale-[0.98] active:bg-foreground/[0.09] motion-reduce:active:scale-100 sm:px-4">
-                  <MailCheckIcon size={16} />
-                  <span>Email</span>
-                </ObfuscatedMailtoAnchor>
                 {resume.links.map((l) => (
                   <a
                     key={l.href}
@@ -356,14 +352,18 @@ export default function Home({
                 ))}
               </div>
               <div className="flex flex-wrap gap-2 border-t border-foreground/10 pt-4 sm:gap-3">
-                <ObfuscatedTelAnchor className="focus-ring inline-flex min-h-11 max-w-full min-w-0 items-center gap-2 rounded-xl border border-foreground/10 bg-foreground/[0.04] px-3 py-2 font-medium text-foreground/85 transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/18 hover:bg-foreground/[0.07] active:scale-[0.98] active:bg-foreground/[0.09] motion-reduce:active:scale-100 break-all sm:break-normal sm:px-4 sm:whitespace-nowrap">
-                  <SmartphoneChargingIcon size={16} />
-                  <span>Call</span>
-                </ObfuscatedTelAnchor>
                 <ObfuscatedWhatsAppAnchor className="focus-ring inline-flex min-h-11 max-w-full min-w-0 items-center gap-2 rounded-xl border border-foreground/10 bg-foreground/[0.04] px-3 py-2 font-medium text-foreground/85 transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/18 hover:bg-foreground/[0.07] active:scale-[0.98] active:bg-foreground/[0.09] motion-reduce:active:scale-100 break-all sm:break-normal sm:px-4 sm:whitespace-nowrap">
                   <MessageCircleIcon size={16} />
                   <span>WhatsApp</span>
                 </ObfuscatedWhatsAppAnchor>
+                <ObfuscatedMailtoAnchor className="focus-ring inline-flex min-h-11 min-w-[2.75rem] items-center gap-2 rounded-xl border border-foreground/10 bg-foreground/[0.04] px-3 py-2 font-medium text-foreground/85 transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/18 hover:bg-foreground/[0.07] active:scale-[0.98] active:bg-foreground/[0.09] motion-reduce:active:scale-100 sm:px-4">
+                  <MailCheckIcon size={16} />
+                  <span>Email</span>
+                </ObfuscatedMailtoAnchor>
+                <ObfuscatedTelAnchor className="focus-ring inline-flex min-h-11 max-w-full min-w-0 items-center gap-2 rounded-xl border border-foreground/10 bg-foreground/[0.04] px-3 py-2 font-medium text-foreground/85 transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/18 hover:bg-foreground/[0.07] active:scale-[0.98] active:bg-foreground/[0.09] motion-reduce:active:scale-100 break-all sm:break-normal sm:px-4 sm:whitespace-nowrap">
+                  <SmartphoneChargingIcon size={16} />
+                  <span>Call</span>
+                </ObfuscatedTelAnchor>
               </div>
             </div>
           </Block>

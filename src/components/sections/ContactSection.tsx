@@ -35,32 +35,36 @@ export function ContactSection() {
                   {resume.location ?? "Location"}{" "}
                 </p>{" "}
               </div>{" "}
-              <div className="flex flex-wrap gap-3">
-                <ObfuscatedMailtoAnchor className="rounded-full border border-foreground/12 px-4 py-2 text-sm text-foreground/85 no-underline transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/20 hover:bg-foreground/[0.06] active:scale-[0.98] motion-reduce:active:scale-100">
-                  Email
-                </ObfuscatedMailtoAnchor>
-                {resume.links.map((l) => (
-                  <ExternalLink
-                    key={l.href}
-                    href={l.href}
-                    className="rounded-full border border-foreground/12 px-4 py-2 text-sm text-foreground/85 no-underline transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/20 hover:bg-foreground/[0.06] active:scale-[0.98] motion-reduce:active:scale-100"
+              <div className="flex flex-col gap-3 sm:items-end">
+                <div className="flex flex-wrap justify-end gap-3">
+                  {resume.links.map((l) => (
+                    <ExternalLink
+                      key={l.href}
+                      href={l.href}
+                      className="rounded-full border border-foreground/12 px-4 py-2 text-sm text-foreground/85 no-underline transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/20 hover:bg-foreground/[0.06] active:scale-[0.98] motion-reduce:active:scale-100"
+                    >
+                      {l.label}
+                    </ExternalLink>
+                  ))}
+                  <a
+                    href="/resume"
+                    className="focus-ring rounded-full bg-foreground px-4 py-2.5 text-sm font-medium text-background transition-[opacity,transform] duration-200 ease-out hover:opacity-90 active:scale-[0.98] motion-reduce:active:scale-100"
                   >
-                    {l.label}
-                  </ExternalLink>
-                ))}
-                <ObfuscatedTelAnchor className="rounded-full border border-foreground/12 px-4 py-2 text-sm text-foreground/85 no-underline transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/20 hover:bg-foreground/[0.06] active:scale-[0.98] motion-reduce:active:scale-100">
-                  Call
-                </ObfuscatedTelAnchor>
-                <ObfuscatedWhatsAppAnchor className="rounded-full border border-foreground/12 px-4 py-2 text-sm text-foreground/85 no-underline transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/20 hover:bg-foreground/[0.06] active:scale-[0.98] motion-reduce:active:scale-100">
-                  WhatsApp
-                </ObfuscatedWhatsAppAnchor>
-                <a
-                  href="/resume"
-                  className="focus-ring rounded-full bg-foreground px-4 py-2.5 text-sm font-medium text-background transition-[opacity,transform] duration-200 ease-out hover:opacity-90 active:scale-[0.98] motion-reduce:active:scale-100"
-                >
-                  {" "}
-                  Print / save as PDF{" "}
-                </a>{" "}
+                    {" "}
+                    Print / save as PDF{" "}
+                  </a>{" "}
+                </div>{" "}
+                <div className="flex w-full flex-wrap justify-end gap-3 border-t border-foreground/10 pt-3">
+                  <ObfuscatedWhatsAppAnchor className="rounded-full border border-foreground/12 px-4 py-2 text-sm text-foreground/85 no-underline transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/20 hover:bg-foreground/[0.06] active:scale-[0.98] motion-reduce:active:scale-100">
+                    WhatsApp
+                  </ObfuscatedWhatsAppAnchor>
+                  <ObfuscatedMailtoAnchor className="rounded-full border border-foreground/12 px-4 py-2 text-sm text-foreground/85 no-underline transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/20 hover:bg-foreground/[0.06] active:scale-[0.98] motion-reduce:active:scale-100">
+                    Email
+                  </ObfuscatedMailtoAnchor>
+                  <ObfuscatedTelAnchor className="rounded-full border border-foreground/12 px-4 py-2 text-sm text-foreground/85 no-underline transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/20 hover:bg-foreground/[0.06] active:scale-[0.98] motion-reduce:active:scale-100">
+                    Call
+                  </ObfuscatedTelAnchor>
+                </div>{" "}
               </div>{" "}
             </div>{" "}
           </div>{" "}

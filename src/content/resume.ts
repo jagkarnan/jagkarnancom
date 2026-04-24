@@ -69,8 +69,8 @@ export const resume: Resume = {
     "I partner with enterprises alongside leadership and teams, learning how the business really runs and where it can work smarter. I analyse processes from start to finish, find where AI can make a meaningful difference, and shape practical changes that smooth out workflows, cut manual effort, and support stronger decisions. I care about outcomes you can measure, like faster cycles, fewer errors, and operations that keep pace as you grow. I get there by building with AI where it helps, automating what should not be manual, and connecting tools in a way that fits how your organisation already works.",
   links: [
     { label: "LinkedIn", href: "https://www.linkedin.com/in/jagkarnan/" },
-    { label: "GitHub", href: "https://github.com/jagkarnan" },
     { label: "YouTube", href: "https://www.youtube.com/@jagkarnanai" },
+    { label: "GitHub", href: "https://github.com/jagkarnan" },
   ],
   skills: [
     {
