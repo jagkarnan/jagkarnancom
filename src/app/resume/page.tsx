@@ -14,6 +14,7 @@ import {
   CORPORATE_EXPERIENCE,
   getIssuerInitials,
 } from "@/content/resumeShared";
+import { LocationPinIcon } from "@/components/ui/LocationPinIcon";
 
 type MilestoneRow = {
   year: number;
@@ -280,7 +281,10 @@ function ResumePrintBody() {
                       {e.role} • {e.company}
                     </p>
                     {e.location ? (
-                      <p className="text-xs text-black">{e.location}</p>
+                      <p className="flex items-center gap-1 text-xs text-black">
+                        <LocationPinIcon className="h-3 w-3 shrink-0 text-black" />
+                        {e.location}
+                      </p>
                     ) : null}
                   </div>
                   <p className="shrink-0 font-mono text-xs text-black sm:whitespace-nowrap">

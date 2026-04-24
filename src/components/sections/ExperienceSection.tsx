@@ -1,4 +1,5 @@
 import { resume } from "@/content/resume";
+import { LocationPinIcon } from "@/components/ui/LocationPinIcon";
 import { Container } from "@/components/ui/Container";
 import { Chip } from "@/components/ui/Chip";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -30,11 +31,20 @@ export function ExperienceSection() {
                     <h3 className="text-base font-semibold leading-tight tracking-tight">
                       {e.role} • {e.company}
                     </h3>{" "}
-                    <p className="text-sm text-foreground/70">
+                    <p className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-sm text-foreground/70">
                       {" "}
-                      {[e.location, `${e.start} — ${e.end ?? "Present"}`]
-                        .filter(Boolean)
-                        .join(" • ")}{" "}
+                      {e.location ? (
+                        <>
+                          <span className="inline-flex items-center gap-1">
+                            <LocationPinIcon className="h-3.5 w-3.5 shrink-0 text-foreground/55" />
+                            <span>{e.location}</span>
+                          </span>
+                          <span className="text-foreground/45" aria-hidden>
+                            •
+                          </span>
+                        </>
+                      ) : null}
+                      <span>{`${e.start} — ${e.end ?? "Present"}`}</span>{" "}
                     </p>{" "}
                   </div>{" "}
                 </div>{" "}

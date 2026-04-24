@@ -123,6 +123,11 @@ export const resume: Resume = {
   ],
   certifications: [
     {
+      name: "AI Fluency: Framework & Foundations",
+      issuer: "Anthropic Academy",
+      date: "2026",
+    },
+    {
       name: "Claude Cowork",
       issuer: "Anthropic Academy",
       date: "2026",
@@ -171,7 +176,7 @@ export const resume: Resume = {
   experience: [
     {
       company: "Singapore IT Services Pte Ltd",
-      role: "AI Partner & Consultant",
+      role: "AI Partner",
       location: "Singapore",
       start: "2020",
       end: "Present",
@@ -235,15 +240,15 @@ export const resume: Resume = {
     },
     {
       company: "Software Technology International",
-      role: "Software Developer",
+      role: "Software Programmer",
       location: "USA",
       start: "1999",
       end: "2001",
       highlights: [
-        "Developed and deployed enterprise applications.",
-        "Supported UAT and implemented client-facing solutions.",
+        "Migrated core functionalities from JSP to .NET, enhancing application efficiency and reducing server load times.",
+        "Developed scalable applications using modern frameworks and languages (JavaScript, Java).",
       ],
-      tech: ["Software Development", "Enterprise Applications", "UAT"],
+      tech: ["JSP", ".NET", "JavaScript", "Java"],
     },
   ],
   projects: [

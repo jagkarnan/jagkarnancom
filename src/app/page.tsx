@@ -502,7 +502,10 @@ export default function Home({
                         {e.role} • {e.company}
                       </p>
                       {e.location ? (
-                        <p className="text-xs text-foreground/60">{e.location}</p>
+                        <p className="flex items-center gap-1 text-xs text-foreground/60">
+                          <LocationPinIcon className="h-3 w-3 shrink-0 text-foreground/55" />
+                          {e.location}
+                        </p>
                       ) : null}
                     </div>
                     <p className="shrink-0 font-mono text-xs text-foreground/60 md:whitespace-nowrap">
