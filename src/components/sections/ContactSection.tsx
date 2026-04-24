@@ -48,6 +48,8 @@ export function ContactSection() {
                   ))}
                   <a
                     href="/resume"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="focus-ring rounded-full bg-foreground px-4 py-2.5 text-sm font-medium text-background transition-[opacity,transform] duration-200 ease-out hover:opacity-90 active:scale-[0.98] motion-reduce:active:scale-100"
                   >
                     {" "}
@@ -58,10 +60,16 @@ export function ContactSection() {
                   <ObfuscatedWhatsAppAnchor className="rounded-full border border-foreground/12 px-4 py-2 text-sm text-foreground/85 no-underline transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/20 hover:bg-foreground/[0.06] active:scale-[0.98] motion-reduce:active:scale-100">
                     WhatsApp
                   </ObfuscatedWhatsAppAnchor>
-                  <ObfuscatedMailtoAnchor className="rounded-full border border-foreground/12 px-4 py-2 text-sm text-foreground/85 no-underline transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/20 hover:bg-foreground/[0.06] active:scale-[0.98] motion-reduce:active:scale-100">
+                  <ObfuscatedMailtoAnchor
+                    newTab
+                    className="rounded-full border border-foreground/12 px-4 py-2 text-sm text-foreground/85 no-underline transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/20 hover:bg-foreground/[0.06] active:scale-[0.98] motion-reduce:active:scale-100"
+                  >
                     Email
                   </ObfuscatedMailtoAnchor>
-                  <ObfuscatedTelAnchor className="rounded-full border border-foreground/12 px-4 py-2 text-sm text-foreground/85 no-underline transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/20 hover:bg-foreground/[0.06] active:scale-[0.98] motion-reduce:active:scale-100">
+                  <ObfuscatedTelAnchor
+                    newTab
+                    className="rounded-full border border-foreground/12 px-4 py-2 text-sm text-foreground/85 no-underline transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/20 hover:bg-foreground/[0.06] active:scale-[0.98] motion-reduce:active:scale-100"
+                  >
                     Call
                   </ObfuscatedTelAnchor>
                 </div>{" "}

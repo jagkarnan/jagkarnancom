@@ -6,6 +6,8 @@ import { useSingletonDecodedContact } from "@/hooks/useSingletonDecodedContact";
 type AnchorProps = {
   className: string;
   children: ReactNode;
+  /** Opens in a new tab (e.g. Contact section). */
+  newTab?: boolean;
 };
 
 function blockUntilReady(e: React.MouseEvent, ready: boolean) {
@@ -13,13 +15,19 @@ function blockUntilReady(e: React.MouseEvent, ready: boolean) {
 }
 
 /** mailto — static HTML uses href="#" until decoded. */
-export function ObfuscatedMailtoAnchor({ className, children }: AnchorProps) {
+export function ObfuscatedMailtoAnchor({
+  className,
+  children,
+  newTab,
+}: AnchorProps) {
   const d = useSingletonDecodedContact();
   const ready = Boolean(d?.email);
   return (
     <a
       href={ready ? `mailto:${d!.email}` : "#"}
       className={className}
+      target={newTab ? "_blank" : undefined}
+      rel={newTab ? "noopener noreferrer" : undefined}
       onClick={(e) => blockUntilReady(e, ready)}
       aria-busy={!ready}
       aria-label={ready ? undefined : "Email, loading"}
@@ -29,7 +37,11 @@ export function ObfuscatedMailtoAnchor({ className, children }: AnchorProps) {
   );
 }
 
-export function ObfuscatedTelAnchor({ className, children }: AnchorProps) {
+export function ObfuscatedTelAnchor({
+  className,
+  children,
+  newTab,
+}: AnchorProps) {
   const d = useSingletonDecodedContact();
   const ready = Boolean(d?.telE164);
   const tel = d?.telE164.replace(/\s/g, "") ?? "";
@@ -37,6 +49,8 @@ export function ObfuscatedTelAnchor({ className, children }: AnchorProps) {
     <a
       href={ready ? `tel:${tel}` : "#"}
       className={className}
+      target={newTab ? "_blank" : undefined}
+      rel={newTab ? "noopener noreferrer" : undefined}
       onClick={(e) => blockUntilReady(e, ready)}
       aria-busy={!ready}
       aria-label={ready ? undefined : "Phone, loading"}
