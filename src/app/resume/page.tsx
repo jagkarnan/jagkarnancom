@@ -14,6 +14,7 @@ import {
   CORPORATE_EXPERIENCE,
   getIssuerInitials,
 } from "@/content/resumeShared";
+import { GoldMedalIcon } from "@/components/ui/GoldMedalIcon";
 import { LocationPinIcon } from "@/components/ui/LocationPinIcon";
 
 type MilestoneRow = {
@@ -325,7 +326,19 @@ function ResumePrintBody() {
                 </p>
                 {ed.notes && ed.notes.length > 0 ? (
                   <p className="mt-1 text-xs italic text-black">
-                    {ed.notes.join(" · ")}
+                    {ed.notes.map((note, i) => (
+                      <span key={`${ed.school}-${note}-${i}`}>
+                        {i > 0 ? " · " : null}
+                        {/gold\s*medal/i.test(note) ? (
+                          <span className="inline-flex items-center gap-1 align-middle not-italic">
+                            <GoldMedalIcon size={14} className="shrink-0" />
+                            <span className="italic">{note}</span>
+                          </span>
+                        ) : (
+                          note
+                        )}
+                      </span>
+                    ))}
                   </p>
                 ) : null}
               </div>

@@ -2,35 +2,15 @@ import PDFDocument from "pdfkit";
 import { resume } from "@/content/resume";
 import { getSensitiveContactLinks } from "@/lib/contactSensitive";
 import {
+  buildAchievementRows,
+  buildTimelineRows,
+  formatContactLine,
+} from "@/lib/resumeDocumentHelpers";
+import {
   buildCertificationBoardItems,
   groupCertificationBoardItemsByDecade,
   CORPORATE_EXPERIENCE,
 } from "@/content/resumeShared";
-
-function digitsOnly(s: string): string {
-  return s.replace(/\D/g, "");
-}
-
-function formatContactLine(label: string, href: string): string {
-  if (href.startsWith("mailto:")) {
-    return `${label}: ${href.slice("mailto:".length)}`;
-  }
-  if (href.startsWith("tel:")) {
-    const telBody = href.slice("tel:".length).replace(/\s/g, "");
-    if (digitsOnly(label) === digitsOnly(telBody)) {
-      return label;
-    }
-    return `${label}: ${telBody}`;
-  }
-  if (href.includes("wa.me/")) {
-    const id = href.split("wa.me/")[1]?.split(/[?#]/)[0] ?? "";
-    if (digitsOnly(label) === digitsOnly(id)) {
-      return label;
-    }
-    return `${label}: https://wa.me/${id}`;
-  }
-  return `${label}: ${href}`;
-}
 
 function sectionTitle(doc: InstanceType<typeof PDFDocument>, title: string) {
   doc.moveDown(0.8);
@@ -55,35 +35,6 @@ function ensureSpace(doc: InstanceType<typeof PDFDocument>, estimatedHeight: num
   if (doc.y + estimatedHeight > pageBottom(doc)) {
     doc.addPage();
   }
-}
-
-/** Milestones excluding certifications and achievements (achievements have their own section). */
-function buildTimelineRows() {
-  return (resume.milestones ?? [])
-    .filter(
-      (m) =>
-        m.type !== "certification" && m.type !== "achievement",
-    )
-    .map((m) => ({
-      kind: "milestone" as const,
-      year: parseInt(m.year, 10),
-      label: m.type,
-      title: m.title,
-      detail: m.description || "",
-    }))
-    .sort((a, b) => a.year - b.year);
-}
-
-/** Achievements only (explicit section per product request). */
-function buildAchievementRows() {
-  return (resume.milestones ?? [])
-    .filter((m) => m.type === "achievement")
-    .map((m) => ({
-      year: parseInt(m.year, 10),
-      title: m.title,
-      detail: m.description || "",
-    }))
-    .sort((a, b) => a.year - b.year);
 }
 
 export function generateResumePdfBuffer(): Promise<Buffer> {

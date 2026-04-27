@@ -138,6 +138,11 @@ export const resume: Resume = {
       date: "2026",
     },
     {
+      name: "Claude Code 101",
+      issuer: "Anthropic Academy",
+      date: "2026",
+    },
+    {
       name: "Software Engineering",
       issuer: "IBM",
       date: "2026",
@@ -176,9 +181,9 @@ export const resume: Resume = {
   experience: [
     {
       company: "Singapore IT Services Pte Ltd",
-      role: "AI Partner",
+      role: "Head of AI",
       location: "Singapore",
-      start: "2020",
+      start: "2023",
       end: "Present",
       highlights: [
         "Act as AI partner to enterprises, helping leadership and teams identify where AI can improve operations.",
@@ -190,10 +195,10 @@ export const resume: Resume = {
     },
     {
       company: "Singapore IT Services Pte Ltd",
-      role: "Digital Transformation & Automation Consultant",
+      role: "Digital Transformation Leader",
       location: "Singapore",
       start: "2015",
-      end: "2019",
+      end: "2022",
       highlights: [
         "Shifted focus from pure infrastructure to process-centric consulting and workflow optimisation.",
         "Mapped end‑to‑end business processes and introduced automation, scripting, and cloud tools to remove manual steps.",
@@ -203,7 +208,7 @@ export const resume: Resume = {
     },
     {
       company: "Singapore IT Services Pte Ltd",
-      role: "Senior Systems Engineer & Consultant",
+      role: "Senior Systems Engineer",
       location: "Singapore",
       start: "2008",
       end: "2014",
@@ -216,15 +221,24 @@ export const resume: Resume = {
     },
     {
       company: "Avanade Asia Pte Ltd",
-      role: "Senior Systems Engineer",
+      role: "Senior Lead Developer",
       location: "Singapore",
       start: "2005",
       end: "2008",
       highlights: [
-        "Supported enterprise IT infrastructure and operations across APAC.",
-        "Delivered upgrades, migrations, and IT projects for clients such as British Telecom, MediaCorp, AIA, Changi General Hospital.",
+        "Led development workstreams and hands-on delivery for large-scale .NET and enterprise solutions across APAC, owning design decisions, build quality, and release readiness.",
+        "Mentored developers, ran code and design reviews, and partnered with leads and client stakeholders to turn requirements into stable, maintainable software.",
+        "Shipped upgrades, migrations, and product releases for clients including British Telecom, MediaCorp, AIA, and Changi General Hospital.",
       ],
-      tech: ["Systems Engineering", "IT Infrastructure", "Enterprise Projects", "APAC Operations"],
+      tech: [
+        "Technical leadership",
+        ".NET / C#",
+        "Enterprise software delivery",
+        "Solution design & architecture",
+        "Code quality & reviews",
+        "Mentoring",
+        "APAC client delivery",
+      ],
     },
     {
       company: "PMR Software Technology Pte Ltd",
@@ -325,7 +339,7 @@ export const resume: Resume = {
     },
     {
       title: "Joined Avanade Asia, Singapore",
-      description: "Senior Software Engineer",
+      description: "Senior Lead Developer",
       year: "2005",
       type: "achievement",
     },

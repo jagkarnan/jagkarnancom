@@ -1,6 +1,7 @@
 import { resume } from "@/content/resume";
 import { Container } from "@/components/ui/Container";
 import { Card } from "@/components/ui/Card";
+import { GoldMedalIcon } from "@/components/ui/GoldMedalIcon";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 export function EducationSection() {
   return (
@@ -43,8 +44,14 @@ export function EducationSection() {
                     {" "}
                     {e.notes.map((n) => (
                       <li key={n} className="flex gap-3">
-                        {" "}
-                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/40" />{" "}
+                        {/gold\s*medal/i.test(n) ? (
+                          <GoldMedalIcon
+                            size={16}
+                            className="mt-0.5 shrink-0"
+                          />
+                        ) : (
+                          <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/40" />
+                        )}{" "}
                         <span>{n}</span>{" "}
                       </li>
                     ))}{" "}

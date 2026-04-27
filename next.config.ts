@@ -19,6 +19,10 @@ const nextConfig: NextConfig = {
         source: "/Jag_Karnan_Resume.pdf",
         destination: "/api/resume",
       },
+      {
+        source: "/Jag_Karnan_Resume.docx",
+        destination: "/api/resume-docx",
+      },
     ];
   },
 };
