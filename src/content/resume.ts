@@ -137,12 +137,7 @@ export const resume: Resume = {
       date: "2026",
     },
     {
-      name: "Claude 101",
-      issuer: "Anthropic Academy",
-      date: "2026",
-    },
-    {
-      name: "Claude Code 101",
+      name: "Claude Code",
       issuer: "Anthropic Academy",
       date: "2026",
     },

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="JK">
+  <circle
+    cx="16"
+    cy="16"
+    r="14"
+    fill="#0f172a"
+    stroke="#38bdf8"
+    stroke-width="2"
+  />
+  <text
+    x="16"
+    y="16"
+    text-anchor="middle"
+    dominant-baseline="central"
+    fill="#fafafa"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    font-size="11"
+    font-weight="700"
+    letter-spacing="-0.02em"
+  >
+    JK
+  </text>
+</svg>
