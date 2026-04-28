@@ -288,10 +288,15 @@ export default function Home({
                     </p>
                   </blockquote>
                 </div>
-                <div className="mx-auto flex w-full max-w-prose flex-col gap-2.5 md:mx-0">
-                  <p className="text-sm leading-relaxed text-foreground/75 break-words text-pretty md:text-left">
-                    {resume.summary}
-                  </p>
+                <div className="mx-auto flex w-full max-w-prose flex-col gap-3 md:mx-0">
+                  {resume.summary.split(/\n\n+/).map((para, i) => (
+                    <p
+                      key={i}
+                      className="text-sm leading-relaxed text-foreground/75 break-words text-pretty md:text-left"
+                    >
+                      {para.trim()}
+                    </p>
+                  ))}
                 </div>
               </div>
             </div>

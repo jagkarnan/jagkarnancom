@@ -62,11 +62,13 @@ export const resume: Resume = {
   name: "Jag Karnan",
   legalName: "Jegadeesan Karunakaran",
   displayLocation: "Singapore",
-  roleLine: "AI Leader, AI Engineering",
-  headline: "Your AI Partner to Identify What Matters and Drive Profitable Business Growth",
+  roleLine:
+    "AI-native thinker • AI automation • Professional AI coding • AI process implementation",
+  headline:
+    "Your AI Partner — AI-native strategy, automation that scales, and processes built for adoption",
   location: "Singapore (Singapore PR • Availability: Immediate)",
   summary:
-    "I partner with enterprises alongside leadership and teams, learning how the business really runs and where it can work smarter. I analyse processes from start to finish, find where AI can make a meaningful difference, and shape practical changes that smooth out workflows, cut manual effort, and support stronger decisions. I care about outcomes you can measure, like faster cycles, fewer errors, and operations that keep pace as you grow. I get there by building with AI where it helps, automating what should not be manual, and connecting tools in a way that fits how your organisation already works.",
+    "I position myself as an AI-native thinker: I default to automation, agents, and LLMs where they genuinely replace repetitive work or sharpen decisions — not AI for its own sake. I combine that mindset with a strong execution track record across AI automation (orchestration, integrations, reliable workflows), professional AI coding (production-minded builds with APIs, Python and TypeScript stacks, reviews and iteration), and AI process implementation (embedding AI steps into real operating rhythms, guardrails, handoffs, and adoption).\n\nI partner with enterprises alongside leadership and teams, learning how the business runs end to end. I map processes, prioritise high-impact use cases, and ship changes that smooth workflows, reduce manual effort, and produce outcomes you can measure: faster cycles, fewer errors, and operations that scale as you grow.",
   links: [
     { label: "LinkedIn", href: "https://www.linkedin.com/in/jagkarnan/" },
     { label: "YouTube", href: "https://www.youtube.com/@jagkarnanai" },
@@ -74,25 +76,27 @@ export const resume: Resume = {
   ],
   skills: [
     {
-      name: "Identify high-impact opportunities where AI can increase revenue, reduce costs, and improve business efficiency",
+      name: "AI-native lens on the business: translate leadership goals into automation-first opportunities — where agents, workflows, or LLMs replace drag instead of layering generic IT projects",
     },
     {
-      name: "Design and implement automated workflows to replace manual tasks such as lead handling, reporting, and customer communication",
+      name: "AI automation: design and operate orchestrations across tools (e.g., n8n, Zapier), APIs, and agent-style patterns so handoffs, retries, and monitoring hold up after launch",
     },
     {
-      name: "Develop and integrate AI-powered tools (e.g., chatbots, internal systems, SaaS applications) into business operations",
+      name: "Professional AI coding: ship AI-assisted apps and integrations using Python, TypeScript/JavaScript, LLM APIs, RAG patterns, and frameworks such as CrewAI and LangChain — with clarity, reviews, and maintainability in mind",
     },
     {
-      name: "Use tools like Claude, Gemini to generate content, automate processes, and support decision-making",
+      name: "AI process implementation: embed AI steps into live workflows — RACI-friendly handoffs, guardrails, documentation, and checkpoints so teams adopt rather than revert to spreadsheets",
     },
     {
-      name: "Build scalable AI solutions using APIs, Python, and automation platforms such as CrewAI, n8n and Zapier",
+      name: "Use frontier assistants (Claude, Gemini, and peers) deliberately for drafting, automation glue, analysis accelerators, and decision support tied to measurable KPIs",
     },
     {
-      name: "Lead end-to-end AI implementation, from identifying use cases to deployment, ensuring smooth adoption and measurable business impact",
+      name: "Lead end-to-end AI delivery from discovery through deployment: prototypes, pilots, production cutovers, training, and iteration loops tied to business outcomes",
     },
   ],
   techSkills: [
+    "AI-native workflows",
+    "AI automation patterns",
     "Agentic AI",
     "RAG",
     "LLM API",
@@ -186,10 +190,10 @@ export const resume: Resume = {
       start: "2023",
       end: "Present",
       highlights: [
-        "Act as AI partner to enterprises, helping leadership and teams identify where AI can improve operations.",
-        "Advise clients on AI adoption strategies and implement AI-driven solutions to optimise business processes.",
-        "Design and deploy AI-powered assistants, automations, and decision-support tools tailored to each organisation.",
-        "Lead AI training workshops and guide organisations through change management for AI-led transformation.",
+        "Act as an AI-native partner to enterprises — automation-first discovery, hands-on prototyping, and rollout tied to KPIs rather than slide decks.",
+        "Deliver professional AI coding and integration work: assistants, internal tools, and orchestrations built for iteration, observability, and safe failure modes.",
+        "Implement AI inside operational processes: documented workflows, stakeholder alignment, guardrails, and adoption checkpoints so teams sustain changes.",
+        "Lead AI fluency workshops and change cadences so leadership and practitioners keep pace as models and tooling evolve.",
       ],
       tech: ["AI Consulting", "LLMs", "Automation", "Cloud Solutions", "Enterprise AI", "Digital Transformation"],
     },
@@ -200,7 +204,7 @@ export const resume: Resume = {
       start: "2015",
       end: "2022",
       highlights: [
-        "Shifted focus from pure infrastructure to process-centric consulting and workflow optimisation.",
+        "Shifted consulting toward automation-first and AI-ready processes — mapping workflows before prescribing tools.",
         "Mapped end‑to‑end business processes and introduced automation, scripting, and cloud tools to remove manual steps.",
         "Collaborated with business stakeholders to define outcomes, KPIs, and success metrics for transformation projects.",
       ],

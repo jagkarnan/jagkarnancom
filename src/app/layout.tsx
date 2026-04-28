@@ -11,18 +11,20 @@ const geistMono = Geist_Mono({
 });
 export const metadata: Metadata = {
   title: {
-    default: "Jag Karnan - AI Leader, AI Engineering",
+    default:
+      "Jag Karnan — AI-native thinker · AI automation · Professional AI coding · AI process implementation",
     template: "%s | Jag Karnan",
   },
   description:
-    "AI-focused online resume: skills, certifications, experience, and projects.",
+    "AI-native thinker with deep practice in AI automation, professional AI coding, and AI process implementation. Skills, certifications, experience, and projects.",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   ),
   openGraph: {
-    title: "Jag Karnan - AI Leader, AI Engineering",
+    title:
+      "Jag Karnan — AI-native thinker · AI automation · Professional AI coding · AI process implementation",
     description:
-      "AI-focused online resume: skills, certifications, experience, and projects.",
+      "AI-native thinker with deep practice in AI automation, professional AI coding, and AI process implementation.",
     type: "website",
   },
   alternates: { canonical: "/" },

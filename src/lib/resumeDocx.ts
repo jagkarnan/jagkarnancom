@@ -97,11 +97,13 @@ export async function generateResumeDocxBuffer(): Promise<Buffer> {
       }),
     );
   }
-  children.push(
-    new Paragraph({
-      children: [new TextRun({ text: resume.summary, size: bodySize() })],
-    }),
-  );
+  for (const para of resume.summary.split(/\n\n+/).map((p) => p.trim()).filter(Boolean)) {
+    children.push(
+      new Paragraph({
+        children: [new TextRun({ text: para, size: bodySize() })],
+      }),
+    );
+  }
 
   children.push(sectionHeading("Contact"));
   children.push(

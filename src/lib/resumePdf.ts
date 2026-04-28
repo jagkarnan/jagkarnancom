@@ -75,7 +75,14 @@ export function generateResumePdfBuffer(): Promise<Buffer> {
       doc.text(resume.location, { width: w });
       doc.moveDown(0.5);
     }
-    doc.font("Helvetica").fontSize(10).text(resume.summary, { width: w, align: "left" });
+    const summaryParas = resume.summary
+      .split(/\n\n+/)
+      .map((p) => p.trim())
+      .filter(Boolean);
+    for (let i = 0; i < summaryParas.length; i++) {
+      if (i > 0) doc.moveDown(0.45);
+      doc.text(summaryParas[i], { width: w, align: "left" });
+    }
 
     // —— Contact ——
     sectionTitle(doc, "Contact");

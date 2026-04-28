@@ -85,9 +85,11 @@ function ResumePrintBody() {
             <p className="mt-2 text-sm leading-snug text-black">
               {resume.headline}
             </p>
-            <p className="mt-3 text-sm leading-relaxed text-black">
-              {resume.summary}
-            </p>
+            <div className="mt-3 space-y-3 text-sm leading-relaxed text-black">
+              {resume.summary.split(/\n\n+/).map((para, i) => (
+                <p key={i}>{para.trim()}</p>
+              ))}
+            </div>
             {resume.location ? (
               <p className="mt-3 text-sm text-black">{resume.location}</p>
             ) : null}
