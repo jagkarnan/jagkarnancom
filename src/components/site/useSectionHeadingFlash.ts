@@ -7,7 +7,6 @@ import { useHomePageHash } from "@/components/site/useHomePageHash";
 
 /** Section `id`s on the home page that can be targeted from the header (hash nav). */
 const HOME_SECTION_FLASH_IDS = new Set([
-  "contact",
   "ai-skills",
   "tech-skills",
   "certifications",

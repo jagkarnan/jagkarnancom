@@ -9,17 +9,11 @@ import {
   groupCertificationBoardItemsByDecade,
   CORPORATE_EXPERIENCE,
 } from "@/content/resumeShared";
-import {
-  ObfuscatedMailtoAnchor,
-  ObfuscatedTelAnchor,
-  ObfuscatedWhatsAppAnchor,
-} from "@/components/contact/ObfuscatedContactAnchors";
 import { useSectionHeadingFlash } from "@/components/site/useSectionHeadingFlash";
 import { Container } from "@/components/ui/Container";
 import { GoldMedalIcon } from "@/components/ui/GoldMedalIcon";
 import { LocationPinIcon } from "@/components/ui/LocationPinIcon";
 import { Timeline } from "@/components/ui/Timeline";
-import { MailCheckIcon, LinkedinIcon, GithubIcon, YoutubeIcon, SmartphoneChargingIcon, MessageCircleIcon } from "lucide-animated";
 
 function getUniversityGoldMedalLabel(): string | null {
   for (const ed of resume.education) {
@@ -301,52 +295,6 @@ export default function Home({
               </div>
             </div>
           </section>
-          <Block title="Contact" id="contact" headingFlash={flashSectionId === "contact"}>
-            <div className="flex flex-col gap-4 text-sm text-foreground/80">
-              <div className="flex flex-wrap gap-2 sm:gap-3">
-                {resume.links.map((l) => (
-                  <a
-                    key={l.href}
-                    href={l.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="focus-ring inline-flex min-h-11 min-w-[2.75rem] items-center gap-2 rounded-xl border border-foreground/10 bg-foreground/[0.04] px-3 py-2 font-medium text-foreground/85 transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/18 hover:bg-foreground/[0.07] active:scale-[0.98] active:bg-foreground/[0.09] motion-reduce:active:scale-100 sm:px-4"
-                  >
-                    {l.label === "LinkedIn" && (
-                      <LinkedinIcon size={16} />
-                    )}
-                    {l.label === "GitHub" && (
-                      <GithubIcon size={16} />
-                    )}
-                    {l.label === "YouTube" && (
-                      <YoutubeIcon size={16} />
-                    )}
-                    <span>{l.label}</span>
-                  </a>
-                ))}
-              </div>
-              <div className="flex flex-wrap gap-2 border-t border-foreground/10 pt-4 sm:gap-3">
-                <ObfuscatedWhatsAppAnchor className="focus-ring inline-flex min-h-11 max-w-full min-w-0 items-center gap-2 rounded-xl border border-foreground/10 bg-foreground/[0.04] px-3 py-2 font-medium text-foreground/85 transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/18 hover:bg-foreground/[0.07] active:scale-[0.98] active:bg-foreground/[0.09] motion-reduce:active:scale-100 break-all sm:break-normal sm:px-4 sm:whitespace-nowrap">
-                  <MessageCircleIcon size={16} />
-                  <span>WhatsApp</span>
-                </ObfuscatedWhatsAppAnchor>
-                <ObfuscatedMailtoAnchor
-                  newTab
-                  className="focus-ring inline-flex min-h-11 min-w-[2.75rem] items-center gap-2 rounded-xl border border-foreground/10 bg-foreground/[0.04] px-3 py-2 font-medium text-foreground/85 transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/18 hover:bg-foreground/[0.07] active:scale-[0.98] active:bg-foreground/[0.09] motion-reduce:active:scale-100 sm:px-4"
-                >
-                  <MailCheckIcon size={16} />
-                  <span>Email</span>
-                </ObfuscatedMailtoAnchor>
-                <ObfuscatedTelAnchor
-                  newTab
-                  className="focus-ring inline-flex min-h-11 max-w-full min-w-0 items-center gap-2 rounded-xl border border-foreground/10 bg-foreground/[0.04] px-3 py-2 font-medium text-foreground/85 transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/18 hover:bg-foreground/[0.07] active:scale-[0.98] active:bg-foreground/[0.09] motion-reduce:active:scale-100 break-all sm:break-normal sm:px-4 sm:whitespace-nowrap"
-                >
-                  <SmartphoneChargingIcon size={16} />
-                  <span>Call</span>
-                </ObfuscatedTelAnchor>
-              </div>
-            </div>
-          </Block>
           <Block title="AI Skills" id="ai-skills" headingFlash={flashSectionId === "ai-skills"}>
             <ul className="space-y-4 text-sm leading-relaxed text-foreground/75">
               {resume.skills.map((s) => (

@@ -63,12 +63,12 @@ export const resume: Resume = {
   legalName: "Jegadeesan Karunakaran",
   displayLocation: "Singapore",
   roleLine:
-    "AI-native thinker • AI automation • Professional AI coding • AI process implementation",
+    "AI-native thinker • AI automation • Professional AI coding",
   headline:
-    "Your AI Partner — AI-native strategy, automation that scales, and processes built for adoption",
+    "Your AI Partner: AI transformation, agentic automation, and AI-driven operations that scale",
   location: "Singapore (Singapore PR • Availability: Immediate)",
   summary:
-    "I position myself as an AI-native thinker: I default to automation, agents, and LLMs where they genuinely replace repetitive work or sharpen decisions — not AI for its own sake. I combine that mindset with a strong execution track record across AI automation (orchestration, integrations, reliable workflows), professional AI coding (production-minded builds with APIs, Python and TypeScript stacks, reviews and iteration), and AI process implementation (embedding AI steps into real operating rhythms, guardrails, handoffs, and adoption).\n\nI partner with enterprises alongside leadership and teams, learning how the business runs end to end. I map processes, prioritise high-impact use cases, and ship changes that smooth workflows, reduce manual effort, and produce outcomes you can measure: faster cycles, fewer errors, and operations that scale as you grow.",
+    "I'm an AI-native operator who defaults to automation, agents, and LLMs wherever they genuinely replace repetitive work or sharpen decisions, never AI for its own sake. That mindset is backed by a strong execution record across three reinforcing areas: building AI automation through orchestration, integrations, and reliable workflows; shipping production-grade AI code across Python and TypeScript stacks with disciplined review and iteration; and embedding AI into real operating rhythms with the guardrails, handoffs, and change management that make adoption stick.\n\nI partner closely with leadership and teams to understand how a business actually runs end to end. From there, I map processes, prioritise the highest-impact use cases, and deliver changes that smooth workflows, cut manual effort, and produce measurable outcomes: faster cycles, fewer errors, and operations built to scale as the business grows.",
   links: [
     { label: "LinkedIn", href: "https://www.linkedin.com/in/jagkarnan/" },
     { label: "YouTube", href: "https://www.youtube.com/@jagkarnanai" },
@@ -76,22 +76,22 @@ export const resume: Resume = {
   ],
   skills: [
     {
-      name: "AI-native lens on the business: translate leadership goals into automation-first opportunities — where agents, workflows, or LLMs replace drag instead of layering generic IT projects",
+      name: "Turn leadership goals into AI roadmaps that use agents, LLMs, and automation to remove real operational drag, not add more IT projects",
     },
     {
-      name: "AI automation: design and operate orchestrations across tools (e.g., n8n, Zapier), APIs, and agent-style patterns so handoffs, retries, and monitoring hold up after launch",
+      name: "Build and run multi-agent workflows across n8n, Zapier, Make, and APIs, with error handling, retries, and monitoring built in",
     },
     {
-      name: "Professional AI coding: ship AI-assisted apps and integrations using Python, TypeScript/JavaScript, LLM APIs, RAG patterns, and frameworks such as CrewAI and LangChain — with clarity, reviews, and maintainability in mind",
+      name: "Ship GenAI apps using Python, TypeScript, LLM APIs (Claude, GPT, Gemini), RAG, vector databases, and frameworks like CrewAI, LangChain, and LangGraph",
     },
     {
-      name: "AI process implementation: embed AI steps into live workflows — RACI-friendly handoffs, guardrails, documentation, and checkpoints so teams adopt rather than revert to spreadsheets",
+      name: "Embed AI into daily workflows with clear handoffs, guardrails, prompt libraries, and human checkpoints so teams actually adopt it",
     },
     {
-      name: "Use frontier assistants (Claude, Gemini, and peers) deliberately for drafting, automation glue, analysis accelerators, and decision support tied to measurable KPIs",
+      name: "Apply frontier models (Claude, GPT, Gemini) to content, analysis, and decision support tied to measurable KPIs",
     },
     {
-      name: "Lead end-to-end AI delivery from discovery through deployment: prototypes, pilots, production cutovers, training, and iteration loops tied to business outcomes",
+      name: "Lead AI delivery end to end: discovery, prototypes, pilots, production rollout, training, and iteration",
     },
   ],
   techSkills: [
@@ -108,6 +108,8 @@ export const resume: Resume = {
     "TypeScript",
     "React",
     "AWS",
+    "Google Cloud",
+    "Azure",
     "Node.js",
     "Next.js",
     "Docker",
@@ -123,7 +125,6 @@ export const resume: Resume = {
     "MySQL",
     "Linux",
     "C++",
-    "Data Recovery & Forensics",
   ],
   certifications: [
     {
@@ -138,6 +139,11 @@ export const resume: Resume = {
     },
     {
       name: "Claude Code",
+      issuer: "Anthropic Academy",
+      date: "2026",
+    },
+    {
+      name: "Claude Code in Action",
       issuer: "Anthropic Academy",
       date: "2026",
     },

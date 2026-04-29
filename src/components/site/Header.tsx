@@ -14,14 +14,15 @@ import { ResumeDownloadMenu } from "@/components/site/ResumeDownloadMenu";
 import { ThemeToggle } from "@/components/site/ThemeToggle";
 import { useHomePageHash } from "@/components/site/useHomePageHash";
 
-/** Top-level nav links split around Competencies / Experience. Re-enable AI Papers here when it should appear in the menu again. */
+/** Top-level nav links split around Competencies / Experience. Contact is last (right end of the strip). */
 const navItems = [
   { href: "/youtube-videos", label: "YouTube Videos" },
-  { href: "/#contact", label: "Contact" },
   { href: "/#milestones", label: "Major Milestones" },
 ] as const;
 
-const NAV_ITEMS_BEFORE_INLINE = 2;
+const NAV_ITEMS_BEFORE_INLINE = 1;
+
+const CONTACT_NAV = { href: "/contact", label: "Contact" } as const;
 
 const navLinkClass =
   "focus-ring rounded-md border border-transparent px-2 py-1 text-center text-[11px] font-medium leading-tight text-foreground/70 transition-colors duration-200 ease-out hover:bg-foreground/[0.06] hover:text-foreground active:bg-foreground/10 motion-reduce:transition-none lg:px-2 lg:text-xs xl:px-2.5 xl:text-sm";
@@ -139,6 +140,15 @@ function MobileNavPanel({
             {item.label}
           </Link>
         ))}
+        <Link
+          href={CONTACT_NAV.href}
+          className={`${mobileNavLinkClass}${
+            isNavHrefActive(pathname, homeHash, CONTACT_NAV.href) ? ` ${NAV_SELECTED_GLASS}` : ""
+          }`}
+          onClick={onClose}
+        >
+          {CONTACT_NAV.label}
+        </Link>
       </div>
     </nav>
   );
@@ -294,6 +304,14 @@ export function Header() {
                   {item.label}
                 </Link>
               ))}
+              <Link
+                href={CONTACT_NAV.href}
+                className={`${navLinkClass}${
+                  isNavHrefActive(pathname, homeHash, CONTACT_NAV.href) ? ` ${NAV_SELECTED_GLASS}` : ""
+                }`}
+              >
+                {CONTACT_NAV.label}
+              </Link>
             </div>
           </nav>
 

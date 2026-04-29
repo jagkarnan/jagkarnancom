@@ -2,10 +2,31 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { CONTACT_SENSITIVE } from '@/lib/contactSensitive';
 
-const resend = new Resend('re_76ojsEPf_7HEZ39KLagMQTohJAZQz5D11');
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/** Verified sender in Resend (defaults to Resend test sender). Override via env in production. */
+const RESEND_FROM =
+  process.env.RESEND_FROM_EMAIL ?? 'onboarding@resend.dev';
 
 export async function POST(request: NextRequest) {
   try {
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+      console.error('RESEND_API_KEY is not set');
+      return NextResponse.json(
+        { error: 'Email service is not configured.' },
+        { status: 503 },
+      );
+    }
+
+    const resend = new Resend(apiKey);
+
     const { name, email, message } = await request.json();
 
     // Validate input
@@ -25,10 +46,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const toEmail = CONTACT_SENSITIVE.email;
+
     // Send email using Resend
     const { data, error } = await resend.emails.send({
-      from: 'onboarding@resend.dev',
-      to: [CONTACT_SENSITIVE.email],
+      from: RESEND_FROM,
+      to: [toEmail],
       subject: 'AI Consulting Inquiry',
       replyTo: email,
       html: `
@@ -38,14 +61,13 @@ export async function POST(request: NextRequest) {
           </h2>
           
           <div style="margin: 20px 0;">
-            <p><strong>Name:</strong> ${name}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Phone:</strong> ${CONTACT_SENSITIVE.phoneDisplay}</p>
+            <p><strong>Name:</strong> ${escapeHtml(String(name))}</p>
+            <p><strong>Email:</strong> ${escapeHtml(String(email))}</p>
           </div>
           
           <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; margin: 20px 0;">
             <h3 style="color: #333; margin-top: 0;">Message:</h3>
-            <p style="white-space: pre-wrap; line-height: 1.6;">${message.replace(/\n/g, '<br>')}</p>
+            <p style="white-space: pre-wrap; line-height: 1.6;">${escapeHtml(String(message)).replace(/\n/g, '<br>')}</p>
           </div>
           
           <div style="border-top: 1px solid #eee; padding-top: 15px; margin-top: 20px;">
