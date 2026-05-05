@@ -186,7 +186,7 @@ export const resume: Resume = {
   experience: [
     {
       company: "Singapore IT Services Pte Ltd",
-      role: "Head of AI",
+      role: "AI Leader",
       location: "Singapore",
       start: "2023",
       end: "Present",
