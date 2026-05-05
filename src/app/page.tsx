@@ -9,6 +9,7 @@ import {
   groupCertificationBoardItemsByDecade,
   CORPORATE_EXPERIENCE,
 } from "@/content/resumeShared";
+import { DomainExposurePills } from "@/components/site/DomainExposurePills";
 import { useSectionHeadingFlash } from "@/components/site/useSectionHeadingFlash";
 import { Container } from "@/components/ui/Container";
 import { GoldMedalIcon } from "@/components/ui/GoldMedalIcon";
@@ -254,10 +255,20 @@ export default function Home({
                       ) : null}
                     </span>
                   </h1>
-                  {resume.roleLine ? (
-                    <p className="w-full text-center text-base font-medium text-foreground/85 sm:text-lg md:text-left">
-                      {resume.roleLine}
-                    </p>
+                  {resume.roleLine || resume.domainExposure ? (
+                    <div className="flex w-full flex-col gap-3 text-center md:text-left">
+                      {resume.roleLine ? (
+                        <p className="text-base font-medium text-foreground/85 sm:text-lg">
+                          {resume.roleLine}
+                        </p>
+                      ) : null}
+                      {resume.domainExposure ? (
+                        <DomainExposurePills
+                          exposure={resume.domainExposure}
+                          pillsJustify="responsive"
+                        />
+                      ) : null}
+                    </div>
                   ) : null}
                   {goldMedalLabel ? (
                     <div className="flex justify-center md:justify-start">

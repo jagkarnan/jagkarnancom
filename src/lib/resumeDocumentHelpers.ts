@@ -1,5 +1,25 @@
 import { resume } from "@/content/resume";
 
+/** Same filter and sort as homepage `Timeline` (all milestones except certifications). */
+export type HomepageMilestoneRow = {
+  year: number;
+  milestoneType: string;
+  title: string;
+  description: string;
+};
+
+export function buildHomepageMilestoneRows(): HomepageMilestoneRow[] {
+  return (resume.milestones ?? [])
+    .filter((m) => m.type !== "certification")
+    .map((m) => ({
+      year: parseInt(m.year, 10),
+      milestoneType: m.type,
+      title: m.title,
+      description: m.description,
+    }))
+    .sort((a, b) => a.year - b.year);
+}
+
 export function digitsOnly(s: string): string {
   return s.replace(/\D/g, "");
 }
@@ -28,31 +48,3 @@ export function formatContactLine(label: string, href: string): string {
 /** Half-points: docx TextRun `size` uses half-points (20 = 10pt). */
 export const DOCX_PT = (pt: number) => pt * 2;
 
-/** Milestones excluding certifications and achievements. */
-export function buildTimelineRows() {
-  return (resume.milestones ?? [])
-    .filter(
-      (m) =>
-        m.type !== "certification" && m.type !== "achievement",
-    )
-    .map((m) => ({
-      kind: "milestone" as const,
-      year: parseInt(m.year, 10),
-      label: m.type,
-      title: m.title,
-      detail: m.description || "",
-    }))
-    .sort((a, b) => a.year - b.year);
-}
-
-/** Achievements only. */
-export function buildAchievementRows() {
-  return (resume.milestones ?? [])
-    .filter((m) => m.type === "achievement")
-    .map((m) => ({
-      year: parseInt(m.year, 10),
-      title: m.title,
-      detail: m.description || "",
-    }))
-    .sort((a, b) => a.year - b.year);
-}

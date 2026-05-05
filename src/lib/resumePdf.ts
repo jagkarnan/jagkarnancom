@@ -2,8 +2,7 @@ import PDFDocument from "pdfkit";
 import { resume } from "@/content/resume";
 import { getSensitiveContactLinks } from "@/lib/contactSensitive";
 import {
-  buildAchievementRows,
-  buildTimelineRows,
+  buildHomepageMilestoneRows,
   formatContactLine,
 } from "@/lib/resumeDocumentHelpers";
 import {
@@ -12,15 +11,21 @@ import {
   CORPORATE_EXPERIENCE,
 } from "@/content/resumeShared";
 
+function resetXToMargin(doc: InstanceType<typeof PDFDocument>) {
+  doc.x = doc.page.margins.left;
+}
+
 function sectionTitle(doc: InstanceType<typeof PDFDocument>, title: string) {
+  resetXToMargin(doc);
   doc.moveDown(0.8);
   doc
     .fontSize(11)
     .font("Helvetica-Bold")
     .fillColor("#000000")
-    .text(title.toUpperCase(), { underline: true });
+    .text(title.toUpperCase(), { width: contentWidth(doc), underline: true });
   doc.moveDown(0.4);
   doc.font("Helvetica").fontSize(10);
+  resetXToMargin(doc);
 }
 
 function contentWidth(doc: InstanceType<typeof PDFDocument>) {
@@ -34,7 +39,26 @@ function pageBottom(doc: InstanceType<typeof PDFDocument>) {
 function ensureSpace(doc: InstanceType<typeof PDFDocument>, estimatedHeight: number) {
   if (doc.y + estimatedHeight > pageBottom(doc)) {
     doc.addPage();
+    resetXToMargin(doc);
   }
+}
+
+/** Domain exposure as one horizontal line (label + domains).
+ * Avoid `continued` + wrapped `text({ width })` — PDFKit can leave doc.x indented for later blocks.
+ */
+function writeDomainExposureLine(
+  doc: InstanceType<typeof PDFDocument>,
+  w: number,
+  exposure: NonNullable<(typeof resume)["domainExposure"]>,
+) {
+  ensureSpace(doc, 22);
+  const left = doc.page.margins.left;
+  doc.fillColor("#000000").fontSize(10);
+  const line = `${exposure.label}: ${exposure.domains.join(", ")}`;
+  doc.font("Helvetica-Bold").text(line, { width: w });
+  doc.font("Helvetica");
+  doc.moveDown(0.25);
+  doc.x = left;
 }
 
 export function generateResumePdfBuffer(): Promise<Buffer> {
@@ -58,15 +82,23 @@ export function generateResumePdfBuffer(): Promise<Buffer> {
     const w = contentWidth(doc);
     const certBoard = buildCertificationBoardItems();
     const certificationsByDecade = groupCertificationBoardItemsByDecade(certBoard);
-    const achievements = buildAchievementRows();
-    const timeline = buildTimelineRows();
+    const homepageMilestones = buildHomepageMilestoneRows();
 
-    // —— Header ——
+    // —— Header (homepage hero fields) ——
     doc.fontSize(22).font("Helvetica-Bold").fillColor("#000000").text(resume.name);
     doc.moveDown(0.25);
     if (resume.legalName) {
       doc.fontSize(11).font("Helvetica").text(resume.legalName);
       doc.moveDown(0.25);
+    }
+    doc.font("Helvetica").fontSize(10).fillColor("#000000");
+    if (resume.roleLine) {
+      doc.text(resume.roleLine, { width: w });
+      doc.moveDown(0.25);
+    }
+    const domainExp = resume.domainExposure;
+    if (domainExp?.domains?.length) {
+      writeDomainExposureLine(doc, w, domainExp);
     }
     doc.fontSize(12).font("Helvetica-Bold").text(resume.headline);
     doc.moveDown(0.35);
@@ -103,6 +135,10 @@ export function generateResumePdfBuffer(): Promise<Buffer> {
       } else {
         doc.text(line, { width: w });
       }
+    }
+    if (resume.domainExposure?.domains?.length) {
+      doc.moveDown(0.1);
+      writeDomainExposureLine(doc, w, resume.domainExposure);
     }
 
     sectionTitle(doc, "AI skills");
@@ -149,29 +185,6 @@ export function generateResumePdfBuffer(): Promise<Buffer> {
       doc.moveDown(0.2);
     }
 
-    sectionTitle(doc, "Corporate Exposure");
-    ensureSpace(doc, 20);
-    doc.text(CORPORATE_EXPERIENCE.map((c) => c.name).join(" · "), { width: w });
-
-    sectionTitle(doc, "Work Experience");
-    for (const e of resume.experience) {
-      ensureSpace(doc, 80);
-      doc
-        .font("Helvetica-Bold")
-        .text(`${e.role} · ${e.company}`, { width: w });
-      doc.font("Helvetica");
-      const meta = [e.location, `${e.start} — ${e.end ?? "Present"}`]
-        .filter(Boolean)
-        .join(" · ");
-      if (meta) doc.text(meta, { width: w });
-      doc.moveDown(0.2);
-      for (const h of e.highlights) {
-        ensureSpace(doc, 18);
-        doc.text(`• ${h}`, { width: w, indent: 10 });
-      }
-      doc.moveDown(0.4);
-    }
-
     sectionTitle(doc, "Education");
     const educationOrdered = [...resume.education].sort(
       (a, b) =>
@@ -191,30 +204,39 @@ export function generateResumePdfBuffer(): Promise<Buffer> {
       doc.moveDown(0.4);
     }
 
-    // —— All achievement-type milestones ——
-    sectionTitle(doc, "Achievements");
-    for (const a of achievements) {
-      ensureSpace(doc, 36);
+    sectionTitle(doc, "Corporate Exposure");
+    ensureSpace(doc, 20);
+    doc.text(CORPORATE_EXPERIENCE.map((c) => c.name).join(" · "), { width: w });
+
+    sectionTitle(doc, "Work Experience");
+    for (const e of resume.experience) {
+      ensureSpace(doc, 80);
       doc
         .font("Helvetica-Bold")
-        .text(`${a.year} — ${a.title}`, { width: w });
+        .text(`${e.role} • ${e.company}`, { width: w });
       doc.font("Helvetica");
-      if (a.detail) {
-        doc.text(a.detail, { width: w, indent: 12 });
+      const meta = [e.location, `${e.start} — ${e.end ?? "Present"}`]
+        .filter(Boolean)
+        .join(" · ");
+      if (meta) doc.text(meta, { width: w });
+      doc.moveDown(0.2);
+      for (const h of e.highlights) {
+        ensureSpace(doc, 18);
+        doc.text(`• ${h}`, { width: w, indent: 10 });
       }
-      doc.moveDown(0.25);
+      doc.moveDown(0.4);
     }
 
-    // —— Awards, projects, etc. (Timeline without certs, achievements, education) ——
     sectionTitle(doc, "Major milestones");
-    for (const row of timeline) {
+    for (const row of homepageMilestones) {
       ensureSpace(doc, 40);
       doc
         .font("Helvetica-Bold")
-        .text(`${row.year} · ${row.label}`, { width: w });
-      doc.font("Helvetica-Bold").fontSize(10).text(row.title, { width: w });
+        .fontSize(10)
+        .text(`${row.year} · ${row.milestoneType}`, { width: w });
+      doc.font("Helvetica-Bold").text(row.title, { width: w });
       doc.font("Helvetica");
-      if (row.detail) doc.text(row.detail, { width: w, indent: 10 });
+      if (row.description) doc.text(row.description, { width: w, indent: 10 });
       doc.moveDown(0.3);
     }
 

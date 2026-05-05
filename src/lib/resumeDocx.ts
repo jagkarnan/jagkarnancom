@@ -10,8 +10,7 @@ import {
 import { resume } from "@/content/resume";
 import { getSensitiveContactLinks } from "@/lib/contactSensitive";
 import {
-  buildAchievementRows,
-  buildTimelineRows,
+  buildHomepageMilestoneRows,
   DOCX_PT,
   formatContactLine,
 } from "@/lib/resumeDocumentHelpers";
@@ -65,8 +64,7 @@ function contactLineParagraph(l: { label: string; href: string }): Paragraph {
 export async function generateResumeDocxBuffer(): Promise<Buffer> {
   const certBoard = buildCertificationBoardItems();
   const certificationsByDecade = groupCertificationBoardItemsByDecade(certBoard);
-  const achievements = buildAchievementRows();
-  const timeline = buildTimelineRows();
+  const homepageMilestones = buildHomepageMilestoneRows();
 
   const children: Paragraph[] = [];
 
@@ -82,9 +80,36 @@ export async function generateResumeDocxBuffer(): Promise<Buffer> {
       }),
     );
   }
+  if (resume.roleLine) {
+    children.push(
+      new Paragraph({
+        spacing: { after: 120 },
+        children: [new TextRun({ text: resume.roleLine, size: bodySize() })],
+      }),
+    );
+  }
+  const domainExposure = resume.domainExposure;
+  if (domainExposure?.domains?.length) {
+    children.push(
+      new Paragraph({
+        spacing: { after: 120 },
+        children: [
+          new TextRun({
+            text: `${domainExposure.label}: `,
+            bold: true,
+            size: bodySize(),
+          }),
+          new TextRun({
+            text: domainExposure.domains.join(", "),
+            size: bodySize(),
+          }),
+        ],
+      }),
+    );
+  }
   children.push(
     new Paragraph({
-      spacing: { after: 60 },
+      spacing: { after: 120 },
       children: [
         new TextRun({ text: resume.headline, bold: true, size: DOCX_PT(12) }),
       ],
@@ -120,6 +145,25 @@ export async function generateResumeDocxBuffer(): Promise<Buffer> {
   }
   for (const l of [...resume.links, ...getSensitiveContactLinks()]) {
     children.push(contactLineParagraph(l));
+  }
+  if (resume.domainExposure?.domains?.length) {
+    const de = resume.domainExposure;
+    children.push(
+      new Paragraph({
+        spacing: { before: 140, after: 80 },
+        children: [
+          new TextRun({
+            text: `${de.label}: `,
+            bold: true,
+            size: bodySize(),
+          }),
+          new TextRun({
+            text: de.domains.join(", "),
+            size: bodySize(),
+          }),
+        ],
+      }),
+    );
   }
 
   children.push(sectionHeading("AI skills"));
@@ -180,51 +224,6 @@ export async function generateResumeDocxBuffer(): Promise<Buffer> {
     }
   }
 
-  children.push(sectionHeading("Corporate Exposure"));
-  children.push(
-    new Paragraph({
-      children: [
-        new TextRun({
-          text: CORPORATE_EXPERIENCE.map((c) => c.name).join(" · "),
-          size: bodySize(),
-        }),
-      ],
-    }),
-  );
-
-  children.push(sectionHeading("Work Experience"));
-  for (const e of resume.experience) {
-    children.push(
-      new Paragraph({
-        children: [
-          new TextRun({
-            text: `${e.role} · ${e.company}`,
-            bold: true,
-            size: bodySize(),
-          }),
-        ],
-      }),
-    );
-    const meta = [e.location, `${e.start} — ${e.end ?? "Present"}`]
-      .filter(Boolean)
-      .join(" · ");
-    if (meta) {
-      children.push(
-        new Paragraph({
-          children: [new TextRun({ text: meta, size: bodySize() })],
-        }),
-      );
-    }
-    for (const h of e.highlights) {
-      children.push(
-        new Paragraph({
-          children: [new TextRun({ text: `• ${h}`, size: bodySize() })],
-          indent: { left: 360 },
-        }),
-      );
-    }
-  }
-
   children.push(sectionHeading("Education"));
   const educationOrdered = [...resume.education].sort(
     (a, b) =>
@@ -259,23 +258,45 @@ export async function generateResumeDocxBuffer(): Promise<Buffer> {
     }
   }
 
-  children.push(sectionHeading("Achievements"));
-  for (const a of achievements) {
+  children.push(sectionHeading("Corporate Exposure"));
+  children.push(
+    new Paragraph({
+      children: [
+        new TextRun({
+          text: CORPORATE_EXPERIENCE.map((c) => c.name).join(" · "),
+          size: bodySize(),
+        }),
+      ],
+    }),
+  );
+
+  children.push(sectionHeading("Work Experience"));
+  for (const e of resume.experience) {
     children.push(
       new Paragraph({
         children: [
           new TextRun({
-            text: `${a.year} — ${a.title}`,
+            text: `${e.role} • ${e.company}`,
             bold: true,
             size: bodySize(),
           }),
         ],
       }),
     );
-    if (a.detail) {
+    const meta = [e.location, `${e.start} — ${e.end ?? "Present"}`]
+      .filter(Boolean)
+      .join(" · ");
+    if (meta) {
       children.push(
         new Paragraph({
-          children: [new TextRun({ text: a.detail, size: bodySize() })],
+          children: [new TextRun({ text: meta, size: bodySize() })],
+        }),
+      );
+    }
+    for (const h of e.highlights) {
+      children.push(
+        new Paragraph({
+          children: [new TextRun({ text: `• ${h}`, size: bodySize() })],
           indent: { left: 360 },
         }),
       );
@@ -283,12 +304,12 @@ export async function generateResumeDocxBuffer(): Promise<Buffer> {
   }
 
   children.push(sectionHeading("Major milestones"));
-  for (const row of timeline) {
+  for (const row of homepageMilestones) {
     children.push(
       new Paragraph({
         children: [
           new TextRun({
-            text: `${row.year} · ${row.label}`,
+            text: `${row.year} · ${row.milestoneType}`,
             bold: true,
             size: bodySize(),
           }),
@@ -300,10 +321,10 @@ export async function generateResumeDocxBuffer(): Promise<Buffer> {
         children: [new TextRun({ text: row.title, bold: true, size: bodySize() })],
       }),
     );
-    if (row.detail) {
+    if (row.description) {
       children.push(
         new Paragraph({
-          children: [new TextRun({ text: row.detail, size: bodySize() })],
+          children: [new TextRun({ text: row.description, size: bodySize() })],
           indent: { left: 360 },
         }),
       );

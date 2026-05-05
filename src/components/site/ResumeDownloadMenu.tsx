@@ -2,8 +2,8 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 
-const PDF_HREF = "/Jag_Karnan_Resume.pdf";
-const DOCX_HREF = "/Jag_Karnan_Resume.docx";
+const PDF_HREF = "/api/resume";
+const DOCX_HREF = "/api/resume-docx";
 
 const triggerClassName =
   "focus-ring inline-flex shrink-0 items-center gap-1 rounded-md bg-[#c73e1d] px-2.5 py-1 text-xs font-medium text-white shadow-[0_0_0_1px_rgba(0,0,0,0.15)] transition-[filter,transform,background-color] duration-200 ease-out hover:bg-[#9e2e18] active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100 sm:px-3 sm:text-sm dark:bg-[#c73e1d] dark:text-white dark:shadow-[0_0_0_1px_rgba(255,255,255,0.18)] dark:hover:bg-[#9e2e18]";

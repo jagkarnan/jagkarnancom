@@ -18,6 +18,7 @@ import {
   SmartphoneChargingIcon,
   MessageCircleIcon,
 } from "lucide-animated";
+import { DomainExposurePills } from "@/components/site/DomainExposurePills";
 
 export function HeroSection() {
   const [formData, setFormData] = useState({
@@ -89,10 +90,20 @@ export function HeroSection() {
                 ) : null}
               </h1>
             </div>{" "}
-            {resume.roleLine ? (
-              <p className="text-base font-medium text-foreground/85 md:text-lg">
-                {resume.roleLine}
-              </p>
+            {resume.roleLine || resume.domainExposure ? (
+              <div className="flex flex-col gap-3">
+                {resume.roleLine ? (
+                  <p className="text-base font-medium text-foreground/85 md:text-lg">
+                    {resume.roleLine}
+                  </p>
+                ) : null}
+                {resume.domainExposure ? (
+                  <DomainExposurePills
+                    exposure={resume.domainExposure}
+                    pillsJustify="start"
+                  />
+                ) : null}
+              </div>
             ) : null}{" "}
             <p className="text-base leading-snug text-foreground/80 md:text-lg">
               {" "}

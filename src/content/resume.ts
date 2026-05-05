@@ -1,4 +1,9 @@
 export type SocialLink = { label: string; href: string };
+/** Hero “Domain exposure” row: label + domain chips */
+export type DomainExposure = {
+  label: string;
+  domains: string[];
+};
 export type SkillLevel = "Expert" | "Advanced" | "Intermediate";
 export type Skill = { name: string; level?: SkillLevel; keywords?: string[] };
 export type Certification = {
@@ -46,6 +51,8 @@ export type Resume = {
   displayLocation?: string;
   /** Shown on the line directly under the name in the hero */
   roleLine?: string;
+  /** Domains shown as chips under roleLine */
+  domainExposure?: DomainExposure;
   headline: string;
   location?: string;
   summary: string;
@@ -64,6 +71,10 @@ export const resume: Resume = {
   displayLocation: "Singapore",
   roleLine:
     "AI-native thinker • AI automation • Professional AI coding",
+  domainExposure: {
+    label: "Domain Exposure",
+    domains: ["Real Estate", "Finance", "Logistics"],
+  },
   headline:
     "Your AI Partner: AI transformation, agentic automation, and AI-driven operations that scale",
   location: "Singapore (Singapore PR • Availability: Immediate)",
@@ -192,11 +203,12 @@ export const resume: Resume = {
       end: "Present",
       highlights: [
         "Act as an AI-native partner to enterprises — automation-first discovery, hands-on prototyping, and rollout tied to KPIs rather than slide decks.",
+        "Build AI systems for real estate workflows: operational automations, assistive tooling, and integrations that fit listing-to-close processes and back-office operations.",
         "Deliver professional AI coding and integration work: assistants, internal tools, and orchestrations built for iteration, observability, and safe failure modes.",
         "Implement AI inside operational processes: documented workflows, stakeholder alignment, guardrails, and adoption checkpoints so teams sustain changes.",
         "Lead AI fluency workshops and change cadences so leadership and practitioners keep pace as models and tooling evolve.",
       ],
-      tech: ["AI Consulting", "LLMs", "Automation", "Cloud Solutions", "Enterprise AI", "Digital Transformation"],
+      tech: ["AI Consulting", "LLMs", "Real Estate Workflows", "Automation", "Cloud Solutions", "Enterprise AI", "Digital Transformation"],
     },
     {
       company: "Singapore IT Services Pte Ltd",

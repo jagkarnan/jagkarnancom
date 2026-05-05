@@ -14,27 +14,9 @@ import {
   CORPORATE_EXPERIENCE,
   getIssuerInitials,
 } from "@/content/resumeShared";
+import { buildHomepageMilestoneRows } from "@/lib/resumeDocumentHelpers";
 import { GoldMedalIcon } from "@/components/ui/GoldMedalIcon";
 import { LocationPinIcon } from "@/components/ui/LocationPinIcon";
-
-type MilestoneRow = {
-  year: number;
-  milestoneType: string;
-  title: string;
-  description: string;
-};
-
-function buildMajorMilestoneRows(): MilestoneRow[] {
-  return (resume.milestones ?? [])
-    .filter((m) => m.type !== "certification")
-    .map((m) => ({
-      year: parseInt(m.year, 10),
-      milestoneType: m.type,
-      title: m.title,
-      description: m.description,
-    }))
-    .sort((a, b) => a.year - b.year);
-}
 
 const EDUCATION_PRINT_ORDERED = [...resume.education].sort(
   (a, b) =>
@@ -42,7 +24,7 @@ const EDUCATION_PRINT_ORDERED = [...resume.education].sort(
     parseInt(a.end || a.start || "0", 10),
 );
 
-const MAJOR_MILESTONE_ROWS = buildMajorMilestoneRows();
+const MAJOR_MILESTONE_ROWS = buildHomepageMilestoneRows();
 const CERTIFICATION_BOARD_ITEMS = buildCertificationBoardItems();
 const CERTIFICATIONS_BY_DECADE = groupCertificationBoardItemsByDecade(
   CERTIFICATION_BOARD_ITEMS,
@@ -58,7 +40,7 @@ const printExact = {
 /**
  * Section order and content mirror the public site (`/`):
  * Hero → Contact → AI Skills → Tech Skills → Certifications →
- * Corporate Exposure → Work Experience → Education → Major Milestones
+ * Education → Corporate Exposure → Work Experience → Major Milestones
  */
 function ResumePrintBody() {
   const certName = resume.legalName ?? resume.name;
@@ -80,6 +62,15 @@ function ResumePrintBody() {
             {resume.legalName ? (
               <p className="mt-0.5 text-sm font-medium text-black">
                 {resume.legalName}
+              </p>
+            ) : null}
+            {resume.roleLine ? (
+              <p className="mt-2 text-sm font-medium text-black">{resume.roleLine}</p>
+            ) : null}
+            {resume.domainExposure ? (
+              <p className="mt-2 text-sm text-black">
+                <span className="font-semibold">{resume.domainExposure.label}:</span>{" "}
+                {resume.domainExposure.domains.join(", ")}
               </p>
             ) : null}
             <p className="mt-2 text-sm leading-snug text-black">
@@ -244,6 +235,44 @@ function ResumePrintBody() {
           </div>
         </section>
 
+        {/* —— Education —— */}
+        <section className="mb-8">
+          <h2 className="mb-3 border-b border-black pb-1 text-sm font-semibold uppercase tracking-wide text-black">
+            Education
+          </h2>
+          <div className="space-y-4 text-sm text-black">
+            {EDUCATION_PRINT_ORDERED.map((ed) => (
+              <div
+                key={`${ed.school}-${ed.degree}`}
+                className="resume-milestone-item border-b border-neutral-400 pb-4 last:border-0"
+              >
+                <p className="font-semibold text-black">{ed.degree}</p>
+                <p className="mt-1 text-black">{ed.school}</p>
+                <p className="mt-1 font-mono text-xs text-black">
+                  {[ed.start, ed.end].filter(Boolean).join(" — ") || "—"}
+                </p>
+                {ed.notes && ed.notes.length > 0 ? (
+                  <p className="mt-1 text-xs italic text-black">
+                    {ed.notes.map((note, i) => (
+                      <span key={`${ed.school}-${note}-${i}`}>
+                        {i > 0 ? " · " : null}
+                        {/gold\s*medal/i.test(note) ? (
+                          <span className="inline-flex items-center gap-1 align-middle not-italic">
+                            <GoldMedalIcon size={14} className="shrink-0" />
+                            <span className="italic">{note}</span>
+                          </span>
+                        ) : (
+                          note
+                        )}
+                      </span>
+                    ))}
+                  </p>
+                ) : null}
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* —— Corporate Exposure —— */}
         <section className="mb-8 break-inside-avoid">
           <h2 className="mb-4 border-b border-black pb-1 text-sm font-semibold uppercase tracking-wide text-black">
@@ -305,44 +334,6 @@ function ResumePrintBody() {
                     </li>
                   ))}
                 </ul>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* —— Education —— */}
-        <section className="mb-8">
-          <h2 className="mb-3 border-b border-black pb-1 text-sm font-semibold uppercase tracking-wide text-black">
-            Education
-          </h2>
-          <div className="space-y-4 text-sm text-black">
-            {EDUCATION_PRINT_ORDERED.map((ed) => (
-              <div
-                key={`${ed.school}-${ed.degree}`}
-                className="resume-milestone-item border-b border-neutral-400 pb-4 last:border-0"
-              >
-                <p className="font-semibold text-black">{ed.degree}</p>
-                <p className="mt-1 text-black">{ed.school}</p>
-                <p className="mt-1 font-mono text-xs text-black">
-                  {[ed.start, ed.end].filter(Boolean).join(" — ") || "—"}
-                </p>
-                {ed.notes && ed.notes.length > 0 ? (
-                  <p className="mt-1 text-xs italic text-black">
-                    {ed.notes.map((note, i) => (
-                      <span key={`${ed.school}-${note}-${i}`}>
-                        {i > 0 ? " · " : null}
-                        {/gold\s*medal/i.test(note) ? (
-                          <span className="inline-flex items-center gap-1 align-middle not-italic">
-                            <GoldMedalIcon size={14} className="shrink-0" />
-                            <span className="italic">{note}</span>
-                          </span>
-                        ) : (
-                          note
-                        )}
-                      </span>
-                    ))}
-                  </p>
-                ) : null}
               </div>
             ))}
           </div>

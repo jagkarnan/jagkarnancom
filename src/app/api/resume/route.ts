@@ -9,8 +9,8 @@ export async function GET() {
     return new NextResponse(new Uint8Array(buffer), {
       headers: {
         "Content-Type": "application/pdf",
-        'Content-Disposition': 'inline; filename="Jag_Karnan_Resume.pdf"',
-        "Cache-Control": "public, max-age=0, must-revalidate",
+        "Content-Disposition": 'attachment; filename="Jag_Karnan_Resume.pdf"',
+        "Cache-Control": "no-store",
       },
     });
   } catch (error) {
