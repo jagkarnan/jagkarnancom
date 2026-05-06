@@ -10,6 +10,13 @@ export const CORPORATE_EXPERIENCE = [
   { name: "Agility Logistics", logo: "/logos/agility.png" },
   { name: "Lazard", logo: "/logos/lazard.png" },
   { name: "AIA", logo: "/logos/aia.png" },
+  { name: "PropNex", logo: "/logos/propnex.png" },
+  { name: "Changi Airport Group", logo: "/logos/changi-airport.png" },
+  { name: "Ministry of Education Singapore", logo: "/logos/moe-singapore.svg" },
+  { name: "Singapore Civil Defence Force", logo: "/logos/scdf.png" },
+  { name: "Public Service Division", logo: "/logos/public-service-division.png" },
+  { name: "Singapore Police Force", logo: "/logos/singapore-police-force.png" },
+  { name: "Changi General Hospital", logo: "/logos/changi-general-hospital.png" },
 ] as const;
 
 export type CertificationBoardItem = {
