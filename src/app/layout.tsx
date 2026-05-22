@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: {
     default:
-      "Jag Karnan — AI-native thinker · AI automation · Professional AI coding",
+      "Jag Karnan — AI Strategy, Hands-on AI Engineer, AI Thought Leader",
     template: "%s | Jag Karnan",
   },
   description:
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   ),
   openGraph: {
     title:
-      "Jag Karnan — AI-native thinker · AI automation · Professional AI coding",
+      "Jag Karnan — AI Strategy, Hands-on AI Engineer, AI Thought Leader",
     description:
       "AI-native thinker with deep practice in AI automation and professional AI coding.",
     type: "website",
