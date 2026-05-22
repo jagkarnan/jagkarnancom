@@ -27,6 +27,9 @@ const CONTACT_NAV = { href: "/contact", label: "Contact" } as const;
 const navLinkClass =
   "focus-ring rounded-md border border-transparent px-2 py-1 text-center text-[11px] font-medium leading-tight text-foreground/70 transition-colors duration-200 ease-out hover:bg-foreground/[0.06] hover:text-foreground active:bg-foreground/10 motion-reduce:transition-none lg:px-2 lg:text-xs xl:px-2.5 xl:text-sm";
 
+const mobileYoutubeBarClass =
+  "focus-ring lg:hidden flex w-full items-center justify-center gap-2 border-b border-[#9e2e18]/40 bg-[#c73e1d] px-4 py-2.5 text-sm font-semibold tracking-tight text-white shadow-[0_2px_10px_rgba(199,62,29,0.25)] transition-[background-color,opacity] duration-200 ease-out hover:bg-[#9e2e18] active:opacity-90 motion-reduce:transition-none";
+
 const nameLinkClass =
   "focus-ring shrink-0 rounded-lg px-2 py-1.5 text-sm font-semibold tracking-tight text-foreground transition-colors duration-200 ease-out hover:bg-foreground/[0.06] active:bg-foreground/10 sm:px-3 sm:text-base motion-reduce:transition-none";
 
@@ -41,6 +44,22 @@ const mobileNavGroupLabelClass = "px-3 py-2 text-xs font-semibold uppercase trac
 
 function BrandLockup() {
   return <span className="min-w-0 truncate">{resume.name}</span>;
+}
+
+function DoubleChevronRightIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+      aria-hidden
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M11 6l6 6-6 6" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M5 6l6 6-6 6" />
+    </svg>
+  );
 }
 
 function HamburgerIcon({ open }: { open: boolean }) {
@@ -331,6 +350,18 @@ export function Header() {
           </div>
         </div>
       </div>
+      {pathname !== navItems[0].href ? (
+        <Link
+          href={navItems[0].href}
+          className={mobileYoutubeBarClass}
+          onClick={closeMenu}
+          title="Opens YouTube videos page"
+          aria-label={`${navItems[0].label} — opens in a new page`}
+        >
+          <span>{navItems[0].label}</span>
+          <DoubleChevronRightIcon className="h-4 w-4 shrink-0 opacity-90" />
+        </Link>
+      ) : null}
     </header>
     {mobileMenuPortal}
     </>
