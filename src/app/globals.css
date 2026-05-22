@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+@custom-variant light-theme (&:where(html[data-theme="light"] *));
+@custom-variant dark-theme (&:where(html:not([data-theme="light"]) *));
+
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
