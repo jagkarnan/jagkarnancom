@@ -10,6 +10,7 @@ import {
   CORPORATE_EXPERIENCE,
 } from "@/content/resumeShared";
 import { DomainExposurePills } from "@/components/site/DomainExposurePills";
+import { TechSkillsPills } from "@/components/site/TechSkillsPills";
 import { useSectionHeadingFlash } from "@/components/site/useSectionHeadingFlash";
 import { Container } from "@/components/ui/Container";
 import { GoldMedalIcon } from "@/components/ui/GoldMedalIcon";
@@ -281,7 +282,7 @@ export default function Home({
                       </span>
                     </div>
                   ) : null}
-                  <blockquote className="mx-auto w-full max-w-prose rounded-xl bg-foreground/[0.035] px-4 py-3.5 shadow-[0_0_0_1px_rgba(148,163,184,0.2)] dark:bg-foreground/[0.06] dark:shadow-[0_0_0_1px_rgba(255,255,255,0.1)] md:mx-0">
+                  <blockquote className="mx-auto w-full max-w-3xl rounded-xl bg-foreground/[0.035] px-4 py-3.5 shadow-[0_0_0_1px_rgba(148,163,184,0.2)] dark:bg-foreground/[0.06] dark:shadow-[0_0_0_1px_rgba(255,255,255,0.1)] md:mx-0">
                     <p className="text-center text-pretty text-sm font-medium italic leading-snug text-foreground/80 sm:text-base md:text-left">
                       <span className="text-foreground/45 not-italic" aria-hidden>
                         &ldquo;
@@ -293,7 +294,7 @@ export default function Home({
                     </p>
                   </blockquote>
                 </div>
-                <div className="mx-auto flex w-full max-w-prose flex-col gap-3 md:mx-0">
+                <div className="mx-auto flex w-full max-w-3xl flex-col gap-3 md:mx-0">
                   {resume.summary.split(/\n\n+/).map((para, i) => (
                     <p
                       key={i}
@@ -320,16 +321,7 @@ export default function Home({
             </ul>
           </Block>
           <Block title="Tech Skills" id="tech-skills" headingFlash={flashSectionId === "tech-skills"}>
-            <div className="flex flex-wrap gap-2 text-sm text-foreground/75">
-              {(resume.techSkills ?? []).map((t) => (
-                <span
-                  key={t}
-                  className="rounded-full border border-foreground/12 bg-foreground/5 px-3 py-1.5 font-medium transition-colors duration-200 ease-out hover:border-foreground/22 hover:bg-foreground/[0.08]"
-                >
-                  {t}
-                </span>
-              ))}
-            </div>
+            <TechSkillsPills skills={resume.techSkills ?? []} />
           </Block>
           <Block
             title="Certifications"
