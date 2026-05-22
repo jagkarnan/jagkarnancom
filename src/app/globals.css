@@ -1,8 +1,5 @@
 @import "tailwindcss";
 
-@custom-variant light-theme (&:where(html[data-theme="light"] *));
-@custom-variant dark-theme (&:where(html:not([data-theme="light"]) *));
-
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
@@ -120,6 +117,102 @@ html[data-theme="light"] .hero-gold-medal-pill {
     rgba(245 158 11 / 0.22)
   );
   box-shadow: 0 0 20px rgba(245, 158, 11, 0.18);
+}
+
+/* Tech skill pills — explicit theme rules (consistent on mobile + desktop) */
+.tech-skill-pill {
+  border: 1px solid var(--tech-pill-border);
+  background-color: var(--tech-pill-bg);
+  color: var(--tech-pill-text);
+  -webkit-text-fill-color: var(--tech-pill-text);
+}
+
+html[data-theme="light"] .tech-skill-pill--0 {
+  --tech-pill-border: rgb(124 58 237 / 0.35);
+  --tech-pill-bg: rgb(124 58 237 / 0.1);
+  --tech-pill-text: rgb(76 29 149);
+}
+html:not([data-theme="light"]) .tech-skill-pill--0 {
+  --tech-pill-border: rgb(167 139 250 / 0.22);
+  --tech-pill-bg: rgb(167 139 250 / 0.09);
+  --tech-pill-text: rgb(237 233 254);
+}
+
+html[data-theme="light"] .tech-skill-pill--1 {
+  --tech-pill-border: rgb(2 132 199 / 0.35);
+  --tech-pill-bg: rgb(2 132 199 / 0.1);
+  --tech-pill-text: rgb(12 74 110);
+}
+html:not([data-theme="light"]) .tech-skill-pill--1 {
+  --tech-pill-border: rgb(56 189 248 / 0.22);
+  --tech-pill-bg: rgb(56 189 248 / 0.09);
+  --tech-pill-text: rgb(224 242 254);
+}
+
+html[data-theme="light"] .tech-skill-pill--2 {
+  --tech-pill-border: rgb(5 150 105 / 0.35);
+  --tech-pill-bg: rgb(5 150 105 / 0.1);
+  --tech-pill-text: rgb(6 78 59);
+}
+html:not([data-theme="light"]) .tech-skill-pill--2 {
+  --tech-pill-border: rgb(52 211 153 / 0.22);
+  --tech-pill-bg: rgb(52 211 153 / 0.09);
+  --tech-pill-text: rgb(209 250 229);
+}
+
+html[data-theme="light"] .tech-skill-pill--3 {
+  --tech-pill-border: rgb(217 119 6 / 0.35);
+  --tech-pill-bg: rgb(217 119 6 / 0.1);
+  --tech-pill-text: rgb(69 26 3);
+}
+html:not([data-theme="light"]) .tech-skill-pill--3 {
+  --tech-pill-border: rgb(251 191 36 / 0.22);
+  --tech-pill-bg: rgb(251 191 36 / 0.09);
+  --tech-pill-text: rgb(254 252 232);
+}
+
+html[data-theme="light"] .tech-skill-pill--4 {
+  --tech-pill-border: rgb(225 29 72 / 0.35);
+  --tech-pill-bg: rgb(225 29 72 / 0.1);
+  --tech-pill-text: rgb(136 19 55);
+}
+html:not([data-theme="light"]) .tech-skill-pill--4 {
+  --tech-pill-border: rgb(251 113 133 / 0.22);
+  --tech-pill-bg: rgb(251 113 133 / 0.09);
+  --tech-pill-text: rgb(255 228 230);
+}
+
+html[data-theme="light"] .tech-skill-pill--5 {
+  --tech-pill-border: rgb(79 70 229 / 0.35);
+  --tech-pill-bg: rgb(79 70 229 / 0.1);
+  --tech-pill-text: rgb(49 46 129);
+}
+html:not([data-theme="light"]) .tech-skill-pill--5 {
+  --tech-pill-border: rgb(129 140 248 / 0.22);
+  --tech-pill-bg: rgb(129 140 248 / 0.09);
+  --tech-pill-text: rgb(224 231 255);
+}
+
+html[data-theme="light"] .tech-skill-pill--6 {
+  --tech-pill-border: rgb(13 148 136 / 0.35);
+  --tech-pill-bg: rgb(13 148 136 / 0.1);
+  --tech-pill-text: rgb(19 78 74);
+}
+html:not([data-theme="light"]) .tech-skill-pill--6 {
+  --tech-pill-border: rgb(45 212 191 / 0.22);
+  --tech-pill-bg: rgb(45 212 191 / 0.09);
+  --tech-pill-text: rgb(204 251 241);
+}
+
+html[data-theme="light"] .tech-skill-pill--7 {
+  --tech-pill-border: rgb(192 38 211 / 0.35);
+  --tech-pill-bg: rgb(192 38 211 / 0.1);
+  --tech-pill-text: rgb(112 26 117);
+}
+html:not([data-theme="light"]) .tech-skill-pill--7 {
+  --tech-pill-border: rgb(232 121 249 / 0.22);
+  --tech-pill-bg: rgb(232 121 249 / 0.09);
+  --tech-pill-text: rgb(250 232 255);
 }
 
 .ai-grid {
