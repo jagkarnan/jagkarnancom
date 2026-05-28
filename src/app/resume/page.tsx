@@ -88,7 +88,7 @@ function ResumePrintBody() {
         </section>
 
         {/* —— Contact —— */}
-        <section className="mb-8 break-inside-avoid">
+        <section className="resume-print-section mb-8 break-inside-avoid">
           <h2 className="mb-3 border-b border-black pb-1 text-sm font-semibold uppercase tracking-wide text-black">
             Contact
           </h2>
@@ -120,7 +120,7 @@ function ResumePrintBody() {
         </section>
 
         {/* —— AI Skills —— */}
-        <section className="mb-8">
+        <section className="resume-print-section mb-8">
           <h2 className="mb-3 border-b border-black pb-1 text-sm font-semibold uppercase tracking-wide text-black">
             AI Skills
           </h2>
@@ -138,7 +138,7 @@ function ResumePrintBody() {
         </section>
 
         {/* —— Tech Skills —— */}
-        <section className="mb-8">
+        <section className="resume-print-section mb-8">
           <h2 className="mb-3 border-b border-black pb-1 text-sm font-semibold uppercase tracking-wide text-black">
             Tech Skills
           </h2>
@@ -156,7 +156,7 @@ function ResumePrintBody() {
         </section>
 
         {/* —— Certifications by decade (same merged list as home) —— */}
-        <section className="mb-8">
+        <section className="resume-print-section mb-8">
           <h2 className="mb-3 border-b border-black pb-1 text-sm font-semibold uppercase tracking-wide text-black">
             Certifications
           </h2>
@@ -165,7 +165,7 @@ function ResumePrintBody() {
               <div
                 key={group.id}
                 className={
-                  "min-w-0" +
+                  "resume-print-decade-group min-w-0" +
                   (i > 0 ? " mt-6 border-t border-neutral-300 pt-6" : "")
                 }
               >
@@ -236,7 +236,7 @@ function ResumePrintBody() {
         </section>
 
         {/* —— Education —— */}
-        <section className="mb-8">
+        <section className="resume-print-section mb-8">
           <h2 className="mb-3 border-b border-black pb-1 text-sm font-semibold uppercase tracking-wide text-black">
             Education
           </h2>
@@ -274,7 +274,7 @@ function ResumePrintBody() {
         </section>
 
         {/* —— Corporate Exposure —— */}
-        <section className="mb-8 break-inside-avoid">
+        <section className="resume-print-section mb-8 break-inside-avoid">
           <h2 className="mb-4 border-b border-black pb-1 text-sm font-semibold uppercase tracking-wide text-black">
             Corporate Exposure
           </h2>
@@ -300,7 +300,7 @@ function ResumePrintBody() {
         </section>
 
         {/* —— Work Experience —— */}
-        <section className="mb-8">
+        <section className="resume-print-section mb-8">
           <h2 className="mb-3 border-b border-black pb-1 text-sm font-semibold uppercase tracking-wide text-black">
             Work Experience
           </h2>
@@ -340,7 +340,7 @@ function ResumePrintBody() {
         </section>
 
         {/* —— Major Milestones (non-cert milestones; same basis as site Timeline) —— */}
-        <section>
+        <section className="resume-print-section">
           <h2 className="mb-3 border-b border-black pb-1 text-sm font-semibold uppercase tracking-wide text-black">
             Major Milestones
           </h2>

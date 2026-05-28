@@ -12,16 +12,17 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["pdfkit", "fontkit"],
   outputFileTracingIncludes: {
     "/api/resume": ["./node_modules/pdfkit/js/data/**/*"],
+    "/api/resume-zip": ["./node_modules/pdfkit/js/data/**/*"],
   },
   async rewrites() {
     return [
       {
         source: "/Jag_Karnan_Resume.pdf",
-        destination: "/api/resume",
+        destination: "/api/resume?variant=detailed",
       },
       {
         source: "/Jag_Karnan_Resume.docx",
-        destination: "/api/resume-docx",
+        destination: "/api/resume-docx?variant=detailed",
       },
     ];
   },

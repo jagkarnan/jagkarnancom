@@ -1,17 +1,25 @@
 import { generateResumeDocxBuffer } from "@/lib/resumeDocx";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { RESUME_FILE_BASENAME, type ResumeDocumentVariant } from "@/lib/resumeDocumentOptions";
 
 export const runtime = "nodejs";
 
-export async function GET() {
+function parseVariant(request: NextRequest): ResumeDocumentVariant {
+  const value = request.nextUrl.searchParams.get("variant");
+  return value === "concise" ? "concise" : "detailed";
+}
+
+export async function GET(request: NextRequest) {
   try {
-    const buffer = await generateResumeDocxBuffer();
+    const variant = parseVariant(request);
+    const buffer = await generateResumeDocxBuffer(variant);
+    const suffix = variant === "concise" ? "concise" : "detailed";
     return new NextResponse(new Uint8Array(buffer), {
       status: 200,
       headers: {
         "Content-Type":
           "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        "Content-Disposition": 'attachment; filename="Jag_Karnan_Resume.docx"',
+        "Content-Disposition": `attachment; filename="${RESUME_FILE_BASENAME}_${suffix}.docx"`,
         "Cache-Control": "no-store",
       },
     });

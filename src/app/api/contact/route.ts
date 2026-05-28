@@ -52,12 +52,12 @@ export async function POST(request: NextRequest) {
     const { data, error } = await resend.emails.send({
       from: RESEND_FROM,
       to: [toEmail],
-      subject: 'AI Consulting Inquiry',
+      subject: 'Contact Form Submission - jagkarnan.com',
       replyTo: email,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #333; border-bottom: 2px solid #eee; padding-bottom: 10px;">
-            New AI Consulting Inquiry
+            New Contact Form Submission
           </h2>
           
           <div style="margin: 20px 0;">

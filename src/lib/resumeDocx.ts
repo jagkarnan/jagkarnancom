@@ -10,15 +10,24 @@ import {
 import { resume } from "@/content/resume";
 import { getSensitiveContactLinks } from "@/lib/contactSensitive";
 import {
-  buildHomepageMilestoneRows,
   DOCX_PT,
   formatContactLine,
 } from "@/lib/resumeDocumentHelpers";
+import { CORPORATE_EXPERIENCE } from "@/content/resumeShared";
 import {
-  buildCertificationBoardItems,
-  groupCertificationBoardItemsByDecade,
-  CORPORATE_EXPERIENCE,
-} from "@/content/resumeShared";
+  getCertificationsByDecadeForDocument,
+  getCertificationItemsForDocument,
+  formatConciseCertificationLine,
+  includeCertificationDecadeHeaders,
+  getExperienceForDocument,
+  getMilestonesForDocument,
+  getSkillsForDocument,
+  getSummaryParagraphs,
+  includeContactNameBlock,
+  includeMilestoneDescriptions,
+  resumeDocumentTitle,
+  type ResumeDocumentVariant,
+} from "@/lib/resumeDocumentOptions";
 
 function bodySize() {
   return DOCX_PT(10);
@@ -27,6 +36,7 @@ function bodySize() {
 function sectionHeading(title: string): Paragraph {
   return new Paragraph({
     spacing: { before: 240, after: 120 },
+    keepNext: true,
     children: [
       new TextRun({
         text: title.toUpperCase(),
@@ -35,6 +45,20 @@ function sectionHeading(title: string): Paragraph {
         size: DOCX_PT(11),
       }),
     ],
+  });
+}
+
+function subsectionHeading(text: string): Paragraph {
+  return new Paragraph({
+    keepNext: true,
+    children: [new TextRun({ text, bold: true, size: bodySize() })],
+  });
+}
+
+function itemHeading(text: string): Paragraph {
+  return new Paragraph({
+    keepNext: true,
+    children: [new TextRun({ text, bold: true, size: bodySize() })],
   });
 }
 
@@ -61,10 +85,14 @@ function contactLineParagraph(l: { label: string; href: string }): Paragraph {
   });
 }
 
-export async function generateResumeDocxBuffer(): Promise<Buffer> {
-  const certBoard = buildCertificationBoardItems();
-  const certificationsByDecade = groupCertificationBoardItemsByDecade(certBoard);
-  const homepageMilestones = buildHomepageMilestoneRows();
+export async function generateResumeDocxBuffer(
+  variant: ResumeDocumentVariant = "detailed",
+): Promise<Buffer> {
+  const certificationsByDecade = getCertificationsByDecadeForDocument(variant);
+  const homepageMilestones = getMilestonesForDocument(variant);
+  const summaryParas = getSummaryParagraphs(variant);
+  const skills = getSkillsForDocument(variant);
+  const experience = getExperienceForDocument(variant);
 
   const children: Paragraph[] = [];
 
@@ -73,6 +101,21 @@ export async function generateResumeDocxBuffer(): Promise<Buffer> {
       children: [new TextRun({ text: resume.name, bold: true, size: DOCX_PT(22) })],
     }),
   );
+  if (variant === "concise") {
+    children.push(
+      new Paragraph({
+        spacing: { after: 80 },
+        children: [
+          new TextRun({
+            text: "Concise summary — highlights only",
+            italics: true,
+            size: DOCX_PT(9),
+            color: "525252",
+          }),
+        ],
+      }),
+    );
+  }
   if (resume.legalName) {
     children.push(
       new Paragraph({
@@ -122,7 +165,7 @@ export async function generateResumeDocxBuffer(): Promise<Buffer> {
       }),
     );
   }
-  for (const para of resume.summary.split(/\n\n+/).map((p) => p.trim()).filter(Boolean)) {
+  for (const para of summaryParas) {
     children.push(
       new Paragraph({
         children: [new TextRun({ text: para, size: bodySize() })],
@@ -131,22 +174,25 @@ export async function generateResumeDocxBuffer(): Promise<Buffer> {
   }
 
   children.push(sectionHeading("Contact"));
-  children.push(
-    new Paragraph({
-      children: [new TextRun({ text: resume.name, bold: true, size: bodySize() })],
-    }),
-  );
-  if (resume.legalName) {
+  if (includeContactNameBlock(variant)) {
     children.push(
       new Paragraph({
-        children: [new TextRun({ text: resume.legalName, size: bodySize() })],
+        keepNext: true,
+        children: [new TextRun({ text: resume.name, bold: true, size: bodySize() })],
       }),
     );
+    if (resume.legalName) {
+      children.push(
+        new Paragraph({
+          children: [new TextRun({ text: resume.legalName, size: bodySize() })],
+        }),
+      );
+    }
   }
   for (const l of [...resume.links, ...getSensitiveContactLinks()]) {
     children.push(contactLineParagraph(l));
   }
-  if (resume.domainExposure?.domains?.length) {
+  if (resume.domainExposure?.domains?.length && variant === "detailed") {
     const de = resume.domainExposure;
     children.push(
       new Paragraph({
@@ -167,7 +213,7 @@ export async function generateResumeDocxBuffer(): Promise<Buffer> {
   }
 
   children.push(sectionHeading("AI skills"));
-  for (const s of resume.skills) {
+  for (const s of skills) {
     const line = s.level ? `${s.name} (${s.level})` : s.name;
     children.push(
       new Paragraph({
@@ -190,37 +236,45 @@ export async function generateResumeDocxBuffer(): Promise<Buffer> {
   );
 
   children.push(sectionHeading("Certifications"));
-  for (let gi = 0; gi < certificationsByDecade.length; gi++) {
-    const group = certificationsByDecade[gi];
-    if (gi > 0) {
-      children.push(
-        new Paragraph({
-          spacing: { before: 120, after: 60 },
-          border: {
-            bottom: { color: "D4D4D8", size: 4, style: "single", space: 1 },
-          },
-        }),
-      );
-    }
-    children.push(
-      new Paragraph({
-        children: [new TextRun({ text: group.label, bold: true, size: bodySize() })],
-      }),
-    );
-    for (const c of group.items) {
-      children.push(
-        new Paragraph({
-          children: [new TextRun({ text: c.title, bold: true, size: bodySize() })],
-        }),
-      );
-      const issuerLine = [c.subtitle, c.year].filter(Boolean).join(" · ");
-      if (issuerLine) {
+  if (includeCertificationDecadeHeaders(variant)) {
+    for (let gi = 0; gi < certificationsByDecade.length; gi++) {
+      const group = certificationsByDecade[gi];
+      if (gi > 0) {
         children.push(
           new Paragraph({
-            children: [new TextRun({ text: issuerLine, size: bodySize() })],
+            spacing: { before: 120, after: 60 },
+            border: {
+              bottom: { color: "D4D4D8", size: 4, style: "single", space: 1 },
+            },
           }),
         );
       }
+      children.push(subsectionHeading(group.label));
+      for (const c of group.items) {
+        children.push(itemHeading(c.title));
+        const issuerLine = [c.subtitle, c.year].filter(Boolean).join(" · ");
+        if (issuerLine) {
+          children.push(
+            new Paragraph({
+              children: [new TextRun({ text: issuerLine, size: bodySize() })],
+            }),
+          );
+        }
+      }
+    }
+  } else {
+    for (const c of getCertificationItemsForDocument(variant)) {
+      children.push(
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: `• ${formatConciseCertificationLine(c)}`,
+              size: bodySize(),
+            }),
+          ],
+          indent: { left: 360 },
+        }),
+      );
     }
   }
 
@@ -231,11 +285,7 @@ export async function generateResumeDocxBuffer(): Promise<Buffer> {
       parseInt(a.end || a.start || "0", 10),
   );
   for (const ed of educationOrdered) {
-    children.push(
-      new Paragraph({
-        children: [new TextRun({ text: ed.degree, bold: true, size: bodySize() })],
-      }),
-    );
+    children.push(itemHeading(ed.degree));
     children.push(
       new Paragraph({
         children: [new TextRun({ text: ed.school, size: bodySize() })],
@@ -271,9 +321,10 @@ export async function generateResumeDocxBuffer(): Promise<Buffer> {
   );
 
   children.push(sectionHeading("Work Experience"));
-  for (const e of resume.experience) {
+  for (const e of experience) {
     children.push(
       new Paragraph({
+        keepNext: true,
         children: [
           new TextRun({
             text: `${e.role} • ${e.company}`,
@@ -307,6 +358,7 @@ export async function generateResumeDocxBuffer(): Promise<Buffer> {
   for (const row of homepageMilestones) {
     children.push(
       new Paragraph({
+        keepNext: true,
         children: [
           new TextRun({
             text: `${row.year} · ${row.milestoneType}`,
@@ -316,12 +368,8 @@ export async function generateResumeDocxBuffer(): Promise<Buffer> {
         ],
       }),
     );
-    children.push(
-      new Paragraph({
-        children: [new TextRun({ text: row.title, bold: true, size: bodySize() })],
-      }),
-    );
-    if (row.description) {
+    children.push(itemHeading(row.title));
+    if (includeMilestoneDescriptions(variant) && row.description) {
       children.push(
         new Paragraph({
           children: [new TextRun({ text: row.description, size: bodySize() })],
@@ -352,7 +400,7 @@ export async function generateResumeDocxBuffer(): Promise<Buffer> {
         children,
       },
     ],
-    title: `${resume.name} — Résumé`,
+    title: resumeDocumentTitle(variant),
     description: "Generated from site content",
     creator: resume.name,
   });
