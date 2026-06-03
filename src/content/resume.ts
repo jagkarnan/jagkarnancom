@@ -157,9 +157,9 @@ export const resume: Resume = {
       result: "Automated listing-to-close processes with human-in-the-loop validation, eliminating data entry bottlenecks.",
     },
     {
-      problem: "GenAI prototypes work well in sandbox demos but fail in production due to lack of evaluation baselines, high API costs, or data privacy restrictions.",
-      solution: "I deploy targeted local LLMs (via Ollama/LoRA) and implement structured logging, cost guardrails, and evaluation benchmarks.",
-      result: "Stable, compliant AI integrations running with predictable costs, clear observability, and on-premises data sovereignty.",
+      problem: "Operations teams spend hours manually copying unstructured details from client emails, PDF attachments, or messaging chats into internal CRM and database systems.",
+      solution: "I build structured LLM extraction pipelines and custom parsers that automatically process arbitrary formats and output validated JSON to target APIs.",
+      result: "Automated data ingestion from human-written communications directly into databases, with exception alerts and human-in-the-loop review.",
     },
   ],
   techSkills: [
