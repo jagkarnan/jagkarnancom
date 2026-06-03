@@ -12,6 +12,7 @@ import { DomainExposurePills } from "@/components/site/DomainExposurePills";
 import { TechSkillsPills } from "@/components/site/TechSkillsPills";
 import { SkillsInfographic } from "@/components/site/SkillsInfographic";
 import { ValuePropositions } from "@/components/site/ValuePropositions";
+import { ContactChannels } from "@/components/contact/ContactPageBody";
 import { useSectionHeadingFlash } from "@/components/site/useSectionHeadingFlash";
 import { Container } from "@/components/ui/Container";
 import { GoldMedalIcon } from "@/components/ui/GoldMedalIcon";
@@ -277,6 +278,13 @@ export default function Home({
               </div>
             </div>
           </section>
+          <Block
+            title="Connect"
+            id="connect"
+            headingFlash={flashSectionId === "connect"}
+          >
+            <ContactChannels />
+          </Block>
           {resume.valuePropositions?.length ? (
             <Block
               title="How I Help"

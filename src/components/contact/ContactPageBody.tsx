@@ -17,8 +17,45 @@ import {
   YoutubeIcon,
 } from "lucide-animated";
 
-const channelButtonClass =
+export const channelButtonClass =
   "focus-ring inline-flex min-h-11 min-w-[2.75rem] items-center gap-2 rounded-xl border border-foreground/10 bg-foreground/[0.04] px-3 py-2 font-medium text-foreground/85 transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/18 hover:bg-foreground/[0.07] active:scale-[0.98] active:bg-foreground/[0.09] motion-reduce:active:scale-100 sm:px-4";
+
+export function ContactChannels() {
+  return (
+    <div className="flex flex-col gap-4 text-sm text-foreground/80">
+      <div className="flex flex-wrap gap-2 sm:gap-3">
+        {resume.links.map((l) => (
+          <a
+            key={l.href}
+            href={l.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={channelButtonClass}
+          >
+            {l.label === "LinkedIn" && <LinkedinIcon size={16} />}
+            {l.label === "GitHub" && <GithubIcon size={16} />}
+            {l.label === "YouTube" && <YoutubeIcon size={16} />}
+            <span>{l.label}</span>
+          </a>
+        ))}
+      </div>
+      <div className="flex flex-wrap gap-2 border-t border-foreground/10 pt-4 sm:gap-3">
+        <ObfuscatedWhatsAppAnchor className={`${channelButtonClass} max-w-full min-w-0 break-all sm:break-normal sm:whitespace-nowrap`}>
+          <MessageCircleIcon size={16} />
+          <span>WhatsApp</span>
+        </ObfuscatedWhatsAppAnchor>
+        <ObfuscatedMailtoAnchor newTab className={channelButtonClass}>
+          <MailCheckIcon size={16} />
+          <span>Email</span>
+        </ObfuscatedMailtoAnchor>
+        <ObfuscatedTelAnchor newTab className={`${channelButtonClass} max-w-full min-w-0 break-all sm:break-normal sm:whitespace-nowrap`}>
+          <SmartphoneChargingIcon size={16} />
+          <span>Call</span>
+        </ObfuscatedTelAnchor>
+      </div>
+    </div>
+  );
+}
 
 export function ContactPageBody() {
   return (
@@ -60,37 +97,8 @@ export function ContactPageBody() {
           >
             Other channels
           </h2>
-          <div className="mt-4 flex flex-col gap-4 text-sm text-foreground/80">
-            <div className="flex flex-wrap gap-2 sm:gap-3">
-              {resume.links.map((l) => (
-                <a
-                  key={l.href}
-                  href={l.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={channelButtonClass}
-                >
-                  {l.label === "LinkedIn" && <LinkedinIcon size={16} />}
-                  {l.label === "GitHub" && <GithubIcon size={16} />}
-                  {l.label === "YouTube" && <YoutubeIcon size={16} />}
-                  <span>{l.label}</span>
-                </a>
-              ))}
-            </div>
-            <div className="flex flex-wrap gap-2 border-t border-foreground/10 pt-4 sm:gap-3">
-              <ObfuscatedWhatsAppAnchor className={`${channelButtonClass} max-w-full min-w-0 break-all sm:break-normal sm:whitespace-nowrap`}>
-                <MessageCircleIcon size={16} />
-                <span>WhatsApp</span>
-              </ObfuscatedWhatsAppAnchor>
-              <ObfuscatedMailtoAnchor newTab className={channelButtonClass}>
-                <MailCheckIcon size={16} />
-                <span>Email</span>
-              </ObfuscatedMailtoAnchor>
-              <ObfuscatedTelAnchor newTab className={`${channelButtonClass} max-w-full min-w-0 break-all sm:break-normal sm:whitespace-nowrap`}>
-                <SmartphoneChargingIcon size={16} />
-                <span>Call</span>
-              </ObfuscatedTelAnchor>
-            </div>
+          <div className="mt-4">
+            <ContactChannels />
           </div>
         </section>
       </div>
