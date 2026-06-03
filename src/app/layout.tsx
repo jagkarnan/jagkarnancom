@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Outfit, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { FloatingWhatsAppButton } from "@/components/site/FloatingWhatsAppButton";
 import { Footer } from "@/components/site/Footer";
 import { Header } from "@/components/site/Header";
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const outfit = Outfit({ variable: "--font-outfit", subsets: ["latin"] });
+const plusJakarta = Plus_Jakarta_Sans({
+  variable: "--font-plus-jakarta",
+  subsets: ["latin"],
+});
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
 });
 export const metadata: Metadata = {
@@ -52,7 +56,7 @@ export default async function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${outfit.variable} ${plusJakarta.variable} ${jetbrainsMono.variable} antialiased`}
         suppressHydrationWarning
       >
         <div className="ai-grid min-h-dvh">

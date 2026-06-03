@@ -76,8 +76,9 @@ html[data-theme="light"] {
   --color-accent: var(--accent);
   --color-accent-2: var(--accent-2);
   --color-muted: var(--foreground-muted);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-plus-jakarta), ui-sans-serif, system-ui;
+  --font-heading: var(--font-outfit), ui-sans-serif, system-ui;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular;
 }
 
 body {
@@ -90,13 +91,18 @@ body {
     radial-gradient(1000px 800px at 85% 10%, rgba(139, 92, 246, 0.15) 0%, transparent 60%),
     radial-gradient(600px 400px at 50% 100%, rgba(14, 165, 233, 0.10) 0%, transparent 60%),
     linear-gradient(to bottom, #070d1d, var(--background));
-  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system,
+  font-family: var(--font-plus-jakarta), ui-sans-serif, system-ui, -apple-system,
     Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
   background-attachment: fixed;
   user-select: text;
   -webkit-user-select: text;
   -moz-user-select: text;
   -ms-user-select: text;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-outfit), var(--font-plus-jakarta), sans-serif;
+  letter-spacing: -0.02em;
 }
 
 html[data-theme="light"] body {
@@ -231,13 +237,14 @@ html:not([data-theme="light"]) .tech-skill-pill--7 {
 
 /* Display headings: Geist compression (DESIGN.md §3) */
 .geist-display {
-  letter-spacing: -0.045em;
+  font-family: var(--font-outfit), sans-serif;
+  letter-spacing: -0.025em;
   line-height: 1.12;
 }
 
 @media (min-width: 640px) {
   .geist-display {
-    letter-spacing: -0.055em;
+    letter-spacing: -0.035em;
   }
 }
 
