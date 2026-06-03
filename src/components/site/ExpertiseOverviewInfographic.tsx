@@ -3,8 +3,8 @@
 import React from "react";
 import { RouteIcon, WorkflowIcon, CpuIcon, LockIcon } from "lucide-animated";
 
-/** Custom Glowing Electronic Brain SVG Icon */
-function ElectronicBrainIcon({ className = "w-12 h-12" }: { className?: string }) {
+/** Custom Glowing Electronic Brain SVG Icon with Sketch styling capability */
+function ElectronicBrainIcon({ className = "w-12 h-12", filter = "" }: { className?: string; filter?: string }) {
   return (
     <svg
       viewBox="0 0 64 64"
@@ -14,6 +14,7 @@ function ElectronicBrainIcon({ className = "w-12 h-12" }: { className?: string }
       strokeWidth="1.75"
       strokeLinecap="round"
       strokeLinejoin="round"
+      style={filter ? { filter } : undefined}
       aria-hidden="true"
     >
       {/* Brain Silhouette Left Hemisphere */}
@@ -39,13 +40,13 @@ function ElectronicBrainIcon({ className = "w-12 h-12" }: { className?: string }
       
       {/* Left Circuit Elements */}
       <path d="M 32 18 H 22 V 26 H 18" className="stroke-accent-2" />
-      <circle cx="18" cy="26" r="2.5" className="fill-accent-2 stroke-accent-2" />
+      <circle cx="18" cy="26" r="2" className="fill-accent-2 stroke-accent-2" />
       
       <path d="M 32 30 H 25 V 36" className="stroke-accent" />
-      <circle cx="25" cy="36" r="2.5" className="fill-accent stroke-accent" />
+      <circle cx="25" cy="36" r="2" className="fill-accent stroke-accent" />
 
       <path d="M 32 42 H 23 V 46" className="stroke-accent-2" opacity="0.8" />
-      <circle cx="23" cy="46" r="2" className="fill-accent-2 stroke-accent-2" opacity="0.8" />
+      <circle cx="23" cy="46" r="1.5" className="fill-accent-2 stroke-accent-2" opacity="0.8" />
 
       {/* Right Circuit Elements */}
       <path d="M 32 18 H 42 V 26 H 46" className="stroke-accent-2" />
@@ -55,19 +56,38 @@ function ElectronicBrainIcon({ className = "w-12 h-12" }: { className?: string }
       <circle cx="39" cy="36" r="2.5" className="fill-accent stroke-accent" />
 
       <path d="M 32 42 H 41 V 46" className="stroke-accent-2" opacity="0.8" />
-      <circle cx="41" cy="46" r="2" className="fill-accent-2 stroke-accent-2" opacity="0.8" />
+      <circle cx="41" cy="46" r="1.5" className="fill-accent-2 stroke-accent-2" opacity="0.8" />
     </svg>
   );
 }
 
 export function ExpertiseOverviewInfographic() {
+  const sketchFilter = "url(#pencil-sketch)";
+
   return (
     <div className="w-full flex flex-col gap-8">
+      {/* SVG Sketch Filter Definition */}
+      <svg className="absolute w-0 h-0" aria-hidden="true">
+        <defs>
+          <filter id="pencil-sketch" x="-10%" y="-10%" width="120%" height="120%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="3" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+        </defs>
+      </svg>
+
       {/* 1. Mobile Layout: Vertical Stack (< md) */}
       <div className="flex flex-col gap-4 md:hidden">
         {/* Mobile Center Header Card */}
-        <div className="glass-card flex flex-col items-center justify-center p-6 text-center rounded-xl border border-foreground/10 shadow-sm bg-foreground/[0.01]">
-          <ElectronicBrainIcon className="w-14 h-14 mb-3" />
+        <div className="relative flex flex-col items-center justify-center p-6 text-center rounded-xl bg-foreground/[0.01] overflow-hidden min-h-[120px]">
+          {/* Sketch border background */}
+          <div className="absolute inset-0 pointer-events-none">
+            <svg className="w-full h-full text-foreground/15 dark:text-foreground/10" style={{ filter: sketchFilter }}>
+              <rect x="2" y="2" width="calc(100% - 4px)" height="calc(100% - 4px)" rx="12" fill="none" stroke="currentColor" strokeWidth="1.5" />
+              <rect x="3.5" y="1" width="calc(100% - 7px)" height="calc(100% - 2px)" rx="12" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.6" />
+            </svg>
+          </div>
+          <ElectronicBrainIcon className="w-14 h-14 mb-3" filter={sketchFilter} />
           <h3 className="text-sm font-bold tracking-tight text-foreground font-heading">
             AI Expertise & Capability Overview
           </h3>
@@ -76,8 +96,15 @@ export function ExpertiseOverviewInfographic() {
         {/* Mobile Corner Blocks */}
         <div className="grid gap-3 sm:grid-cols-2">
           {/* AI Strategy */}
-          <div className="border border-amber-500/15 bg-amber-500/[0.01] rounded-xl p-4 flex flex-col gap-2">
-            <div className="flex items-center gap-2">
+          <div className="relative bg-amber-500/[0.005] rounded-xl p-4 flex flex-col gap-2 min-h-[110px]">
+            {/* Sketch border */}
+            <div className="absolute inset-0 pointer-events-none">
+              <svg className="w-full h-full text-amber-500/20" style={{ filter: sketchFilter }}>
+                <rect x="2" y="2" width="calc(100% - 4px)" height="calc(100% - 4px)" rx="12" fill="none" stroke="currentColor" strokeWidth="1.25" />
+                <rect x="3" y="1" width="calc(100% - 6px)" height="calc(100% - 2px)" rx="12" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.5" />
+              </svg>
+            </div>
+            <div className="flex items-center gap-2 z-10">
               <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400">
                 <RouteIcon size={16} />
               </div>
@@ -85,7 +112,7 @@ export function ExpertiseOverviewInfographic() {
                 AI Strategy & Roadmaps
               </h4>
             </div>
-            <ul className="list-disc pl-4 text-[11px] leading-relaxed text-foreground/75 space-y-1">
+            <ul className="list-disc pl-4 text-[11px] leading-relaxed text-foreground/75 space-y-1 z-10">
               <li>Roadmap planning</li>
               <li>ROI modeling</li>
               <li>Applied AI</li>
@@ -93,8 +120,15 @@ export function ExpertiseOverviewInfographic() {
           </div>
 
           {/* Agentic Automation */}
-          <div className="border border-indigo-500/15 bg-indigo-500/[0.01] rounded-xl p-4 flex flex-col gap-2">
-            <div className="flex items-center gap-2">
+          <div className="relative bg-indigo-500/[0.005] rounded-xl p-4 flex flex-col gap-2 min-h-[110px]">
+            {/* Sketch border */}
+            <div className="absolute inset-0 pointer-events-none">
+              <svg className="w-full h-full text-indigo-500/20" style={{ filter: sketchFilter }}>
+                <rect x="2" y="2" width="calc(100% - 4px)" height="calc(100% - 4px)" rx="12" fill="none" stroke="currentColor" strokeWidth="1.25" />
+                <rect x="3" y="1" width="calc(100% - 6px)" height="calc(100% - 2px)" rx="12" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.5" />
+              </svg>
+            </div>
+            <div className="flex items-center gap-2 z-10">
               <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
                 <WorkflowIcon size={16} />
               </div>
@@ -102,7 +136,7 @@ export function ExpertiseOverviewInfographic() {
                 Agentic Automation
               </h4>
             </div>
-            <ul className="list-disc pl-4 text-[11px] leading-relaxed text-foreground/75 space-y-1">
+            <ul className="list-disc pl-4 text-[11px] leading-relaxed text-foreground/75 space-y-1 z-10">
               <li>Multi-agent coordination</li>
               <li>Autonomous workflows</li>
               <li>Tool & API integration</li>
@@ -110,8 +144,15 @@ export function ExpertiseOverviewInfographic() {
           </div>
 
           {/* GenAI Engineering */}
-          <div className="border border-sky-500/15 bg-sky-500/[0.01] rounded-xl p-4 flex flex-col gap-2">
-            <div className="flex items-center gap-2">
+          <div className="relative bg-sky-500/[0.005] rounded-xl p-4 flex flex-col gap-2 min-h-[110px]">
+            {/* Sketch border */}
+            <div className="absolute inset-0 pointer-events-none">
+              <svg className="w-full h-full text-sky-500/20" style={{ filter: sketchFilter }}>
+                <rect x="2" y="2" width="calc(100% - 4px)" height="calc(100% - 4px)" rx="12" fill="none" stroke="currentColor" strokeWidth="1.25" />
+                <rect x="3" y="1" width="calc(100% - 6px)" height="calc(100% - 2px)" rx="12" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.5" />
+              </svg>
+            </div>
+            <div className="flex items-center gap-2 z-10">
               <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-sky-500/10 text-sky-600 dark:text-sky-400">
                 <CpuIcon size={16} />
               </div>
@@ -119,7 +160,7 @@ export function ExpertiseOverviewInfographic() {
                 GenAI Engineering
               </h4>
             </div>
-            <ul className="list-disc pl-4 text-[11px] leading-relaxed text-foreground/75 space-y-1">
+            <ul className="list-disc pl-4 text-[11px] leading-relaxed text-foreground/75 space-y-1 z-10">
               <li>LLM APIs (Claude, GPT, Gemini)</li>
               <li>RAG & vector databases</li>
               <li>Production deployment</li>
@@ -127,8 +168,15 @@ export function ExpertiseOverviewInfographic() {
           </div>
 
           {/* Private LLMs */}
-          <div className="border border-emerald-500/15 bg-emerald-500/[0.01] rounded-xl p-4 flex flex-col gap-2">
-            <div className="flex items-center gap-2">
+          <div className="relative bg-emerald-500/[0.005] rounded-xl p-4 flex flex-col gap-2 min-h-[110px]">
+            {/* Sketch border */}
+            <div className="absolute inset-0 pointer-events-none">
+              <svg className="w-full h-full text-emerald-500/20" style={{ filter: sketchFilter }}>
+                <rect x="2" y="2" width="calc(100% - 4px)" height="calc(100% - 4px)" rx="12" fill="none" stroke="currentColor" strokeWidth="1.25" />
+                <rect x="3" y="1" width="calc(100% - 6px)" height="calc(100% - 2px)" rx="12" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.5" />
+              </svg>
+            </div>
+            <div className="flex items-center gap-2 z-10">
               <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
                 <LockIcon size={16} />
               </div>
@@ -136,7 +184,7 @@ export function ExpertiseOverviewInfographic() {
                 Local & Private LLMs
               </h4>
             </div>
-            <ul className="list-disc pl-4 text-[11px] leading-relaxed text-foreground/75 space-y-1">
+            <ul className="list-disc pl-4 text-[11px] leading-relaxed text-foreground/75 space-y-1 z-10">
               <li>Ollama & local models</li>
               <li>Compliance & security</li>
               <li>Cost optimization</li>
@@ -148,14 +196,15 @@ export function ExpertiseOverviewInfographic() {
       {/* 2. Desktop Layout: Relative Grid & SVG Connectors (>= md) */}
       <div className="hidden md:block w-full max-w-4xl mx-auto relative aspect-[16/9] select-none">
         
-        {/* SVG Curved Connections Layer */}
+        {/* SVG Curved Connections Layer (with sketch filter) */}
         <svg
-          className="absolute inset-0 w-full h-full pointer-events-none text-foreground/15 dark:text-foreground/10"
+          className="absolute inset-0 w-full h-full pointer-events-none text-foreground/20 dark:text-foreground/15"
           viewBox="0 0 1000 562.5"
           fill="none"
           stroke="currentColor"
           strokeWidth="1.5"
           strokeDasharray="4 4"
+          style={{ filter: sketchFilter }}
         >
           {/* Arrowhead markers definition */}
           <defs>
@@ -168,7 +217,7 @@ export function ExpertiseOverviewInfographic() {
               markerHeight="6"
               orient="auto-start-reverse"
             >
-              <path d="M 10 0 L 0 5 L 10 10 z" fill="currentColor" className="text-foreground/30 dark:text-foreground/20" />
+              <path d="M 10 0 L 0 5 L 10 10 z" fill="currentColor" className="text-foreground/30 dark:text-foreground/25" />
             </marker>
             <marker
               id="arrow-right"
@@ -179,36 +228,46 @@ export function ExpertiseOverviewInfographic() {
               markerHeight="6"
               orient="auto"
             >
-              <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" className="text-foreground/30 dark:text-foreground/20" />
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" className="text-foreground/30 dark:text-foreground/25" />
             </marker>
           </defs>
 
-          {/* Curves from Center Card to Corners (Center is 500, 281) */}
-          {/* Top Left (Card Bottom-Right center roughly 140, 180) */}
+          {/* Curvy connector lines between center and outer boxes */}
+          {/* Top Left curve */}
           <path d="M 340 281 C 240 281, 140 250, 140 190" markerEnd="url(#arrow-left)" />
-
-          {/* Top Right (Card Bottom-Left center roughly 860, 180) */}
+          {/* Top Right curve */}
           <path d="M 660 281 C 760 281, 860 250, 860 190" markerEnd="url(#arrow-right)" />
-
-          {/* Bottom Left (Card Top-Right center roughly 140, 382) */}
+          {/* Bottom Left curve */}
           <path d="M 340 281 C 240 281, 140 312, 140 372" markerEnd="url(#arrow-left)" />
-
-          {/* Bottom Right (Card Top-Left center roughly 860, 382) */}
+          {/* Bottom Right curve */}
           <path d="M 660 281 C 760 281, 860 312, 860 372" markerEnd="url(#arrow-right)" />
         </svg>
 
-        {/* Center Card: Title & Icon */}
-        <div className="absolute left-[34%] top-[38%] w-[32%] h-[24%] flex flex-col items-center justify-center p-3 text-center rounded-2xl border border-foreground/15 shadow-[0_0_25px_rgba(0,114,245,0.05)] bg-card backdrop-blur-md group hover:border-accent/40 hover:shadow-[0_0_30px_rgba(0,114,245,0.12)] transition-all duration-300">
-          <div className="absolute inset-[1.5px] rounded-[14px] border border-dashed border-foreground/10 pointer-events-none group-hover:border-accent/30 transition-colors" />
-          <ElectronicBrainIcon className="w-10 h-10 mb-1.5" />
-          <h3 className="text-xs sm:text-[13px] font-bold tracking-tight text-foreground font-heading">
+        {/* Center Card: Title & Icon (Subtly rotated for hand-sketched placement feel) */}
+        <div className="absolute left-[34%] top-[38%] w-[32%] h-[24%] flex flex-col items-center justify-center p-3 text-center rounded-2xl bg-card/65 backdrop-blur-sm group hover:shadow-[0_0_20px_rgba(0,114,245,0.08)] transition-all duration-300 rotate-[-0.4deg]">
+          {/* Custom double-sketched border */}
+          <div className="absolute inset-0 pointer-events-none">
+            <svg className="w-full h-full text-foreground/25 dark:text-foreground/20" style={{ filter: sketchFilter }}>
+              <rect x="3" y="3" width="calc(100% - 6px)" height="calc(100% - 6px)" rx="14" fill="none" stroke="currentColor" strokeWidth="1.75" />
+              <rect x="1" y="2.5" width="calc(100% - 2px)" height="calc(100% - 5px)" rx="14" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.65" />
+            </svg>
+          </div>
+          <ElectronicBrainIcon className="w-10 h-10 mb-1" filter={sketchFilter} />
+          <h3 className="text-xs sm:text-[13px] font-bold tracking-tight text-foreground font-heading z-10">
             AI Expertise & Capability Overview
           </h3>
         </div>
 
-        {/* Top-Left: AI Strategy */}
-        <div className="absolute left-0 top-[2%] w-[28%] h-[34%] border border-amber-500/15 bg-amber-500/[0.01] hover:border-amber-500/30 hover:bg-amber-500/[0.03] transition-all duration-300 rounded-2xl p-4 flex flex-col justify-between">
-          <div className="flex items-center gap-2.5">
+        {/* Top-Left: AI Strategy (Subtly rotated for organic sketch layout) */}
+        <div className="absolute left-0 top-[2%] w-[28%] h-[34%] bg-amber-500/[0.003] rounded-2xl p-4 flex flex-col justify-between rotate-[0.3deg]">
+          {/* Sketched border background */}
+          <div className="absolute inset-0 pointer-events-none">
+            <svg className="w-full h-full text-amber-500/25" style={{ filter: sketchFilter }}>
+              <rect x="2" y="2" width="calc(100% - 4px)" height="calc(100% - 4px)" rx="12" fill="none" stroke="currentColor" strokeWidth="1.5" />
+              <rect x="3.5" y="1" width="calc(100% - 7px)" height="calc(100% - 2px)" rx="12" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.6" />
+            </svg>
+          </div>
+          <div className="flex items-center gap-2.5 z-10">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400">
               <RouteIcon size={18} />
             </div>
@@ -216,16 +275,23 @@ export function ExpertiseOverviewInfographic() {
               AI Strategy & Roadmaps
             </h4>
           </div>
-          <ul className="list-disc pl-4 text-[11px] sm:text-xs leading-relaxed text-foreground/75 space-y-1.5 mt-auto">
+          <ul className="list-disc pl-4 text-[11px] sm:text-xs leading-relaxed text-foreground/75 space-y-1.5 mt-auto z-10">
             <li>Roadmap planning</li>
             <li>ROI modeling</li>
             <li>Applied AI</li>
           </ul>
         </div>
 
-        {/* Top-Right: Agentic Automation */}
-        <div className="absolute right-0 top-[2%] w-[28%] h-[34%] border border-indigo-500/15 bg-indigo-500/[0.01] hover:border-indigo-500/30 hover:bg-indigo-500/[0.03] transition-all duration-300 rounded-2xl p-4 flex flex-col justify-between">
-          <div className="flex items-center gap-2.5">
+        {/* Top-Right: Agentic Automation (Subtly rotated) */}
+        <div className="absolute right-0 top-[2%] w-[28%] h-[34%] bg-indigo-500/[0.003] rounded-2xl p-4 flex flex-col justify-between rotate-[-0.3deg]">
+          {/* Sketched border background */}
+          <div className="absolute inset-0 pointer-events-none">
+            <svg className="w-full h-full text-indigo-500/25" style={{ filter: sketchFilter }}>
+              <rect x="2" y="2" width="calc(100% - 4px)" height="calc(100% - 4px)" rx="12" fill="none" stroke="currentColor" strokeWidth="1.5" />
+              <rect x="3.5" y="1" width="calc(100% - 7px)" height="calc(100% - 2px)" rx="12" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.6" />
+            </svg>
+          </div>
+          <div className="flex items-center gap-2.5 z-10">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
               <WorkflowIcon size={18} />
             </div>
@@ -233,16 +299,23 @@ export function ExpertiseOverviewInfographic() {
               Agentic Automation
             </h4>
           </div>
-          <ul className="list-disc pl-4 text-[11px] sm:text-xs leading-relaxed text-foreground/75 space-y-1.5 mt-auto">
+          <ul className="list-disc pl-4 text-[11px] sm:text-xs leading-relaxed text-foreground/75 space-y-1.5 mt-auto z-10">
             <li>Multi-agent coordination</li>
             <li>Autonomous workflows</li>
             <li>Tool & API integration</li>
           </ul>
         </div>
 
-        {/* Bottom-Left: GenAI Engineering */}
-        <div className="absolute left-0 bottom-[2%] w-[28%] h-[34%] border border-sky-500/15 bg-sky-500/[0.01] hover:border-sky-500/30 hover:bg-sky-500/[0.03] transition-all duration-300 rounded-2xl p-4 flex flex-col justify-between">
-          <div className="flex items-center gap-2.5">
+        {/* Bottom-Left: GenAI Engineering (Subtly rotated) */}
+        <div className="absolute left-0 bottom-[2%] w-[28%] h-[34%] bg-sky-500/[0.003] rounded-2xl p-4 flex flex-col justify-between rotate-[-0.2deg]">
+          {/* Sketched border background */}
+          <div className="absolute inset-0 pointer-events-none">
+            <svg className="w-full h-full text-sky-500/25" style={{ filter: sketchFilter }}>
+              <rect x="2" y="2" width="calc(100% - 4px)" height="calc(100% - 4px)" rx="12" fill="none" stroke="currentColor" strokeWidth="1.5" />
+              <rect x="3.5" y="1" width="calc(100% - 7px)" height="calc(100% - 2px)" rx="12" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.6" />
+            </svg>
+          </div>
+          <div className="flex items-center gap-2.5 z-10">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-500/10 text-sky-600 dark:text-sky-400">
               <CpuIcon size={18} />
             </div>
@@ -250,16 +323,23 @@ export function ExpertiseOverviewInfographic() {
               GenAI Engineering
             </h4>
           </div>
-          <ul className="list-disc pl-4 text-[11px] sm:text-xs leading-relaxed text-foreground/75 space-y-1.5 mt-auto">
+          <ul className="list-disc pl-4 text-[11px] sm:text-xs leading-relaxed text-foreground/75 space-y-1.5 mt-auto z-10">
             <li>LLM APIs (Claude, GPT, Gemini)</li>
             <li>RAG & vector databases</li>
             <li>Production deployment</li>
           </ul>
         </div>
 
-        {/* Bottom-Right: Private LLMs */}
-        <div className="absolute right-0 bottom-[2%] w-[28%] h-[34%] border border-emerald-500/15 bg-emerald-500/[0.01] hover:border-emerald-500/30 hover:bg-emerald-500/[0.03] transition-all duration-300 rounded-2xl p-4 flex flex-col justify-between">
-          <div className="flex items-center gap-2.5">
+        {/* Bottom-Right: Private LLMs (Subtly rotated) */}
+        <div className="absolute right-0 bottom-[2%] w-[28%] h-[34%] bg-emerald-500/[0.003] rounded-2xl p-4 flex flex-col justify-between rotate-[0.4deg]">
+          {/* Sketched border background */}
+          <div className="absolute inset-0 pointer-events-none">
+            <svg className="w-full h-full text-emerald-500/25" style={{ filter: sketchFilter }}>
+              <rect x="2" y="2" width="calc(100% - 4px)" height="calc(100% - 4px)" rx="12" fill="none" stroke="currentColor" strokeWidth="1.5" />
+              <rect x="3.5" y="1" width="calc(100% - 7px)" height="calc(100% - 2px)" rx="12" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.6" />
+            </svg>
+          </div>
+          <div className="flex items-center gap-2.5 z-10">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
               <LockIcon size={18} />
             </div>
@@ -267,7 +347,7 @@ export function ExpertiseOverviewInfographic() {
               Local & Private LLMs
             </h4>
           </div>
-          <ul className="list-disc pl-4 text-[11px] sm:text-xs leading-relaxed text-foreground/75 space-y-1.5 mt-auto">
+          <ul className="list-disc pl-4 text-[11px] sm:text-xs leading-relaxed text-foreground/75 space-y-1.5 mt-auto z-10">
             <li>Ollama & local models</li>
             <li>Compliance & security</li>
             <li>Cost optimization</li>
