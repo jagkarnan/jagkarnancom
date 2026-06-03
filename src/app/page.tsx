@@ -290,11 +290,11 @@ export default function Home({
             id="overview"
             headingFlash={flashSectionId === "overview"}
           >
-            <div className="overflow-hidden rounded-xl border border-foreground/10 bg-foreground/[0.02] shadow-sm">
+            <div className="mx-auto w-full md:w-[75%] flex justify-center">
               <img
                 src="/ai-expertise-overview.png"
                 alt="AI Expertise & Capability Overview Infographic showing AI Strategy & Roadmap, Agentic Automation, GenAI Engineering, and Private & Local LLMs"
-                className="w-full h-auto object-cover"
+                className="w-full h-auto object-contain invert dark:invert-0"
                 decoding="async"
               />
             </div>
