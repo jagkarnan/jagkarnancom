@@ -562,6 +562,13 @@ html[data-theme="light"] .timeline-hub {
   }
 }
 
+.expertise-infographic {
+  filter: invert(0);
+}
+html[data-theme="light"] .expertise-infographic {
+  filter: invert(0.8);
+}
+
 @media print {
 
   * {
