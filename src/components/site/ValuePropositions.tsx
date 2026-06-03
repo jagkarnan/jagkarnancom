@@ -45,9 +45,7 @@ export function ValuePropositions({ items }: { items: ValueProposition[] }) {
   return (
     <div className="flex flex-col gap-8">
       <p className="max-w-2xl text-sm leading-relaxed text-foreground/70 md:text-base">
-        Most teams don&rsquo;t need more AI hype — they need the right problems
-        solved, in production, with measurable outcomes. Here is exactly where I
-        create value.
+        Focusing on moving AI from prototype to production by addressing concrete operational bottlenecks and establishing stable, cost-controlled engineering systems.
       </p>
       <div className="grid gap-4 lg:grid-cols-2">
         {items.map((vp) => {

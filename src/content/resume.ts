@@ -152,24 +152,14 @@ export const resume: Resume = {
   ],
   valuePropositions: [
     {
-      problem: "Leadership wants AI but has no roadmap — pilots stall, budgets scatter, and teams stay stuck on manual work.",
-      solution: "I run a focused discovery, rank use cases by impact and effort, and build a phased AI roadmap tied to real KPIs — so the first win funds the next.",
-      result: "Clear AI strategy with sequenced pilots, measurable ROI targets, and executive buy-in from day one.",
+      problem: "Real estate transaction pipelines and back-office operations involve heavy manual document parsing, cross-portal data entry, and status tracking.",
+      solution: "I designed and deployed multi-agent workflows (connecting n8n, document parsers, and custom LLM interfaces) to orchestrate operations end-to-end.",
+      result: "Automated listing-to-close processes with human-in-the-loop validation, eliminating data entry bottlenecks.",
     },
     {
-      problem: "Repetitive workflows eat hours every week — copy-paste between systems, manual approvals, and data re-entry that nobody has time to fix.",
-      solution: "I design and ship multi-agent automations across n8n, APIs, and LLMs with error handling, retries, and monitoring built in — not duct-taped scripts.",
-      result: "End-to-end workflows that run unattended, with clear logs and alerts so the team trusts the system.",
-    },
-    {
-      problem: "Sensitive data can't leave the building, but cloud-only AI models are the only option leadership has heard of.",
-      solution: "I deploy and fine-tune local LLMs with Ollama, llama.cpp, and LoRA — keeping data on-prem while matching cloud-grade quality for targeted tasks.",
-      result: "Private, cost-controlled AI that passes compliance review and runs on your own infrastructure.",
-    },
-    {
-      problem: "AI demos impress in the meeting room but break in production — no eval baselines, no monitoring, no one owns it after launch.",
-      solution: "I bake in evaluation benchmarks, logging, latency and cost guardrails, and change-control from the start so the system stays reliable after go-live.",
-      result: "Production AI services with observability dashboards, defined SLAs, and a clear owner for every component.",
+      problem: "GenAI prototypes work well in sandbox demos but fail in production due to lack of evaluation baselines, high API costs, or data privacy restrictions.",
+      solution: "I deploy targeted local LLMs (via Ollama/LoRA) and implement structured logging, cost guardrails, and evaluation benchmarks.",
+      result: "Stable, compliant AI integrations running with predictable costs, clear observability, and on-premises data sovereignty.",
     },
   ],
   techSkills: [

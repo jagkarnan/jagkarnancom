@@ -298,7 +298,7 @@ export default function Home({
           </section>
           {resume.valuePropositions?.length ? (
             <Block
-              title="Why Engage Me"
+              title="How I Help"
               id="why-engage"
               headingFlash={flashSectionId === "why-engage"}
             >
