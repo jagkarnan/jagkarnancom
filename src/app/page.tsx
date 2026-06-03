@@ -294,7 +294,7 @@ export default function Home({
               <img
                 src="/ai-expertise-overview.png"
                 alt="AI Expertise & Capability Overview Infographic showing AI Strategy & Roadmap, Agentic Automation, GenAI Engineering, and Private & Local LLMs"
-                className="w-full h-auto object-contain invert dark:invert-0"
+                className="w-full h-auto object-contain invert-[0.8] dark:invert-0"
                 decoding="async"
               />
             </div>
