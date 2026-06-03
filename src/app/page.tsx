@@ -1,16 +1,17 @@
 "use client";
 
-import { use, useEffect, useRef, useState } from "react";
+import { use, useEffect, useId, useRef, useState } from "react";
 import { resume } from "@/content/resume";
 import type { CertificationBoardItem } from "@/content/resumeShared";
 import {
   buildCertificationBoardItems,
-  getIssuerInitials,
   groupCertificationBoardItemsByDecade,
   CORPORATE_EXPERIENCE,
 } from "@/content/resumeShared";
 import { DomainExposurePills } from "@/components/site/DomainExposurePills";
 import { TechSkillsPills } from "@/components/site/TechSkillsPills";
+import { SkillsInfographic } from "@/components/site/SkillsInfographic";
+import { ValuePropositions } from "@/components/site/ValuePropositions";
 import { useSectionHeadingFlash } from "@/components/site/useSectionHeadingFlash";
 import { Container } from "@/components/ui/Container";
 import { GoldMedalIcon } from "@/components/ui/GoldMedalIcon";
@@ -140,60 +141,44 @@ function ProfilePhotoLightbox({
   );
 }
 
-function CertificationBoardCard({
-  c,
-  certName,
-}: {
-  c: CertificationBoardItem;
-  certName: string;
-}) {
+function CertificationRow({ c }: { c: CertificationBoardItem }) {
+  const uid = useId().replace(/:/g, "");
+  const gradId = `cert-grad-${uid}`;
   return (
-    <div
-      className="relative flex flex-col rounded-[22px] border border-black/70 bg-[#f5f0e6] px-4 py-3 shadow-sm transition-shadow duration-200 dark:border-black dark:bg-[#f5f0e6]"
-    >
-      <div className="pointer-events-none absolute inset-1 rounded-[20px] border border-black/80 shadow-inner" />
-      <div className="relative flex flex-1 flex-col gap-3">
-        <div className="flex min-w-0 items-start gap-2.5 border-b border-black/40 pb-2">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-accent-2 text-[11px] font-bold text-white shadow-sm">
-            {getIssuerInitials(c.subtitle)}
-          </div>
-          <div className="min-w-0 flex flex-col">
-            <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-zinc-600">
-              Certificate of Achievement
-            </span>
-            <span className="break-words text-xs font-semibold text-zinc-900">
-              {c.subtitle || "Accredited Issuer"}
-            </span>
-          </div>
-        </div>
-        <div className="flex-1 space-y-1.5">
-          <p className="text-[11px] uppercase tracking-[0.22em] text-zinc-500">
-            This is to certify that
-          </p>
-          <p className="text-[13px] font-semibold tracking-tight text-zinc-900">{certName}</p>
-          <p className="text-[11px] text-zinc-600">has successfully attained</p>
-          <p className="break-words text-[12px] font-semibold leading-snug text-zinc-900">
-            {c.title}
-          </p>
-        </div>
-        <div className="mt-1.5 flex items-center justify-between pt-1.5">
-          <div className="flex flex-col text-[10px] text-zinc-700">
-            <span className="uppercase tracking-[0.18em]">Awarded</span>
-            <span className="mt-1 inline-flex w-fit rounded-full border border-black/60 bg-[#f5f0e6] px-2 py-0.5 font-mono text-[10px] text-zinc-900">
-              {c.year}
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="relative h-10 w-10 rounded-full border-2 border-red-700 bg-gradient-to-br from-red-500 to-red-700 text-[16px] font-bold text-white shadow-sm">
-              <div className="absolute inset-[2px] rounded-full border border-red-200/80" />
-              <div className="relative flex h-full w-full items-center justify-center leading-none">
-                ★
-              </div>
-            </div>
-          </div>
-        </div>
+    <li className="group flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors duration-150 hover:bg-foreground/[0.04]">
+      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-amber-500/[0.04] ring-1 ring-inset ring-amber-500/15 shadow-sm dark:bg-amber-500/[0.02]">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden className="text-foreground/70">
+          <defs>
+            <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="100%">
+              {/* Premium gold/copper gradient stops matching GoldMedalIcon */}
+              <stop offset="0%" stopColor="#fde68a" />
+              <stop offset="40%" stopColor="#f59e0b" />
+              <stop offset="100%" stopColor="#b45309" />
+            </linearGradient>
+          </defs>
+          {/* certificate body */}
+          <rect x="2" y="2" width="16" height="14" rx="1.5" stroke={`url(#${gradId})`} strokeWidth="1.2" fill="none" />
+          {/* text lines */}
+          <line x1="5" y1="5.5" x2="15" y2="5.5" stroke={`url(#${gradId})`} strokeWidth="1" strokeLinecap="round" opacity="0.65" />
+          <line x1="5" y1="8" x2="13" y2="8" stroke={`url(#${gradId})`} strokeWidth="1" strokeLinecap="round" opacity="0.5" />
+          <line x1="5" y1="10.5" x2="11" y2="10.5" stroke={`url(#${gradId})`} strokeWidth="1" strokeLinecap="round" opacity="0.35" />
+          {/* ribbon / seal */}
+          <circle cx="14.5" cy="14.5" r="3.2" fill={`url(#${gradId})`} stroke="#b45309" strokeWidth="0.5" />
+          <path d="M13.3 14.3l.8.8 1.6-1.6" stroke="#451a03" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+        </svg>
       </div>
-    </div>
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-sm font-semibold leading-tight tracking-tight text-foreground">
+          {c.title}
+        </p>
+        <p className="truncate text-xs text-foreground/55">
+          {c.subtitle}
+        </p>
+      </div>
+      <span className="shrink-0 rounded-full border border-foreground/10 bg-foreground/[0.04] px-2.5 py-0.5 font-mono text-[11px] font-medium text-foreground/60">
+        {c.year}
+      </span>
+    </li>
   );
 }
 
@@ -295,30 +280,33 @@ export default function Home({
                   </blockquote>
                 </div>
                 <div className="mx-auto flex w-full max-w-3xl flex-col gap-3 md:mx-0">
-                  {resume.summary.split(/\n\n+/).map((para, i) => (
-                    <p
-                      key={i}
-                      className="text-sm leading-relaxed text-foreground/75 break-words text-pretty md:text-left"
-                    >
-                      {para.trim()}
-                    </p>
-                  ))}
+                  {resume.summary
+                    .split(/\n\n+/)
+                    .map((para) => para.trim())
+                    .filter(Boolean)
+                    .map((para, i) => (
+                      <p
+                        key={i}
+                        className="text-sm leading-relaxed text-foreground/75 break-words text-pretty md:text-left"
+                      >
+                        {para}
+                      </p>
+                    ))}
                 </div>
               </div>
             </div>
           </section>
+          {resume.valuePropositions?.length ? (
+            <Block
+              title="Why Engage Me"
+              id="why-engage"
+              headingFlash={flashSectionId === "why-engage"}
+            >
+              <ValuePropositions items={resume.valuePropositions} />
+            </Block>
+          ) : null}
           <Block title="AI Skills" id="ai-skills" headingFlash={flashSectionId === "ai-skills"}>
-            <ul className="space-y-4 text-sm leading-relaxed text-foreground/75">
-              {resume.skills.map((s) => (
-                <li key={s.name} className="flex gap-3 text-pretty">
-                  <span
-                    className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/40"
-                    aria-hidden
-                  />
-                  <span className="min-w-0 break-words">{s.name}</span>
-                </li>
-              ))}
-            </ul>
+            <SkillsInfographic skills={resume.skills} />
           </Block>
           <Block title="Tech Skills" id="tech-skills" headingFlash={flashSectionId === "tech-skills"}>
             <TechSkillsPills skills={resume.techSkills ?? []} />
@@ -337,7 +325,7 @@ export default function Home({
                   className={
                     "min-w-0 scroll-mt-28" +
                     (i > 0
-                      ? " mt-8 border-t border-foreground/10 pt-8 md:mt-10 md:pt-10"
+                      ? " mt-5 border-t border-foreground/10 pt-5 md:mt-6 md:pt-6"
                       : "")
                   }
                 >
@@ -347,15 +335,11 @@ export default function Home({
                   >
                     {group.label}
                   </h3>
-                  <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                  <ul className="mt-2 grid gap-x-2 sm:grid-cols-2">
                     {group.items.map((c) => (
-                      <CertificationBoardCard
-                        key={c.id}
-                        c={c}
-                        certName={resume.legalName ?? resume.name}
-                      />
+                      <CertificationRow key={c.id} c={c} />
                     ))}
-                  </div>
+                  </ul>
                 </section>
               ))}
             </div>

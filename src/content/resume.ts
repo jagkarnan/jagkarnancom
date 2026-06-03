@@ -5,7 +5,25 @@ export type DomainExposure = {
   domains: string[];
 };
 export type SkillLevel = "Expert" | "Advanced" | "Intermediate";
-export type Skill = { name: string; level?: SkillLevel; keywords?: string[] };
+/** Icon key resolved to a component in the skills infographic */
+export type SkillIcon =
+  | "roadmap"
+  | "automation"
+  | "engineering"
+  | "local-llm"
+  | "adoption"
+  | "frontier"
+  | "delivery"
+  | "observability";
+export type Skill = {
+  name: string;
+  /** Short headline shown above the description in the infographic */
+  title?: string;
+  /** Icon key for the infographic card */
+  icon?: SkillIcon;
+  level?: SkillLevel;
+  keywords?: string[];
+};
 export type Certification = {
   name: string;
   issuer: string;
@@ -43,6 +61,11 @@ export type Milestone = {
   year: string;
   type: "achievement" | "project" | "award" | "certification";
 };
+export type ValueProposition = {
+  problem: string;
+  solution: string;
+  result: string;
+};
 export type Resume = {
   name: string;
   /** Legal / certificate name (e.g. for formal résumé and PDF) */
@@ -64,13 +87,14 @@ export type Resume = {
   projects: Project[];
   education: Education[];
   milestones?: Milestone[];
+  valuePropositions?: ValueProposition[];
 };
 export const resume: Resume = {
   name: "Jag Karnan",
   legalName: "Jegadeesan Karunakaran",
   displayLocation: "Singapore",
   roleLine:
-    "AI Strategy, Hands-on AI Engineer, AI Thought Leader",
+    "AI Architect, Hands-on AI Engineer",
   domainExposure: {
     label: "Domain Exposure",
     domains: ["Real Estate", "Finance", "Logistics"],
@@ -78,8 +102,7 @@ export const resume: Resume = {
   headline:
     "AI first strategy, AI transformation, agentic automation, and AI-driven operations that scale",
   location: "Singapore (Singapore PR • Availability: Immediate)",
-  summary:
-    "AI-native operator who defaults to automation, agents, and LLMs wherever they genuinely replace repetitive work or sharpen decisions, never AI for its own sake. That mindset is backed by a strong execution record across three reinforcing areas: building AI automation through orchestration, integrations, and reliable workflows; shipping production-grade AI code across Python and TypeScript stacks with disciplined review and iteration; and embedding AI into real operating rhythms with the guardrails, handoffs, and change management that make adoption stick.\n\nI partner closely with leadership and teams to understand how a business actually runs end to end. From there, I map processes, prioritise the highest-impact use cases, and deliver changes that smooth workflows, cut manual effort, and produce measurable outcomes: faster cycles, fewer errors, and operations built to scale as the business grows.",
+  summary: "",
   links: [
     { label: "LinkedIn", href: "https://www.linkedin.com/in/jagkarnan/" },
     { label: "YouTube", href: "https://www.youtube.com/@jagkarnanai" },
@@ -87,25 +110,66 @@ export const resume: Resume = {
   ],
   skills: [
     {
+      title: "AI Strategy & Roadmaps",
+      icon: "roadmap",
       name: "Turn leadership goals into AI roadmaps that use agents, LLMs, and automation to remove real operational drag, not add more IT projects",
     },
     {
+      title: "Agentic Automation",
+      icon: "automation",
       name: "Build and run multi-agent workflows across n8n, Zapier, Make, and APIs, with error handling, retries, and monitoring built in",
     },
     {
+      title: "GenAI Engineering",
+      icon: "engineering",
       name: "Ship GenAI apps using Python, TypeScript, LLM APIs (Claude, GPT, Gemini), RAG, vector databases, and frameworks like CrewAI, LangChain, and LangGraph",
     },
     {
+      title: "Local & Private LLMs",
+      icon: "local-llm",
       name: "Install and fine-tune local LLM models with Ollama, llama.cpp, and LoRA/QLoRA for private, on-prem, or cost-controlled workloads where data must stay in-house",
     },
     {
+      title: "AI Adoption & Enablement",
+      icon: "adoption",
       name: "Embed AI into daily workflows with clear handoffs, guardrails, prompt libraries, and human checkpoints so teams actually adopt it",
     },
     {
+      title: "Frontier Model Applications",
+      icon: "frontier",
       name: "Apply frontier models (Claude, GPT, Gemini) to content, analysis, and decision support tied to measurable KPIs",
     },
     {
+      title: "End-to-End AI Delivery",
+      icon: "delivery",
       name: "Lead AI delivery end to end: discovery, prototypes, pilots, production rollout, training, and iteration",
+    },
+    {
+      title: "AI Evaluation & Observability",
+      icon: "observability",
+      name: "Set evaluation baselines, logging, monitoring, and cost or latency guardrails so AI systems stay reliable, explainable, and cost-effective after go-live",
+    },
+  ],
+  valuePropositions: [
+    {
+      problem: "Leadership wants AI but has no roadmap — pilots stall, budgets scatter, and teams stay stuck on manual work.",
+      solution: "I run a focused discovery, rank use cases by impact and effort, and build a phased AI roadmap tied to real KPIs — so the first win funds the next.",
+      result: "Clear AI strategy with sequenced pilots, measurable ROI targets, and executive buy-in from day one.",
+    },
+    {
+      problem: "Repetitive workflows eat hours every week — copy-paste between systems, manual approvals, and data re-entry that nobody has time to fix.",
+      solution: "I design and ship multi-agent automations across n8n, APIs, and LLMs with error handling, retries, and monitoring built in — not duct-taped scripts.",
+      result: "End-to-end workflows that run unattended, with clear logs and alerts so the team trusts the system.",
+    },
+    {
+      problem: "Sensitive data can't leave the building, but cloud-only AI models are the only option leadership has heard of.",
+      solution: "I deploy and fine-tune local LLMs with Ollama, llama.cpp, and LoRA — keeping data on-prem while matching cloud-grade quality for targeted tasks.",
+      result: "Private, cost-controlled AI that passes compliance review and runs on your own infrastructure.",
+    },
+    {
+      problem: "AI demos impress in the meeting room but break in production — no eval baselines, no monitoring, no one owns it after launch.",
+      solution: "I bake in evaluation benchmarks, logging, latency and cost guardrails, and change-control from the start so the system stays reliable after go-live.",
+      result: "Production AI services with observability dashboards, defined SLAs, and a clear owner for every component.",
     },
   ],
   techSkills: [
@@ -115,11 +179,9 @@ export const resume: Resume = {
     "LangChain",
     "LangGraph",
     "CrewAI",
-    "RAG",
     "OpenAI API",
     "Anthropic Claude",
     "Google Gemini",
-    "MCP",
     "n8n",
     "FastAPI",
     "React",
@@ -138,8 +200,6 @@ export const resume: Resume = {
     "MySQL",
     "Redis",
     "pgvector",
-    "Linux",
-    "Git",
   ],
   certifications: [
     {
@@ -201,7 +261,7 @@ export const resume: Resume = {
   experience: [
     {
       company: "Singapore IT Services Pte Ltd",
-      role: "AI Strategy, Hands-on AI Engineer, AI Thought Leader",
+      role: "AI Architect, Hands-on AI Engineer",
       location: "Singapore",
       start: "2023",
       end: "Present",

@@ -109,10 +109,12 @@ export function HeroSection() {
               {" "}
               {resume.headline}{" "}
             </p>{" "}
-            <p className="max-w-2xl text-sm leading-relaxed text-foreground/70 md:text-base">
-              {" "}
-              {resume.summary}{" "}
-            </p>{" "}
+            {resume.summary.trim() ? (
+              <p className="max-w-2xl text-sm leading-relaxed text-foreground/70 md:text-base">
+                {" "}
+                {resume.summary}{" "}
+              </p>
+            ) : null}{" "}
             <div className="flex flex-wrap items-center gap-3 pt-4">
               {" "}
               <ObfuscatedMailtoAnchor className="flex items-center gap-2 rounded-full border border-foreground/12 bg-transparent px-4 py-2 text-sm text-foreground/85 no-underline transition-[background-color,border-color,transform] duration-200 ease-out hover:border-foreground/20 hover:bg-foreground/[0.06] active:scale-[0.98] motion-reduce:active:scale-100">

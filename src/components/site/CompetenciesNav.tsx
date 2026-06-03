@@ -9,6 +9,7 @@ import { NAV_INLINE_TRIGGER_OPEN_GLASS, NAV_SELECTED_GLASS } from "@/components/
 import { useHashLinkClickResync } from "@/components/site/useHashLinkClickResync";
 
 export const COMPETENCIES_ITEMS = [
+  { href: "/#why-engage", id: "why-engage", label: "Why Engage Me" },
   { href: "/#ai-skills", id: "ai-skills", label: "AI Skills" },
   { href: "/#tech-skills", id: "tech-skills", label: "Tech Skills" },
   { href: "/#certifications", id: "certifications", label: "Certifications" },
