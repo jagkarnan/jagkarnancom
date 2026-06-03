@@ -18,14 +18,6 @@ import { GoldMedalIcon } from "@/components/ui/GoldMedalIcon";
 import { LocationPinIcon } from "@/components/ui/LocationPinIcon";
 import { Timeline } from "@/components/ui/Timeline";
 
-function getUniversityGoldMedalLabel(): string | null {
-  for (const ed of resume.education) {
-    const hit = ed.notes?.find((n) => /gold\s*medal/i.test(n));
-    if (hit) return hit;
-  }
-  return null;
-}
-
 function Block({
   title,
   children,
@@ -193,7 +185,6 @@ export default function Home({
   const certificationsByDecade = groupCertificationBoardItemsByDecade(
     certificationBoardItems,
   );
-  const goldMedalLabel = getUniversityGoldMedalLabel();
   const [photoOpen, setPhotoOpen] = useState(false);
   const photoAlt = `Photo of ${resume.name}`;
   const flashSectionId = useSectionHeadingFlash();
@@ -256,17 +247,7 @@ export default function Home({
                       ) : null}
                     </div>
                   ) : null}
-                  {goldMedalLabel ? (
-                    <div className="flex justify-center md:justify-start">
-                      <span
-                        className="hero-gold-medal-pill inline-flex items-center gap-1.5 rounded-full border border-amber-400/45 bg-gradient-to-r from-amber-500/15 to-amber-600/10 px-2.5 py-1 text-xs font-semibold tracking-tight text-amber-100 shadow-[0_0_20px_rgba(245,158,11,0.12)] transition-[box-shadow,border-color] duration-200"
-                        title={goldMedalLabel}
-                      >
-                        <GoldMedalIcon size={18} className="shrink-0 drop-shadow-sm" />
-                        <span className="whitespace-nowrap">{goldMedalLabel}</span>
-                      </span>
-                    </div>
-                  ) : null}
+
                   <blockquote className="mx-auto w-full max-w-3xl rounded-xl bg-foreground/[0.035] px-4 py-3.5 shadow-[0_0_0_1px_rgba(148,163,184,0.2)] dark:bg-foreground/[0.06] dark:shadow-[0_0_0_1px_rgba(255,255,255,0.1)] md:mx-0">
                     <p className="text-center text-pretty text-sm font-medium italic leading-snug text-foreground/80 sm:text-base md:text-left">
                       <span className="text-foreground/45 not-italic" aria-hidden>
