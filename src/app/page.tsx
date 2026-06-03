@@ -285,6 +285,20 @@ export default function Home({
           >
             <ContactChannels singleLine />
           </Block>
+          <Block
+            title="Overview"
+            id="overview"
+            headingFlash={flashSectionId === "overview"}
+          >
+            <div className="overflow-hidden rounded-xl border border-foreground/10 bg-foreground/[0.02] shadow-sm">
+              <img
+                src="/ai-expertise-overview.png"
+                alt="AI Expertise & Capability Overview Infographic showing AI Strategy & Roadmap, Agentic Automation, GenAI Engineering, and Private & Local LLMs"
+                className="w-full h-auto object-cover"
+                decoding="async"
+              />
+            </div>
+          </Block>
           {resume.valuePropositions?.length ? (
             <Block
               title="How I Help"
