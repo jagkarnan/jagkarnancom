@@ -220,7 +220,7 @@ function ResumePrintBody() {
                             <p className="text-[9px] uppercase tracking-widest text-neutral-700">
                               Awarded
                             </p>
-                            <p className="mt-0.5 inline-block rounded-full border border-black px-2 py-0.5 font-mono text-[10px] text-black">
+                            <p className="mt-0.5 inline-block rounded-full border border-black px-2 py-0.5 font-mono text-[10px] text-black whitespace-nowrap">
                               {c.year}
                             </p>
                           </div>

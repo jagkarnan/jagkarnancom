@@ -138,7 +138,7 @@ function CertificationRow({ c }: { c: CertificationBoardItem }) {
   const uid = useId().replace(/:/g, "");
   const gradId = `cert-grad-${uid}`;
   return (
-    <li className="group flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors duration-150 hover:bg-foreground/[0.04]">
+    <li className="group flex min-w-0 items-center gap-3 rounded-lg px-3 py-2.5 transition-colors duration-150 hover:bg-foreground/[0.04]">
       <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-amber-500/[0.04] ring-1 ring-inset ring-amber-500/15 shadow-sm dark:bg-amber-500/[0.02]">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden className="text-foreground/70">
           <defs>
@@ -168,7 +168,7 @@ function CertificationRow({ c }: { c: CertificationBoardItem }) {
           {c.subtitle}
         </p>
       </div>
-      <span className="shrink-0 rounded-full border border-foreground/10 bg-foreground/[0.04] px-2.5 py-0.5 font-mono text-[11px] font-medium text-foreground/60">
+      <span className="shrink-0 rounded-full border border-foreground/10 bg-foreground/[0.04] px-2.5 py-0.5 font-mono text-[11px] font-medium text-foreground/60 whitespace-nowrap">
         {c.year}
       </span>
     </li>
