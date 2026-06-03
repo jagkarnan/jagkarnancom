@@ -11,7 +11,6 @@ import {
 import { DomainExposurePills } from "@/components/site/DomainExposurePills";
 import { TechSkillsPills } from "@/components/site/TechSkillsPills";
 import { SkillsInfographic } from "@/components/site/SkillsInfographic";
-import { ExpertiseOverviewInfographic } from "@/components/site/ExpertiseOverviewInfographic";
 import { ValuePropositions } from "@/components/site/ValuePropositions";
 import { ContactChannels } from "@/components/contact/ContactPageBody";
 import { useSectionHeadingFlash } from "@/components/site/useSectionHeadingFlash";
@@ -291,7 +290,14 @@ export default function Home({
             id="overview"
             headingFlash={flashSectionId === "overview"}
           >
-            <ExpertiseOverviewInfographic />
+            <div className="mx-auto w-full md:w-[75%] flex justify-center">
+              <img
+                src="/ai-expertise-overview.png"
+                alt="AI Expertise & Capability Overview Infographic showing AI Strategy & Roadmap, Agentic Automation, GenAI Engineering, and Private & Local LLMs in a technical drawing sketch style"
+                className="w-full h-auto object-contain expertise-infographic"
+                decoding="async"
+              />
+            </div>
           </Block>
           {resume.valuePropositions?.length ? (
             <Block
