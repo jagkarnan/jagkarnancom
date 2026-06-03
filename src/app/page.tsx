@@ -283,7 +283,7 @@ export default function Home({
             id="connect"
             headingFlash={flashSectionId === "connect"}
           >
-            <ContactChannels />
+            <ContactChannels singleLine />
           </Block>
           {resume.valuePropositions?.length ? (
             <Block
