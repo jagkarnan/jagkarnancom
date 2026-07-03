@@ -73,9 +73,11 @@ function ResumePrintBody() {
                 {resume.domainExposure.domains.join(", ")}
               </p>
             ) : null}
-            <p className="mt-2 text-sm leading-snug text-black">
-              {resume.headline}
-            </p>
+            {resume.headline.trim() ? (
+              <p className="mt-2 text-sm leading-snug text-black">
+                {resume.headline}
+              </p>
+            ) : null}
             {resume.summary.trim() ? (
               <div className="mt-3 space-y-3 text-sm leading-relaxed text-black">
                 {resume.summary

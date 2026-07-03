@@ -141,7 +141,9 @@ export function generateResumePdfBuffer(
     if (domainExp?.domains?.length) {
       writeDomainExposureLine(doc, w, domainExp);
     }
-    doc.fontSize(12).font("Helvetica-Bold").text(resume.headline);
+    if (resume.headline.trim()) {
+      doc.fontSize(12).font("Helvetica-Bold").text(resume.headline);
+    }
     doc.moveDown(compact ? 0.25 : 0.35);
     doc.font("Helvetica").fontSize(10);
     if (resume.location) {

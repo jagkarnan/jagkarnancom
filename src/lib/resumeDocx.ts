@@ -150,14 +150,16 @@ export async function generateResumeDocxBuffer(
       }),
     );
   }
-  children.push(
-    new Paragraph({
-      spacing: { after: 120 },
-      children: [
-        new TextRun({ text: resume.headline, bold: true, size: DOCX_PT(12) }),
-      ],
-    }),
-  );
+  if (resume.headline.trim()) {
+    children.push(
+      new Paragraph({
+        spacing: { after: 120 },
+        children: [
+          new TextRun({ text: resume.headline, bold: true, size: DOCX_PT(12) }),
+        ],
+      }),
+    );
+  }
   if (resume.location) {
     children.push(
       new Paragraph({
