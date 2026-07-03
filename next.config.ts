@@ -12,17 +12,19 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["pdfkit", "fontkit"],
   outputFileTracingIncludes: {
     "/api/resume": ["./node_modules/pdfkit/js/data/**/*"],
-    "/api/resume-zip": ["./node_modules/pdfkit/js/data/**/*"],
   },
+  /** Resume downloads are served as static files under /public/resume/.
+   *  The legacy dynamic /api/resume and /api/resume-docx routes remain in
+   *  place for the printable /resume page on /. */
   async rewrites() {
     return [
       {
         source: "/Jag_Karnan_Resume.pdf",
-        destination: "/api/resume?variant=detailed",
+        destination: "/resume/Jag_Karnan_Resume.pdf",
       },
       {
         source: "/Jag_Karnan_Resume.docx",
-        destination: "/api/resume-docx?variant=detailed",
+        destination: "/resume/Jag_Karnan_Resume.docx",
       },
     ];
   },

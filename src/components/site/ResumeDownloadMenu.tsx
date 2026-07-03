@@ -3,12 +3,12 @@
 import { useEffect, useId, useRef, useState } from "react";
 
 import {
-  RESUME_DOCX_ZIP_FILENAME,
-  RESUME_PDF_ZIP_FILENAME,
+  RESUME_DOCX_FILENAME,
+  RESUME_PDF_FILENAME,
 } from "@/lib/resumeDocumentOptions";
 
-const PDF_HREF = "/api/resume-zip";
-const DOCX_HREF = "/api/resume-docx-zip";
+const PDF_PATH = "/resume/" + RESUME_PDF_FILENAME;
+const DOCX_PATH = "/resume/" + RESUME_DOCX_FILENAME;
 
 const triggerClassName =
   "editorial-resume-trigger focus-ring inline-flex h-full min-h-10 shrink-0 items-center gap-1.5 rounded-md px-3 text-xs font-semibold transition-[color,transform,background-color] duration-200 ease-out active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100 sm:min-h-12 sm:px-3.5";
@@ -91,21 +91,21 @@ export function ResumeDownloadMenu({ onAfterPick }: ResumeDownloadMenuProps) {
         >
           <a
             role="menuitem"
-            href={PDF_HREF}
-            download={RESUME_PDF_ZIP_FILENAME}
+            href={PDF_PATH}
+            download={RESUME_PDF_FILENAME}
             className={menuItemClassName}
             onClick={handlePick}
           >
-            Download PDF (ZIP)
+            Download PDF
           </a>
           <a
             role="menuitem"
-            href={DOCX_HREF}
-            download={RESUME_DOCX_ZIP_FILENAME}
+            href={DOCX_PATH}
+            download={RESUME_DOCX_FILENAME}
             className={menuItemClassName}
             onClick={handlePick}
           >
-            Download DOCX (ZIP)
+            Download DOCX
           </a>
         </div>
       ) : null}

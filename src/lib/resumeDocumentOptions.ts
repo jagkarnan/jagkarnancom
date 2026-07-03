@@ -12,8 +12,10 @@ import {
 export type ResumeDocumentVariant = "detailed" | "concise";
 
 export const RESUME_FILE_BASENAME = "Jag_Karnan_Resume";
-export const RESUME_PDF_ZIP_FILENAME = `${RESUME_FILE_BASENAME}_pdf.zip`;
-export const RESUME_DOCX_ZIP_FILENAME = `${RESUME_FILE_BASENAME}_docx.zip`;
+/** Download filename for the static PDF the Resume button serves. */
+export const RESUME_PDF_FILENAME = `${RESUME_FILE_BASENAME}.pdf`;
+/** Download filename for the static DOCX the Resume button serves. */
+export const RESUME_DOCX_FILENAME = `${RESUME_FILE_BASENAME}.docx`;
 
 export function resumeDocumentTitle(variant: ResumeDocumentVariant): string {
   return variant === "concise"
