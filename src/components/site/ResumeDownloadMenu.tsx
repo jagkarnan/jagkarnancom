@@ -11,10 +11,10 @@ const PDF_HREF = "/api/resume-zip";
 const DOCX_HREF = "/api/resume-docx-zip";
 
 const triggerClassName =
-  "focus-ring inline-flex shrink-0 items-center gap-1 rounded-md bg-[#c73e1d] px-2.5 py-1 text-xs font-medium text-white shadow-[0_0_0_1px_rgba(0,0,0,0.15)] transition-[filter,transform,background-color] duration-200 ease-out hover:bg-[#9e2e18] active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100 sm:px-3 sm:text-sm dark:bg-[#c73e1d] dark:text-white dark:shadow-[0_0_0_1px_rgba(255,255,255,0.18)] dark:hover:bg-[#9e2e18]";
+  "editorial-resume-trigger focus-ring inline-flex h-full min-h-10 shrink-0 items-center gap-1.5 rounded-md px-3 text-xs font-semibold transition-[color,transform,background-color] duration-200 ease-out active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100 sm:min-h-12 sm:px-3.5";
 
 const menuItemClassName =
-  "focus-ring block w-full rounded-md px-3 py-2.5 text-left text-sm text-foreground transition-colors hover:bg-foreground/[0.06] active:bg-foreground/10";
+  "focus-ring block w-full rounded-md px-3 py-2.5 text-left text-sm font-semibold text-[#111111] transition-colors hover:bg-[#e4efe6] active:bg-[#d8e8dc]";
 
 type ResumeDownloadMenuProps = {
   /** Called after the user picks PDF or DOCX (e.g. close mobile menu overlay). */
@@ -70,7 +70,7 @@ export function ResumeDownloadMenu({ onAfterPick }: ResumeDownloadMenuProps) {
   };
 
   return (
-    <div ref={rootRef} className="relative shrink-0">
+    <div ref={rootRef} className="relative inline-flex shrink-0 self-stretch items-center">
       <button
         type="button"
         className={triggerClassName}
@@ -79,7 +79,7 @@ export function ResumeDownloadMenu({ onAfterPick }: ResumeDownloadMenuProps) {
         aria-controls={menuId}
         onClick={() => setOpen((o) => !o)}
       >
-        Download Resume
+        Resume
         <ChevronIcon open={open} />
       </button>
       {open ? (
@@ -87,7 +87,7 @@ export function ResumeDownloadMenu({ onAfterPick }: ResumeDownloadMenuProps) {
           id={menuId}
           role="menu"
           aria-label="Resume format"
-          className="absolute right-0 top-[calc(100%+6px)] z-[100] min-w-[11rem] rounded-lg border border-foreground/10 bg-[var(--card)] py-1 shadow-lg shadow-black/10 dark:shadow-black/40"
+          className="absolute right-0 top-[calc(100%+8px)] z-[100] min-w-[13rem] rounded-md border border-[#d7ddd5] bg-white p-1 shadow-[0_18px_42px_rgba(17,17,17,0.14)]"
         >
           <a
             role="menuitem"
