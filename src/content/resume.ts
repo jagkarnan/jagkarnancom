@@ -99,8 +99,7 @@ export const resume: Resume = {
     label: "Domain Exposure",
     domains: ["Real Estate", "Finance", "Logistics"],
   },
-  headline:
-    "AI first strategy, AI transformation, agentic automation, and AI-driven operations that scale",
+  headline: "",
   location: "Singapore (Singapore PR • Availability: Immediate)",
   summary: "",
   links: [
