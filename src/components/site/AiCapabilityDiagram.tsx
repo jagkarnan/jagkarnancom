@@ -180,8 +180,8 @@ export function AiCapabilityDiagram() {
       {/* Bottom outcome label */}
       <div className="relative mt-4 flex items-center gap-2 pl-8">
         <div className="h-px flex-1 bg-[var(--editorial-line)]" />
-        <span className="shrink-0 text-[10px] font-semibold uppercase tracking-[0.15em] text-[var(--editorial-muted)]">
-          measure → learn → tune → automate → govern
+        <span className="shrink-0 whitespace-nowrap text-[9px] font-semibold uppercase tracking-[0.08em] text-[var(--editorial-muted)] sm:text-[10px] sm:tracking-[0.15em]">
+          measure → learn → automate → govern
         </span>
         <div className="h-px flex-1 bg-[var(--editorial-line)]" />
       </div>
