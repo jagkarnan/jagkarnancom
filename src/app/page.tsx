@@ -11,8 +11,8 @@ import {
 import { DomainExposurePills } from "@/components/site/DomainExposurePills";
 import { TechSkillsPills } from "@/components/site/TechSkillsPills";
 import { SkillsInfographic } from "@/components/site/SkillsInfographic";
+import { AiCapabilityDiagram } from "@/components/site/AiCapabilityDiagram";
 import { ValuePropositions } from "@/components/site/ValuePropositions";
-import { ContactChannels } from "@/components/contact/ContactPageBody";
 import { useSectionHeadingFlash } from "@/components/site/useSectionHeadingFlash";
 import { Container } from "@/components/ui/Container";
 import { GoldMedalIcon } from "@/components/ui/GoldMedalIcon";
@@ -34,12 +34,12 @@ function Block({
   return (
     <section
       id={id}
-      className="glass-card rounded-xl p-4 sm:p-6"
+      className="editorial-section"
       aria-labelledby={headingId}
     >
       <h2
         id={headingId}
-        className="text-xs font-semibold uppercase leading-tight tracking-[0.18em] text-foreground/45 sm:text-[13px] sm:tracking-[0.2em]"
+        className="editorial-section-title"
       >
         <span
           className={`relative inline-block max-w-full pb-1${
@@ -49,7 +49,7 @@ function Block({
           {title}
         </span>
       </h2>
-      <div className="mt-4 md:mt-6">{children}</div>
+      <div className="mt-6 md:mt-8">{children}</div>
     </section>
   );
 }
@@ -65,7 +65,10 @@ function ProfilePhotoLightbox({
 }) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const onCloseRef = useRef(onClose);
-  onCloseRef.current = onClose;
+
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
 
   useEffect(() => {
     if (!open) return;
@@ -192,111 +195,87 @@ export default function Home({
 
   return (
     <main
-      className="min-w-0 overflow-x-hidden pt-8 pb-12 md:pb-14"
+      className="editorial-main min-w-0 overflow-x-hidden pb-16"
       aria-label="Profile and résumé"
     >
-      <Container>
-        <div className="flex flex-col gap-8 md:gap-10">
-          <section
-            className="glass-card rounded-xl p-4 sm:p-6"
-            aria-labelledby="hero-name-heading"
-          >
-            <div className="flex flex-col gap-5 md:flex-row md:gap-8">
-              <div className="mx-auto shrink-0 md:mx-0">
-                <button
-                  type="button"
-                  onClick={() => setPhotoOpen(true)}
-                  className="focus-ring group relative rounded-full"
-                  aria-label={`View larger photo of ${resume.name}`}
-                >
+      <section
+        id="connect"
+        className="editorial-hero"
+        aria-labelledby="hero-name-heading"
+      >
+        <Container>
+          <div className="editorial-hero-grid">
+            <div className="editorial-portrait-wrap">
+              <button
+                type="button"
+                onClick={() => setPhotoOpen(true)}
+                className="editorial-portrait-button focus-ring"
+                aria-label={`View larger photo of ${resume.name}`}
+              >
+                <span className="editorial-portrait-frame">
                   <img
                     src="/profile-photo.jpg"
                     alt=""
-                    className="h-24 w-24 rounded-full object-cover border-2 border-foreground/20 ring-2 ring-foreground/5 transition-[transform,box-shadow] duration-200 ease-out group-hover:ring-foreground/15 group-active:scale-[0.98] motion-reduce:group-active:scale-100"
+                    className="editorial-portrait-img"
                     decoding="async"
                   />
-                </button>
-              </div>
-              <div className="flex min-w-0 flex-1 flex-col gap-3 text-center md:text-left">
-                <div className="flex w-full flex-col gap-3 items-center md:items-start">
-                  <h1
-                    id="hero-name-heading"
-                    className="geist-display w-full text-center text-2xl font-semibold text-foreground sm:text-3xl break-words md:text-left"
-                  >
-                    <span className="inline-flex flex-wrap items-center justify-center gap-x-2 gap-y-1 md:justify-start">
-                      <span>{resume.name}</span>
-                      {resume.displayLocation ? (
-                        <span className="inline-flex items-center gap-1.5 text-sm font-medium tracking-normal text-foreground/70 sm:text-base sm:tracking-wide">
-                          <LocationPinIcon className="h-3 w-3 shrink-0 text-foreground/55 sm:h-3.5 sm:w-3.5" />
-                          {resume.displayLocation}
-                        </span>
-                      ) : null}
-                    </span>
-                  </h1>
-                  {resume.roleLine || resume.domainExposure ? (
-                    <div className="flex w-full flex-col gap-3 text-center md:text-left">
-                      {resume.roleLine ? (
-                        <p className="text-base font-medium text-foreground/85 sm:text-lg">
-                          {resume.roleLine}
-                        </p>
-                      ) : null}
-                      {resume.domainExposure ? (
-                        <DomainExposurePills
-                          exposure={resume.domainExposure}
-                          pillsJustify="responsive"
-                        />
-                      ) : null}
-                    </div>
-                  ) : null}
-
-                  <blockquote className="mx-auto w-full max-w-3xl rounded-xl bg-foreground/[0.035] px-4 py-3.5 shadow-[0_0_0_1px_rgba(148,163,184,0.2)] dark:bg-foreground/[0.06] dark:shadow-[0_0_0_1px_rgba(255,255,255,0.1)] md:mx-0">
-                    <p className="text-center text-pretty text-sm font-medium italic leading-snug text-foreground/80 sm:text-base md:text-left">
-                      <span className="text-foreground/45 not-italic" aria-hidden>
-                        &ldquo;
-                      </span>
-                      {resume.headline}
-                      <span className="text-foreground/45 not-italic" aria-hidden>
-                        &rdquo;
-                      </span>
-                    </p>
-                  </blockquote>
-                </div>
-                <div className="mx-auto flex w-full max-w-3xl flex-col gap-3 md:mx-0">
-                  {resume.summary
-                    .split(/\n\n+/)
-                    .map((para) => para.trim())
-                    .filter(Boolean)
-                    .map((para, i) => (
-                      <p
-                        key={i}
-                        className="text-sm leading-relaxed text-foreground/75 break-words text-pretty md:text-left"
-                      >
-                        {para}
-                      </p>
-                    ))}
-                </div>
-              </div>
+                </span>
+              </button>
             </div>
-          </section>
+
+            <div className="editorial-hero-copy">
+              <p className="editorial-eyebrow">
+                {resume.roleLine}
+                {resume.displayLocation ? ` · ${resume.displayLocation}` : ""}
+              </p>
+              <h1 id="hero-name-heading" className="editorial-hero-title">
+                Designing <span>AI systems</span> that make complex work
+                clearer, faster, and easier to scale.
+              </h1>
+              {resume.domainExposure ? (
+                <div className="mt-7">
+                  <DomainExposurePills
+                    exposure={resume.domainExposure}
+                    pillsJustify="start"
+                  />
+                </div>
+              ) : null}
+            </div>
+          </div>
+
+          <div className="editorial-logo-strip" aria-label="Selected corporate exposure">
+            {CORPORATE_EXPERIENCE.slice(0, 6).map((company) => (
+              <div key={company.name} className="editorial-logo-cell">
+                <img
+                  src={company.logo}
+                  alt={`${company.name} logo`}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            ))}
+          </div>
+
+          <div className="editorial-capability-grid">
+            {resume.skills.slice(0, 3).map((skill) => (
+              <article key={skill.title ?? skill.name} className="editorial-capability-card">
+                <h2>{skill.title}</h2>
+                <p>{skill.name}</p>
+              </article>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <Container>
+        <div className="editorial-section-stack">
           <Block
-            title="Connect"
-            id="connect"
-            headingFlash={flashSectionId === "connect"}
+            title="Capability stack"
+            id="capability-stack"
+            headingFlash={flashSectionId === "capability-stack"}
           >
-            <ContactChannels singleLine />
-          </Block>
-          <Block
-            title="Overview"
-            id="overview"
-            headingFlash={flashSectionId === "overview"}
-          >
-            <div className="mx-auto w-full md:w-[75%] flex justify-center">
-              <img
-                src="/ai-expertise-overview.png"
-                alt="AI Expertise & Capability Overview Infographic showing AI Strategy & Roadmap, Agentic Automation, GenAI Engineering, and Private & Local LLMs in a technical drawing sketch style"
-                className="w-full h-auto object-contain expertise-infographic"
-                decoding="async"
-              />
+            <div className="editorial-image-panel">
+              <AiCapabilityDiagram />
             </div>
           </Block>
           {resume.valuePropositions?.length ? (
@@ -393,24 +372,18 @@ export default function Home({
             id="corporate-exposure"
             headingFlash={flashSectionId === "corporate-exposure"}
           >
-            <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12">
+            <div className="editorial-logo-strip editorial-logo-strip--section" aria-label="Corporate exposure logos">
               {CORPORATE_EXPERIENCE.map((company) => (
                 <div
                   key={company.name}
-                  className="flex flex-col items-center gap-3"
+                  className="editorial-logo-cell"
                 >
-                  <div className="corporate-logo-tile flex h-16 w-40 shrink-0 items-center justify-center rounded-xl border border-neutral-300 px-3 py-2 shadow-sm transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md sm:h-[4.5rem] sm:w-44">
-                    <img
-                      src={company.logo}
-                      alt={`${company.name} logo`}
-                      className="max-h-full max-w-full object-contain"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </div>
-                  <span className="text-xs font-medium text-foreground/70">
-                    {company.name}
-                  </span>
+                  <img
+                    src={company.logo}
+                    alt={`${company.name} logo`}
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
               ))}
             </div>
