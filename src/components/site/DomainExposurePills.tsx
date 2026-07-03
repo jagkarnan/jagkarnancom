@@ -22,7 +22,7 @@ export function DomainExposurePills({
     <div
       className={`flex flex-row flex-wrap items-center gap-x-2 gap-y-2 ${rowLayout}`}
     >
-      <span className="shrink-0 text-xs font-semibold uppercase tracking-wide text-foreground/55">
+      <span className="domain-exposure-label shrink-0 text-xs font-semibold uppercase tracking-wide text-foreground/55">
         {exposure.label}
       </span>
       <ul className="m-0 flex list-none flex-row flex-wrap items-center gap-2 p-0">

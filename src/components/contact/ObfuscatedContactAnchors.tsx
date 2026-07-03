@@ -8,6 +8,8 @@ type AnchorProps = {
   children: ReactNode;
   /** Opens in a new tab (e.g. Contact section). */
   newTab?: boolean;
+  /** Pre-filled WhatsApp message appended as ?text=... (URL-encoded). */
+  text?: string;
 };
 
 function blockUntilReady(e: React.MouseEvent, ready: boolean) {
@@ -60,12 +62,19 @@ export function ObfuscatedTelAnchor({
   );
 }
 
-export function ObfuscatedWhatsAppAnchor({ className, children }: AnchorProps) {
+export function ObfuscatedWhatsAppAnchor({
+  className,
+  children,
+  text,
+}: AnchorProps) {
   const d = useSingletonDecodedContact();
   const ready = Boolean(d?.whatsAppId);
+  const baseHref = ready ? `https://wa.me/${d!.whatsAppId}` : "#";
+  const href =
+    ready && text ? `${baseHref}?text=${encodeURIComponent(text)}` : baseHref;
   return (
     <a
-      href={ready ? `https://wa.me/${d!.whatsAppId}` : "#"}
+      href={href}
       target="_blank"
       rel="noopener noreferrer"
       className={className}

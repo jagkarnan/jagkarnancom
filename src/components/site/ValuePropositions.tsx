@@ -21,22 +21,22 @@ function buildStages(vp: ValueProposition): Stage[] {
       label: "The problem",
       text: vp.problem,
       Icon: BadgeAlertIcon,
-      tile: "bg-amber-500/10 text-amber-600 ring-amber-500/20 dark:text-amber-400",
-      accent: "bg-amber-500/30",
+      tile: "bg-[#e4efe6] text-[#315c3f] ring-[#315c3f]/20",
+      accent: "bg-[#315c3f]/20",
     },
     {
       label: "How I solve it",
       text: vp.solution,
       Icon: WrenchIcon,
-      tile: "bg-sky-500/10 text-sky-600 ring-sky-500/20 dark:text-sky-400",
-      accent: "bg-sky-500/30",
+      tile: "bg-[#e4efe6] text-[#315c3f] ring-[#315c3f]/20",
+      accent: "bg-[#315c3f]/20",
     },
     {
       label: "What you get",
       text: vp.result,
       Icon: TrendingUpIcon,
-      tile: "bg-emerald-500/10 text-emerald-600 ring-emerald-500/20 dark:text-emerald-400",
-      accent: "bg-emerald-500/30",
+      tile: "bg-[#e4efe6] text-[#315c3f] ring-[#315c3f]/20",
+      accent: "bg-[#315c3f]/20",
     },
   ];
 }
@@ -53,7 +53,7 @@ export function ValuePropositions({ items }: { items: ValueProposition[] }) {
           return (
             <article
               key={vp.problem}
-              className="group relative flex flex-col rounded-xl border border-foreground/10 bg-foreground/[0.02] p-5 transition-[border-color,background-color] duration-200 ease-out hover:border-foreground/20 hover:bg-foreground/[0.04]"
+              className="editorial-card group relative flex flex-col p-5 transition-[transform,box-shadow] duration-200 ease-out"
             >
               {stages.map((stage, i) => (
                 <div key={stage.label} className="relative flex gap-4">

@@ -33,12 +33,9 @@ export function Timeline({ milestones }: TimelineProps) {
   const cardClass = (item: TimelineItem) => {
     const isAchievement =
       item.type === "milestone" && item.milestoneType === "achievement";
-    const isMilestone = item.type === "milestone";
     if (isAchievement)
-      return "bg-gradient-to-br from-purple-500/20 to-indigo-500/20 border border-purple-500/30";
-    if (isMilestone)
-      return "bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/30";
-    return "bg-foreground/5 border border-foreground/10";
+      return "editorial-milestone-card editorial-milestone-card--achievement";
+    return "editorial-milestone-card";
   };
 
   const typeLabel = (item: TimelineItem) => item.milestoneType;
@@ -64,12 +61,12 @@ export function Timeline({ milestones }: TimelineProps) {
           }`}
         >
           <div
-            className={`inline-block max-w-full rounded-xl p-3 transition-[border-color,box-shadow] duration-200 ease-out sm:p-4 ${
+            className={`inline-block max-w-full p-3 transition-[border-color,box-shadow] duration-200 ease-out sm:p-4 ${
               isAchievement
-                ? "bg-gradient-to-br from-purple-500/20 to-indigo-500/20 border border-purple-500/30"
+                ? "editorial-milestone-card editorial-milestone-card--achievement"
                 : isMilestone
-                  ? "bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/30"
-                  : "bg-foreground/5 border border-foreground/10"
+                  ? "editorial-milestone-card"
+                  : "editorial-milestone-card"
             }`}
           >
             <div
@@ -80,9 +77,9 @@ export function Timeline({ milestones }: TimelineProps) {
               <span
                 className={`text-xs font-medium uppercase tracking-wider ${
                   isAchievement
-                    ? "text-purple-400/80"
+                    ? "text-[var(--editorial-accent)]"
                     : isMilestone
-                      ? "text-amber-400/80"
+                      ? "text-[var(--editorial-muted)]"
                       : "text-foreground/50"
                 }`}
               >
@@ -108,11 +105,11 @@ export function Timeline({ milestones }: TimelineProps) {
 
         <div className="absolute left-1/2 -translate-x-1/2 z-10">
           <div
-            className={`timeline-hub flex h-12 w-12 items-center justify-center rounded-full text-xs font-bold ring-4 ring-background ${
+            className={`timeline-hub flex h-11 w-11 items-center justify-center rounded-full text-xs font-bold ring-4 ring-background ${
               isAchievement
-                ? "bg-gradient-to-br from-purple-500 to-indigo-500 text-white"
+                ? "bg-[var(--editorial-accent)] text-white"
                 : isMilestone
-                  ? "bg-gradient-to-br from-amber-500 to-orange-500 text-white"
+                  ? "border border-[var(--editorial-accent)] bg-[var(--editorial-cream)] text-[var(--editorial-accent)]"
                   : "border-2 border-foreground/40 bg-background text-foreground"
             }`}
           >
@@ -137,11 +134,11 @@ export function Timeline({ milestones }: TimelineProps) {
     <div className="relative mt-8 mb-8">
       <div className="absolute left-0 right-0 flex flex-wrap items-center justify-center gap-4 gap-y-2 px-2 text-xs text-foreground/60 sm:gap-8">
         <div className="flex items-center gap-2">
-          <div className="h-4 w-4 rounded-full bg-gradient-to-br from-purple-500 to-indigo-500" />
+          <div className="h-3 w-3 rounded-full bg-[var(--editorial-accent)]" />
           <span>Achievement</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="h-4 w-4 rounded-full bg-gradient-to-br from-amber-500 to-orange-500" />
+          <div className="h-3 w-3 rounded-full border border-[var(--editorial-accent)] bg-[var(--editorial-cream)]" />
           <span>Milestone</span>
         </div>
       </div>
@@ -155,7 +152,7 @@ export function Timeline({ milestones }: TimelineProps) {
         {allItems.map((item) => (
           <div
             key={`mobile-${item.title}-${item.year}`}
-            className={`rounded-xl p-4 transition-[border-color,box-shadow] duration-200 ease-out motion-reduce:transition-none ${cardClass(item)}`}
+            className={`p-4 transition-[border-color,box-shadow] duration-200 ease-out motion-reduce:transition-none ${cardClass(item)}`}
           >
             <p className="text-xs font-medium uppercase tracking-wider text-foreground/60">
               {typeLabel(item)}
@@ -181,7 +178,7 @@ export function Timeline({ milestones }: TimelineProps) {
       {/* md–lg: timeline only */}
       <div className="hidden md:block lg:hidden">
         <div className="relative min-w-0 max-w-4xl">
-          <div className="absolute left-1/2 top-0 bottom-0 w-1 -translate-x-1/2 rounded-full bg-gradient-to-b from-foreground/30 via-foreground/60 to-foreground/30" />
+          <div className="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2 bg-[var(--editorial-line)]" />
           <div className="relative space-y-8">
             {allItems.map((item) => (
               <Fragment key={`${item.title}-${item.year}`}>
@@ -201,7 +198,7 @@ export function Timeline({ milestones }: TimelineProps) {
             <h3 className="experience-journey-heading text-sm font-semibold text-foreground/80">
               Experience Journey
             </h3>
-            <p className="experience-journey-subtitle mt-1 text-[10px] font-bold tracking-wide text-amber-500/95">
+            <p className="experience-journey-subtitle mt-1 text-[10px] font-bold tracking-wide text-[var(--editorial-accent)]">
               30 YEARS EXPERIENCE
             </p>
           </div>
@@ -216,7 +213,7 @@ export function Timeline({ milestones }: TimelineProps) {
             className="pointer-events-none z-0 col-start-1 row-start-1 flex justify-center"
             style={{ gridRowEnd: `span ${allItems.length}` }}
           >
-            <div className="w-1 min-h-full rounded-full bg-gradient-to-b from-foreground/30 via-foreground/60 to-foreground/30" />
+            <div className="min-h-full w-px bg-[var(--editorial-line)]" />
           </div>
 
           {/* Experience arrow — same vertical span as spine */}
@@ -224,8 +221,8 @@ export function Timeline({ milestones }: TimelineProps) {
             className="pointer-events-none z-0 col-start-2 row-start-1 relative flex justify-center"
             style={{ gridRowEnd: `span ${allItems.length}` }}
           >
-            <div className="experience-journey-arrow-track absolute left-1/2 top-0 bottom-0 w-2 -translate-x-1/2 rounded-full bg-gradient-to-b from-amber-500/30 via-amber-500/40 to-amber-500/50" />
-            <div className="experience-journey-arrow-tip absolute bottom-0 left-1/2 -translate-x-1/2 h-0 w-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[10px] border-t-amber-500/60" />
+            <div className="experience-journey-arrow-track absolute left-1/2 top-0 bottom-0 w-1 -translate-x-1/2 rounded-full bg-[var(--editorial-accent)]/30" />
+            <div className="experience-journey-arrow-tip absolute bottom-0 left-1/2 h-0 w-0 -translate-x-1/2 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[10px] border-t-[var(--editorial-accent)]/50" />
           </div>
 
           {allItems.map((item, index) => (
@@ -240,10 +237,10 @@ export function Timeline({ milestones }: TimelineProps) {
                 className="relative z-10 flex flex-col items-center justify-center gap-0.5 px-1 text-center"
                 style={{ gridColumn: 2, gridRow: index + 1 }}
               >
-                <span className="experience-journey-year text-xs font-mono text-amber-500/90">
+                <span className="experience-journey-year text-xs font-mono text-[var(--editorial-accent)]">
                   {item.year}
                 </span>
-                <span className="experience-journey-year experience-journey-yr-count text-[10px] font-bold leading-tight text-amber-500/95">
+                <span className="experience-journey-year experience-journey-yr-count text-[10px] font-bold leading-tight text-[var(--editorial-muted)]">
                   {item.year - careerStartYear + 1} yrs
                 </span>
               </div>

@@ -2,6 +2,9 @@
 
 import { ObfuscatedWhatsAppAnchor } from "@/components/contact/ObfuscatedContactAnchors";
 
+const WHATSAPP_PREFILLED_MESSAGE =
+  "Hi Jag, I am contacting through your jagkarnan.com websit. I would like to ...";
+
 function WhatsAppGlyph({ className }: { className?: string }) {
   return (
     <svg
@@ -19,7 +22,8 @@ function WhatsAppGlyph({ className }: { className?: string }) {
 export function FloatingWhatsAppButton() {
   return (
     <ObfuscatedWhatsAppAnchor
-      className="focus-ring fixed bottom-[max(1.25rem,env(safe-area-inset-bottom,0px))] right-[max(1.25rem,env(safe-area-inset-right,0px))] z-[100] flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg shadow-black/20 transition-[transform,box-shadow,background-color] duration-200 ease-out hover:bg-[#20bd5a] hover:shadow-xl hover:shadow-black/25 active:scale-[0.96] motion-reduce:transition-none motion-reduce:active:scale-100 print:hidden dark:shadow-black/40"
+      className="focus-ring fixed bottom-[max(1.25rem,env(safe-area-inset-bottom,0px))] right-[max(1.25rem,env(safe-area-inset-right,0px))] z-[100] flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg shadow-emerald-950/25 transition-[transform,box-shadow,background-color] duration-200 ease-out hover:bg-[#1ebe5d] hover:shadow-xl hover:shadow-emerald-950/30 active:scale-[0.96] motion-reduce:transition-none motion-reduce:active:scale-100 print:hidden"
+      text={WHATSAPP_PREFILLED_MESSAGE}
     >
       <span className="sr-only">Chat on WhatsApp</span>
       <WhatsAppGlyph className="h-7 w-7" />
