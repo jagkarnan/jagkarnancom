@@ -94,7 +94,7 @@ export const resume: Resume = {
   legalName: "Jegadeesan Karunakaran",
   displayLocation: "Singapore",
   roleLine:
-    "AI Architect, Hands-on AI Engineer",
+    "AI Transformation Leader, Hands-on AI Engineer",
   domainExposure: {
     label: "Domain Exposure",
     domains: ["Real Estate", "Finance", "Logistics"],
@@ -250,7 +250,7 @@ export const resume: Resume = {
   experience: [
     {
       company: "Singapore IT Services Pte Ltd",
-      role: "AI Architect, Hands-on AI Engineer",
+      role: "AI Transformation Lead",
       location: "Singapore",
       start: "2023",
       end: "Present",

@@ -127,9 +127,9 @@ function ProfilePhotoLightbox({
           </svg>
         </button>
         <img
-          src="/profile-photo.jpg"
+          src="/jag-portrait.webp"
           alt={alt}
-          className="max-h-[min(90vh,36rem)] max-w-[min(90vw,36rem)] rounded-full border-2 border-white/20 object-cover shadow-2xl"
+          className="max-h-[min(90vh,36rem)] max-w-[min(90vw,36rem)] object-contain drop-shadow-2xl"
           decoding="async"
         />
       </div>
@@ -214,7 +214,7 @@ export default function Home({
               >
                 <span className="editorial-portrait-frame">
                   <img
-                    src="/profile-photo.jpg"
+                    src="/jag-portrait.webp"
                     alt=""
                     className="editorial-portrait-img"
                     decoding="async"

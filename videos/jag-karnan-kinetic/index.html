@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --paper: #ffffff;
+        --ink: #111111;
+        --muted: #5c5f5c;
+        --rule: #e5e5dd;
+        --accent: #315c3f;
+        --accent-2: #4f7d5c;
+        --wash: #e4efe6;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--paper);
+      }
+      body {
+        font-family: "Montserrat", system-ui, sans-serif;
+        color: var(--ink);
+      }
+
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        background: var(--paper);
+      }
+
+      /* each scene fills the stage and centers its content */
+      .scene {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 120px 200px;
+        box-sizing: border-box;
+        text-align: center;
+      }
+
+      .hero {
+        font-family: "Crimson Text", Georgia, serif;
+        font-weight: 400;
+        font-size: 188px;
+        line-height: 1.02;
+        letter-spacing: -0.01em;
+        color: var(--ink);
+      }
+      .hero .w {
+        display: inline-block;
+      }
+
+      .rule {
+        width: 360px;
+        height: 4px;
+        background: var(--accent);
+        margin-top: 48px;
+        border-radius: 2px;
+      }
+
+      /* scene 2 — the number */
+      .bignum {
+        font-family: "Crimson Text", Georgia, serif;
+        font-weight: 600;
+        font-size: 440px;
+        line-height: 1;
+        color: var(--accent);
+      }
+      .bignum #num {
+        display: inline-block;
+      }
+      .years {
+        font-family: "Montserrat", sans-serif;
+        font-weight: 600;
+        font-size: 70px;
+        letter-spacing: 0.38em;
+        text-indent: 0.38em;
+        color: var(--ink);
+        margin-top: 52px;
+      }
+
+      /* scene 3 — building AI */
+      .accent {
+        display: inline-block;
+        color: var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-gxr6" id="root" data-composition-id="main" data-start="0" data-duration="8" data-width="1920" data-height="1080">
+      <div data-hf-id="hf-4lf6" id="seq" class="clip" data-start="0" data-duration="8" data-track-index="1">
+        <!-- Scene 1 — Hook -->
+        <div data-hf-id="hf-zet7" class="scene" id="scene1">
+          <h1 data-hf-id="hf-4rwm" class="hero">
+            <span data-hf-id="hf-stqu" class="w">Jag</span> <span data-hf-id="hf-ou1j" class="w">Karnan</span>
+          </h1>
+          <div data-hf-id="hf-djvb" class="rule" id="rule1"></div>
+        </div>
+
+        <!-- Scene 2 — Build -->
+        <div data-hf-id="hf-qqxc" class="scene" id="scene2">
+          <div data-hf-id="hf-82fe" class="bignum"><span data-hf-id="hf-gzi4" id="num">20</span></div>
+          <div data-hf-id="hf-8lys" class="years">YEARS</div>
+        </div>
+
+        <!-- Scene 3 — Punch -->
+        <div data-hf-id="hf-ril5" class="scene" id="scene3">
+          <h1 data-hf-id="hf-ot3e" class="hero">
+            <span data-hf-id="hf-pwgf" class="w3">building</span> <span data-hf-id="hf-3d9h" class="w3 accent" id="ai">AI</span>
+          </h1>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const ease = "power3.out";
+
+      // Seek-safe gating: scenes hidden until their entrance; rule collapsed.
+      gsap.set(["#scene1", "#scene2", "#scene3"], { autoAlpha: 0 });
+      gsap.set("#rule1", { scaleX: 0, transformOrigin: "left center" });
+
+      // ── Scene 1 — Hook : "Jag Karnan" ──────────────────────────────
+      tl.to("#scene1", { autoAlpha: 1, duration: 0.35 }, 0.0)
+        .from(
+          "#scene1 .w",
+          { y: 96, opacity: 0, duration: 0.85, ease, stagger: 0.12 },
+          0.0
+        )
+        .to("#rule1", { scaleX: 1, duration: 0.7, ease: "power2.inOut" }, 0.55)
+        .to(
+          "#scene1",
+          { autoAlpha: 0, y: -34, duration: 0.5, ease: "power2.in" },
+          2.25
+        );
+
+      // ── Scene 2 — Build : "20 YEARS" ────────────────────────────────
+      tl.to("#scene2", { autoAlpha: 1, duration: 0.3 }, 2.65)
+        .from(
+          "#num",
+          { scale: 0.45, opacity: 0, duration: 0.75, ease: "back.out(1.9)" },
+          2.65
+        )
+        .from(
+          "#scene2 .years",
+          { y: 44, opacity: 0, duration: 0.6, ease },
+          3.0
+        )
+        // emphasis pulse on the number
+        .to(
+          "#num",
+          { scale: 1.08, duration: 0.2, yoyo: true, repeat: 1, ease: "sine.inOut" },
+          3.55
+        )
+        .to(
+          "#scene2",
+          { autoAlpha: 0, y: -34, duration: 0.5, ease: "power2.in" },
+          4.75
+        );
+
+      // ── Scene 3 — Punch : "building AI" ─────────────────────────────
+      tl.to("#scene3", { autoAlpha: 1, duration: 0.3 }, 5.15)
+        .from(
+          "#scene3 .w3",
+          { y: 88, opacity: 0, duration: 0.85, ease, stagger: 0.13 },
+          5.15
+        )
+        // accent word lifts + glows on the beat
+        .to(
+          "#ai",
+          { scale: 1.07, duration: 0.35, yoyo: true, repeat: 1, ease: "sine.inOut" },
+          6.2
+        )
+        .to(
+          "#ai",
+          {
+            textShadow: "0 0 48px rgba(49, 92, 63, 0.55)",
+            duration: 0.45,
+            yoyo: true,
+            repeat: 1,
+            ease: "sine.inOut",
+          },
+          6.2
+        );
+
+      // hold the final frame to the full 8s
+      tl.to("#scene3", { autoAlpha: 1, duration: 0.01 }, 7.99);
+
+      tl.seek(0);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
